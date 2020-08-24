@@ -129,7 +129,7 @@ Item {
             {
                 anchors.fill: parent
 
-                VericalSpacer{}
+                VerticalSpacer{}
 
                 AppText
                 {
@@ -219,7 +219,7 @@ Item {
                     }
                 }
 
-                VericalSpacer{}
+                VerticalSpacer{}
             }
         }
 

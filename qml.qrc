@@ -17,9 +17,13 @@
         <file>qml/views/SettingsView.qml</file>
         <file>qml/views/MessagesView.qml</file>
         <file>qml/views/SalesView.qml</file>
-        <file>qml/components/VericalSpacer.qml</file>
+        <file>qml/components/VerticalSpacer.qml</file>
         <file>qml/components/HorizontalSpacer.qml</file>
         <file>qml/views/AccountsView.qml</file>
         <file>qml/components/UserIcon.qml</file>
+        <file>qml/subviews/TableHeader.qml</file>
+        <file>qml/components/TextIconButton.qml</file>
+        <file>qml/subviews/CheckoutPopup.qml</file>
+        <file>qml/components/CheckoutPaymentItem.qml</file>
     </qresource>
 </RCC>
