@@ -15,6 +15,7 @@ Window {
 
     property string bgColor: "#f4f9fa"
     property string menuColor: "#12679a"
+    property string tableHeaderColor: "#5f00ff"
 
     Component.onCompleted: mainApp.showMaximized();
 

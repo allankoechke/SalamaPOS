@@ -25,5 +25,10 @@
         <file>qml/components/TextIconButton.qml</file>
         <file>qml/subviews/CheckoutPopup.qml</file>
         <file>qml/components/CheckoutPaymentItem.qml</file>
+        <file>qml/components/StockViewSelectBtn.qml</file>
+        <file>qml/subviews/StockProductView.qml</file>
+        <file>qml/subviews/StockItemStockView.qml</file>
+        <file>qml/components/StockProductViewHeader.qml</file>
+        <file>qml/delegates/ProductViewDelegate.qml</file>
     </qresource>
 </RCC>
