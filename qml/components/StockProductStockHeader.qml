@@ -59,26 +59,6 @@ Rectangle {
         AppText
         {
             color: "white"
-            text: qsTr("BP")
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.preferredWidth: 150
-        }
-
-        AppText
-        {
-            color: "white"
-            text: qsTr("SP")
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.preferredWidth: 150
-        }
-
-        AppText
-        {
-            color: "white"
             text: qsTr("Qty.")
             horizontalAlignment: AppText.AlignHCenter
 
@@ -89,23 +69,23 @@ Rectangle {
         AppText
         {
             color: "white"
-            text: qsTr("Company")
+            text: qsTr("Action")
+            horizontalAlignment: AppText.AlignHCenter
+
+            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+            Layout.preferredWidth: 150
+        }
+
+        AppText
+        {
+            color: "white"
+            text: qsTr("Last Updated")
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.fillWidth: true
             Layout.minimumWidth: 150
             Layout.maximumWidth: 300
-        }
-
-        AppText
-        {
-            color: "white"
-            text: qsTr("Action")
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.preferredWidth: 100
         }
     }
 }

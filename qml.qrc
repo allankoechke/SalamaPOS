@@ -21,7 +21,7 @@
         <file>qml/components/HorizontalSpacer.qml</file>
         <file>qml/views/AccountsView.qml</file>
         <file>qml/components/UserIcon.qml</file>
-        <file>qml/subviews/TableHeader.qml</file>
+        <file>qml/subviews/CheckoutTableHeader.qml</file>
         <file>qml/components/TextIconButton.qml</file>
         <file>qml/subviews/CheckoutPopup.qml</file>
         <file>qml/components/CheckoutPaymentItem.qml</file>
@@ -30,5 +30,12 @@
         <file>qml/subviews/StockItemStockView.qml</file>
         <file>qml/components/StockProductViewHeader.qml</file>
         <file>qml/delegates/ProductViewDelegate.qml</file>
+        <file>qml/components/StockProductStockHeader.qml</file>
+        <file>qml/delegates/StockViewDelegate.qml</file>
+        <file>qml/models/StockViewModel.qml</file>
+        <file>qml/models/ProductViewModel.qml</file>
+        <file>qml/delegates/CheckoutViewDelegate.qml</file>
+        <file>qml/models/CheckoutViewModel.qml</file>
+        <file>qml/components/NotificationSelectBtn.qml</file>
     </qresource>
 </RCC>

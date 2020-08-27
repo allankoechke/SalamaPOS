@@ -13,10 +13,8 @@ Rectangle {
     property string itemName
     property string barCode
     property string unit
-    property int bp
-    property int sp
     property int qty
-    property string company
+    property string lastUpdated
 
     RowLayout
     {
@@ -67,26 +65,6 @@ Rectangle {
         AppText
         {
             color: "black"
-            text: bp.toString()
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.preferredWidth: 150
-        }
-
-        AppText
-        {
-            color: "black"
-            text: sp.toString()
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.preferredWidth: 150
-        }
-
-        AppText
-        {
-            color: "black"
             text: qty.toString()
             horizontalAlignment: AppText.AlignHCenter
 
@@ -94,20 +72,8 @@ Rectangle {
             Layout.preferredWidth: 100
         }
 
-        AppText
-        {
-            color: "black"
-            text: company
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.fillWidth: true
-            Layout.minimumWidth: 150
-            Layout.maximumWidth: 300
-        }
-
         Item{
-            Layout.preferredWidth: 100
+            Layout.preferredWidth: 150
             Layout.fillHeight: true
 
             RowLayout
@@ -126,11 +92,23 @@ Rectangle {
                 AppText
                 {
                     color: "black"
-                    text: qsTr("Edit")
+                    text: qsTr("Change")
 
                     Layout.alignment: Qt.AlignVCenter
                 }
             }
+        }
+
+        AppText
+        {
+            color: "black"
+            text: lastUpdated
+            horizontalAlignment: AppText.AlignHCenter
+
+            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+            Layout.fillWidth: true
+            Layout.minimumWidth: 150
+            Layout.maximumWidth: 300
         }
     }
 }

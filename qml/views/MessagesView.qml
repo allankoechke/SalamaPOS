@@ -12,13 +12,7 @@ Item {
     Layout.margins: 50
 
     property bool isSendingMail: false
-
-    onIsSendingMailChanged: {
-        if(!isSendingMail)
-        {
-            sendIcon.rotation = 0;
-        }
-    }
+    property int currentScreen: 0
 
     RotationAnimation
     {
@@ -27,6 +21,8 @@ Item {
         duration: 2500
         loops: RotationAnimation.Infinite
         running: isSendingMail
+
+        onStopped: sendIcon.rotation = 0;
     }
 
     RowLayout
@@ -55,24 +51,28 @@ Item {
                     RowLayout
                     {
                         anchors.fill: parent
-                        anchors.margins: 20
+                        anchors.leftMargin: 20
+                        anchors.rightMargin: 20
                         spacing: 10
 
-                        Rectangle
+                        NotificationSelectBtn
                         {
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-
-                            color: menuColor
+                            count: 0
+                            label: qsTr("Messages")
+                            _icon: "\uf0e0"
+                            isSelected: currentScreen === 0;
+                            onClicked: currentScreen = 0;
                         }
 
-                        Rectangle
+                        NotificationSelectBtn
                         {
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-
-                            color: menuColor
+                            count: 0
+                            label: qsTr("Notifications")
+                            _icon: "\uf0f3"
+                            isSelected: currentScreen === 1;
+                            onClicked: currentScreen = 1;
                         }
+
                     }
                 }
 

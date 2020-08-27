@@ -4,6 +4,7 @@ import QtQuick.Controls 2.4 as Controls2
 
 import "../components"
 import "../delegates"
+import "../models"
 
 Rectangle {
 
@@ -21,10 +22,7 @@ Rectangle {
         anchors.margins: 0
         spacing: 0
 
-        StockProductViewHeader
-        {
-
-        }
+        StockProductViewHeader {}
 
         Rectangle
         {
@@ -39,20 +37,30 @@ Rectangle {
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.margins: 1
+            clip: true
 
             ListView
             {
                 anchors.fill: parent
                 spacing: 0
 
-                model: 5
+                model: ProductViewModel {}
+
                 delegate: Component {
                     id: productViewDelegate
 
                     ProductViewDelegate
                     {
                         width: scroll.width
+
                         _index: model.index
+                        itemName: _name
+                        barCode: _code
+                        unit: _unit
+                        qty: _qty
+                        bp: _bp
+                        sp: _sp
+                        company: _company
                     }
                 }
             }

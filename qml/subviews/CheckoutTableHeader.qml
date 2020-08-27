@@ -1,6 +1,5 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.3
-import QtQuick.Controls 2.4 as Controls2
 
 import "../components"
 
@@ -15,10 +14,13 @@ Rectangle {
         anchors.fill: parent
         spacing: 1
 
+
         AppText
         {
+            size: 17
             color: "white"
             text: qsTr("No.")
+            font.bold: true
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
@@ -27,59 +29,24 @@ Rectangle {
 
         AppText
         {
+            size: 17
             color: "white"
             text: qsTr("Item Name")
+            font.bold: true
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.fillWidth: true
             Layout.minimumWidth: 150
+            Layout.maximumWidth: 450
         }
 
         AppText
         {
-            color: "white"
-            text: qsTr("Bar Code")
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.preferredWidth: 150
-        }
-
-        AppText
-        {
-            color: "white"
-            text: qsTr("Unit")
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.preferredWidth: 100
-        }
-
-        AppText
-        {
-            color: "white"
-            text: qsTr("BP")
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.preferredWidth: 150
-        }
-
-        AppText
-        {
-            color: "white"
-            text: qsTr("SP")
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.preferredWidth: 150
-        }
-
-        AppText
-        {
+            size: 17
             color: "white"
             text: qsTr("Qty.")
+            font.bold: true
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
@@ -88,20 +55,34 @@ Rectangle {
 
         AppText
         {
+            size: 17
             color: "white"
-            text: qsTr("Company")
+            text: qsTr("Unit Price (Ksh.)")
+            font.bold: true
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.fillWidth: true
-            Layout.minimumWidth: 150
-            Layout.maximumWidth: 300
+            Layout.preferredWidth: 200
         }
 
         AppText
         {
+            size: 17
+            color: "white"
+            text: qsTr("Subtotal")
+            font.bold: true
+            horizontalAlignment: AppText.AlignHCenter
+
+            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+            Layout.preferredWidth: 200
+        }
+
+        AppText
+        {
+            size: 17
             color: "white"
             text: qsTr("Action")
+            font.bold: true
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter

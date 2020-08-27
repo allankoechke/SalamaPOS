@@ -4,6 +4,8 @@ import QtQuick.Controls 2.4 as Controls2
 
 import "../components"
 import "../subviews"
+import "../models"
+import "../delegates"
 
 Item {
     id: root
@@ -115,31 +117,49 @@ Item {
 
             color: "white"
             radius: 4
+            border.width: 1
+            border.color: "grey"
 
             // Table Header
             ColumnLayout
             {
                 anchors.fill: parent
-                anchors.margins: 5
-                spacing: 3
+                anchors.margins: 0
+                spacing: 0
 
-                TableHeader
+                CheckoutTableHeader
                 {
-
                 }
 
                 Controls2.ScrollView
                 {
+                    id: scroll
                     Layout.fillHeight: true
                     Layout.fillWidth: true
-                    spacing: 5
+                    Layout.margins: 1
+                    clip: true
 
                     ListView
                     {
                         anchors.fill: parent
-                        spacing: 1
+                        spacing: 0
 
-                        model: ListModel { id: checkoutModel }
+                        model: CheckoutViewModel { id: checkoutModel }
+                        delegate: Component {
+                            id: checkoutViewDelegate
+
+                            CheckoutViewDelegate
+                            {
+                                width: scroll.width
+                                anchors.leftMargin: 1
+
+                                _index: model.index
+                                itemName: _name
+                                unit: _unit
+                                qty: _qty
+                                sp: _sp
+                            }
+                        }
                     }
                 }
 

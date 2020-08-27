@@ -11,12 +11,9 @@ Rectangle {
 
     property int _index
     property string itemName
-    property string barCode
     property string unit
-    property int bp
-    property int sp
     property int qty
-    property string company
+    property int sp
 
     RowLayout
     {
@@ -36,52 +33,13 @@ Rectangle {
         AppText
         {
             color: "black"
-            text: itemName
+            text: unit + " " + itemName
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.fillWidth: true
             Layout.minimumWidth: 150
-        }
-
-        AppText
-        {
-            color: "black"
-            text: barCode
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.preferredWidth: 150
-        }
-
-        AppText
-        {
-            color: "black"
-            text: unit
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.preferredWidth: 100
-        }
-
-        AppText
-        {
-            color: "black"
-            text: bp.toString()
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.preferredWidth: 150
-        }
-
-        AppText
-        {
-            color: "black"
-            text: sp.toString()
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.preferredWidth: 150
+            Layout.maximumWidth: 450
         }
 
         AppText
@@ -97,13 +55,21 @@ Rectangle {
         AppText
         {
             color: "black"
-            text: company
+            text: sp.toString()
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.fillWidth: true
-            Layout.minimumWidth: 150
-            Layout.maximumWidth: 300
+            Layout.preferredWidth: 200
+        }
+
+        AppText
+        {
+            color: "black"
+            text: (qty*sp).toString()
+            horizontalAlignment: AppText.AlignHCenter
+
+            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+            Layout.preferredWidth: 200
         }
 
         Item{
@@ -126,7 +92,7 @@ Rectangle {
                 AppText
                 {
                     color: "black"
-                    text: qsTr("Edit")
+                    text: qsTr("Change")
 
                     Layout.alignment: Qt.AlignVCenter
                 }
