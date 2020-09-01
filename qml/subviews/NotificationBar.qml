@@ -34,8 +34,11 @@ Rectangle {
 
         UserIcon
         {
-
             Layout.rightMargin: 20
+
+            onClicked: {
+                userMenuPopup.open();
+            }
         }
     }
 }

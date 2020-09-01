@@ -12,6 +12,7 @@ Rectangle {
     property string viewText: qsTr("Home")
 
     property alias checkoutPopup: checkoutPopup
+    property alias userMenuPopup: userMenuPopup
 
     onNavBarIndexChanged: {
         switch(navBarIndex)
@@ -112,5 +113,12 @@ Rectangle {
     CheckoutPopup
     {
         id: checkoutPopup
+    }
+
+    UserMenuPopup
+    {
+        id: userMenuPopup
+
+        onOpened: console.log("Opened")
     }
 }

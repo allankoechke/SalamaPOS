@@ -3,8 +3,12 @@ import QtQuick.Layouts 1.3
 import "../components"
 
 Item {
+    id: root
+
     Layout.fillHeight: true
     Layout.preferredWidth: 70+usr_name.width
+
+    signal clicked()
 
     RowLayout
     {
@@ -49,9 +53,13 @@ Item {
 
         Item
         {
+            id: userIcon
+            Layout.minimumHeight: 50
             Layout.fillHeight: true
             Layout.preferredWidth: 60
             //clip: true
+
+            signal btnClicked()
 
             AppIcon
             {
@@ -71,10 +79,18 @@ Item {
 
                 anchors.bottom: parent.bottom
                 anchors.right: parent.right
-                anchors.bottomMargin: -20
+                anchors.bottomMargin: 5
                 anchors.rightMargin: 5
-
             }
+
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked: {
+                    root.clicked();
+                }
+            }
+
         }
     }
 }

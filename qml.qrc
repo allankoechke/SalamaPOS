@@ -37,5 +37,17 @@
         <file>qml/delegates/CheckoutViewDelegate.qml</file>
         <file>qml/models/CheckoutViewModel.qml</file>
         <file>qml/components/NotificationSelectBtn.qml</file>
+        <file>qml/subviews/SalesProductView.qml</file>
+        <file>qml/models/SalesViewModel.qml</file>
+        <file>qml/delegates/SalesViewDelegate.qml</file>
+        <file>qml/components/SalesTableHeader.qml</file>
+        <file>qml/components/SettingsMenuButton.qml</file>
+        <file>qml/subviews/GeneralSettingsView.qml</file>
+        <file>qml/subviews/PrinterSettingsView.qml</file>
+        <file>qml/subviews/BarcodeScannerSettingsView.qml</file>
+        <file>qml/subviews/RemoteSettingsView.qml</file>
+        <file>qml/components/UserMenuPopup.qml</file>
+        <file>qml/components/DashboardGraphWidget.qml</file>
+        <file>json/config.json</file>
     </qresource>
 </RCC>
