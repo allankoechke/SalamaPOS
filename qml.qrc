@@ -49,5 +49,7 @@
         <file>qml/components/UserMenuPopup.qml</file>
         <file>qml/components/DashboardGraphWidget.qml</file>
         <file>json/config.json</file>
+        <file>json/db-credentials.json</file>
+        <file>qml/components/AppTextInput.qml</file>
     </qresource>
 </RCC>

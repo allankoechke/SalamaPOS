@@ -9,7 +9,7 @@ QmlInterface::QmlInterface(QObject *parent) : QObject(parent)
 
 void QmlInterface::initDatabase()
 {
-
+    
 }
 
 void QmlInterface::writeToDb(const QString &querry, const QVariantList &list)

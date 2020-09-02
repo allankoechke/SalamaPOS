@@ -2,7 +2,7 @@
 #define QMLINTERFACE_H
 
 #include <QObject>
-
+#include <QDebug>
 
 #include "databaseinterface.h"
 #include "serialportinterface.h"
@@ -12,6 +12,7 @@
 class QmlInterface : public QObject
 {
     Q_OBJECT
+
 public:
     explicit QmlInterface(QObject *parent = nullptr);
 
@@ -25,6 +26,12 @@ signals:
     void writeToDbChanged(const QString & querry, const QVariantList & list);
 
     void readFromDbChanged(const QString & querry, const QVariantList & list);
+
+private slots:
+    void onDatabaseStatusChanged(const bool & status);
+
+private:
+    DatabaseInterface * m_databaseInterface;
 
 };
 
