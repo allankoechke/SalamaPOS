@@ -18,6 +18,8 @@ Rectangle {
     property int qty
     property string company
 
+    signal clicked()
+
     RowLayout
     {
         anchors.fill: parent
@@ -130,6 +132,12 @@ Rectangle {
 
                     Layout.alignment: Qt.AlignVCenter
                 }
+            }
+
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked: root.clicked()
             }
         }
     }

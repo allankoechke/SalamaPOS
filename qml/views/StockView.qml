@@ -74,6 +74,89 @@ Item {
 
                 Rectangle
                 {
+                    visible: currentScreen===0
+                    Layout.preferredHeight: 45
+                    Layout.preferredWidth: 120
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.rightMargin: 20
+
+                    color: menuColor
+                    radius: 3
+
+                    RowLayout
+                    {
+                        anchors.centerIn: parent
+
+                        spacing: 7
+
+                        AppIcon
+                        {
+                            color: "white"
+                            size: 15
+                            icon: "\uf067"
+                        }
+
+                        AppText
+                        {
+                            color: "white"
+                            size: 15
+                            text: qsTr("Add Item")
+                        }
+                    }
+
+                    MouseArea
+                    {
+                        anchors.fill: parent
+                        onClicked: {
+                            newItemPopup.open()
+                            newItemPopup.barCode = "";
+                            newItemPopup.itemName = "";
+                            newItemPopup.itemUnit = "";
+                            newItemPopup.itemBp = -1;
+                            newItemPopup.itemSp = -1;
+                            newItemPopup.itemQty = -1;
+                            newItemPopup.itemCompany = "";
+
+                            newItemPopup.isNewItemMode = true;
+                            newItemPopup.qty.textInput.readOnly = false;
+                            newItemPopup.qty.textInput.enabled = true;
+                        }
+                    }
+                }
+
+                Rectangle
+                {
+                    visible: false
+                    Layout.fillHeight: true
+                    Layout.preferredWidth: 150
+
+                    color: menuColor
+                    radius: 3
+
+                    RowLayout
+                    {
+                        anchors.centerIn: parent
+
+                        spacing: 10
+
+                        AppIcon
+                        {
+                            color: "white"
+                            size: 15
+                            icon: "\uf067"
+                        }
+
+                        AppText
+                        {
+                            color: "white"
+                            size: 15
+                            text: qsTr("Add Stock")
+                        }
+                    }
+                }
+
+                Rectangle
+                {
                     Layout.preferredHeight: 45
                     Layout.fillWidth: true
                     Layout.minimumWidth: 100

@@ -9,6 +9,7 @@
 #include <QJsonDocument>
 #include <QJsonValue>
 #include <QJsonObject>
+#include <exception>
 #include <QFile>
 
 
@@ -18,6 +19,7 @@ class DatabaseInterface : public QObject
 
 public:
     explicit DatabaseInterface(QObject *parent = nullptr);
+    ~DatabaseInterface();
 
     void initializeDatabase();
 
@@ -34,6 +36,8 @@ public slots:
     void onDatabaseStatusChanged(const bool & status);
 
     void onDatabaseStatusChangedd();
+
+    void onWriteToDbChanged(const QString & querry, const QJsonObject & json,const QVariantList & type);
 
 private:
     QSqlDatabase m_db;

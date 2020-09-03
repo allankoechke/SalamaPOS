@@ -21,37 +21,49 @@ DatabaseInterface::DatabaseInterface(QObject *parent) : QObject(parent)
     m_db.setHostName("localhost");
     m_db.setUserName(db_uname);
     m_db.setPassword(db_pswd);
-    m_db.setDatabaseName(db_name);
+    m_db.setDatabaseName("test1"); //db_name);
     const bool status = m_db.open();
 
     //qDebug() << "Is db open? " << status;
     emit databaseStatusChanged(status);
 
     initializeDatabase();
+}
 
-    //connect(this, &QSqlDatabase::open, this, &DatabaseInterface::onDatabaseStatusChangedd);
-    //connect(this, &DatabaseInterface::databaseStatusChangedd, this, &DatabaseInterface::onDatabaseStatusChangedd);
+DatabaseInterface::~DatabaseInterface()
+{
+    m_db.close();
 }
 
 void DatabaseInterface::initializeDatabase()
 {
-    m_db.transaction();
-    QSqlQuery query;
+    try {
+        m_db.transaction();
+        QSqlQuery query;
 
-    query.exec("CREATE TABLE IF NOT EXISTS app_user (\
-               username varchar(45) NOT NULL,\
-               password varchar(450) NOT NULL,\
-               enabled integer NOT NULL DEFAULT '1',\
-               PRIMARY KEY (username))");
+        QFile file(":/sql/tables.sql");
+        file.open(QIODevice::ReadOnly);
+        QString sql = file.readAll();
 
-    emit databaseStatusChanged(true);
-    m_db.commit();
+        //qDebug() << sql;
 
-    qDebug() << "Database has been instantiated ...";
+        query.exec(sql);
+
+        //emit databaseStatusChanged(true);
+        m_db.commit();
+
+        qDebug() << "Database has been instantiated ...";
+
+    } catch (std::exception &e) {
+        qDebug() << "Error executing SQL: " << e.what();
+    }
+
 }
 
 void DatabaseInterface::addToDatabase(const QString &querry, const QVariantMap &map)
 {
+    qDebug() << "New Querry from qml";
+
     QSqlQuery m_query;
     m_query.prepare(querry);
 
@@ -65,6 +77,55 @@ void DatabaseInterface::addToDatabase(const QString &querry, const QVariantMap &
     //m_query.bindValue(":id", 1001);
     //m_query.bindValue(":name", "Thad Beaumont");
     //m_query.bindValue(":salary", 65000);
+    m_query.exec();
+}
+
+void DatabaseInterface::onWriteToDbChanged(const QString &querry, const QJsonObject &json, const QVariantList &type)
+{
+    qDebug() << "New Querry from qml";
+
+    QSqlQuery m_query;
+    m_query.prepare(querry);
+
+    QVariantList var_list;
+    var_list.append("barcode");
+    var_list.append("item_name");
+    var_list.append("item_unit");
+    var_list.append("item_bp");
+    var_list.append("item_sp");
+    var_list.append("item_qty");
+    var_list.append("item_company");
+
+    if(type.count() != 0)
+    {
+        for(int i=0; i<7; i++)
+        {
+            if(type.at(i).toString() == "string")
+            {
+                int item = json.value(var_list.at(i).toString()).toInt();
+                m_query.bindValue(":"+var_list.at(i).toString(), item);
+            }
+
+            else if(type.at(i).toString() == "real")
+            {
+                float item = json.value(var_list.at(i).toString()).toDouble();
+                m_query.bindValue(":"+var_list.at(i).toString(), item);
+            }
+
+            else if(type.at(i).toString() == "int")
+            {
+                int item = json.value(var_list.at(i).toString()).toInt();
+                m_query.bindValue(":"+var_list.at(i).toString(), item);
+            }
+
+            else
+            {
+                qDebug() << "Error bindind this value";
+                qDebug() << "Index: " << i;
+            }
+        }
+    }
+
     m_query.exec();
 }
 

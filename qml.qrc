@@ -51,5 +51,7 @@
         <file>json/config.json</file>
         <file>json/db-credentials.json</file>
         <file>qml/components/AppTextInput.qml</file>
+        <file>qml/subviews/NewItemPopup.qml</file>
+        <file>sql/tables.sql</file>
     </qresource>
 </RCC>

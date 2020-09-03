@@ -9,17 +9,29 @@ Item
 
     property string label
     property alias textInput: textInput
+    property real prefWidth: 0
+    property string hintText: ""
 
     RowLayout
     {
         anchors.fill: parent
         spacing: 10
 
-        AppText
+        Item
         {
-            color: "#555555"
-            size: 15
-            text: label
+            Layout.fillHeight: true
+            Layout.preferredWidth: prefWidth===0? textLabel.width:prefWidth
+
+            AppText
+            {
+                id: textLabel
+                color: "#555555"
+                size: 15
+                text: label
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+            }
         }
 
         Controls2.TextField
@@ -30,10 +42,10 @@ Item
             verticalAlignment: Controls2.TextField.AlignVCenter
             horizontalAlignment: Controls2.TextField.AlignLeft
 
-            color: "#535353"
+            color: "black" //"#535353"
             font.pixelSize: 15
             font.family: montserratFontLoader.name
-
+            placeholderText: hintText
         }
     }
 }

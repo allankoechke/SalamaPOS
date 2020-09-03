@@ -118,7 +118,11 @@ Rectangle {
     UserMenuPopup
     {
         id: userMenuPopup
+        // onOpened: console.log("Opened")
+    }
 
-        onOpened: console.log("Opened")
+    NewItemPopup
+    {
+        id: newItemPopup
     }
 }

@@ -61,6 +61,21 @@ Rectangle {
                         bp: _bp
                         sp: _sp
                         company: _company
+
+                        onClicked: {
+                            newItemPopup.open();
+                            newItemPopup.barCode = barCode;
+                            newItemPopup.itemName = itemName;
+                            newItemPopup.itemUnit = unit;
+                            newItemPopup.itemBp = bp;
+                            newItemPopup.itemSp = sp;
+                            newItemPopup.itemQty = qty;
+                            newItemPopup.itemCompany = company;
+
+                            newItemPopup.qty.textInput.readOnly = true;
+                            newItemPopup.qty.textInput.enabled = false;
+                            newItemPopup.isNewItemMode = false;
+                        }
                     }
                 }
             }
