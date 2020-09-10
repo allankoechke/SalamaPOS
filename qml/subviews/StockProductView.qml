@@ -44,7 +44,7 @@ Rectangle {
                 anchors.fill: parent
                 spacing: 0
 
-                model: ProductViewModel {}
+                model: StockItemModel // ProductViewModel {}
 
                 delegate: Component {
                     id: productViewDelegate
@@ -54,16 +54,17 @@ Rectangle {
                         width: scroll.width
 
                         _index: model.index
-                        itemName: _name
-                        barCode: _code
-                        unit: _unit
-                        qty: _qty
+                        itemName: name
+                        barCode: barcode
+                        _unit: unit
+                        qty: quantity
                         bp: _bp
                         sp: _sp
-                        company: _company
+                        company: _company===""? "---":_company
 
                         onClicked: {
                             newItemPopup.open();
+                            newItemPopup.currentIndex = index
                             newItemPopup.barCode = barCode;
                             newItemPopup.itemName = itemName;
                             newItemPopup.itemUnit = unit;

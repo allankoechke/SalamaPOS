@@ -13,6 +13,7 @@ Rectangle {
 
     property alias checkoutPopup: checkoutPopup
     property alias userMenuPopup: userMenuPopup
+    property alias stockPopup: stockPopup
 
     onNavBarIndexChanged: {
         switch(navBarIndex)
@@ -40,6 +41,8 @@ Rectangle {
             break;
         }
     }
+
+    // Component.onCompleted: StockItemModel.initializeStockFromDb();
 
     RowLayout
     {
@@ -124,5 +127,10 @@ Rectangle {
     NewItemPopup
     {
         id: newItemPopup
+    }
+
+    StockPopup
+    {
+        id: stockPopup
     }
 }

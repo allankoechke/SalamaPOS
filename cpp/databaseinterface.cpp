@@ -21,7 +21,7 @@ DatabaseInterface::DatabaseInterface(QObject *parent) : QObject(parent)
     m_db.setHostName("localhost");
     m_db.setUserName(db_uname);
     m_db.setPassword(db_pswd);
-    m_db.setDatabaseName("test1"); //db_name);
+    m_db.setDatabaseName(db_name);
     const bool status = m_db.open();
 
     //qDebug() << "Is db open? " << status;
@@ -41,100 +41,57 @@ void DatabaseInterface::initializeDatabase()
         m_db.transaction();
         QSqlQuery query;
 
-        QFile file(":/sql/tables.sql");
-        file.open(QIODevice::ReadOnly);
-        QString sql = file.readAll();
+        if(query.exec("SELECT * FROM product_type"))
+        {
+            int count = 0;
+            QString sql;
 
-        //qDebug() << sql;
+            while(query.next())
+            {
+                count++;
+            }
 
-        query.exec(sql);
+            if(count == 0)
+            {
+                QString sql;
+                sql = "INSERT INTO product_type(type_name) VALUES ('General')";
+                if(query.exec(sql))
+                    qDebug() << ">> New ctaegory Added";
+                else
+                    qDebug() << "Error Adding item: " << query.lastError().text();
+            }
 
-        //emit databaseStatusChanged(true);
-        m_db.commit();
+            QFile file(":/sql/tables.sql");
+            file.open(QIODevice::ReadOnly);
+            sql = file.readAll();
 
-        qDebug() << "Database has been instantiated ...";
+            if(query.exec(sql))
+            {
+                m_db.commit();
+
+
+
+                qInfo() << ">> Database has been instantiated ...";
+            }
+
+            else
+            {
+                qDebug() << "Error Creating Db: " << query.lastError().text();
+
+                // throw query.lastError().text();
+            }
+        }
 
     } catch (std::exception &e) {
         qDebug() << "Error executing SQL: " << e.what();
     }
 
+    emit databaseReady();
+
+    qDebug() << ">> database Ready emitted";
 }
 
-void DatabaseInterface::addToDatabase(const QString &querry, const QVariantMap &map)
+QSqlDatabase DatabaseInterface::getDb()
 {
-    qDebug() << "New Querry from qml";
-
-    QSqlQuery m_query;
-    m_query.prepare(querry);
-
-    if(map.count() != 0)
-    {
-        for(int i=0; i<map.count(); i++)
-        {
-            //m_query.bindValue(":", map.value(i));
-        }
-    }
-    //m_query.bindValue(":id", 1001);
-    //m_query.bindValue(":name", "Thad Beaumont");
-    //m_query.bindValue(":salary", 65000);
-    m_query.exec();
-}
-
-void DatabaseInterface::onWriteToDbChanged(const QString &querry, const QJsonObject &json, const QVariantList &type)
-{
-    qDebug() << "New Querry from qml";
-
-    QSqlQuery m_query;
-    m_query.prepare(querry);
-
-    QVariantList var_list;
-    var_list.append("barcode");
-    var_list.append("item_name");
-    var_list.append("item_unit");
-    var_list.append("item_bp");
-    var_list.append("item_sp");
-    var_list.append("item_qty");
-    var_list.append("item_company");
-
-    if(type.count() != 0)
-    {
-        for(int i=0; i<7; i++)
-        {
-            if(type.at(i).toString() == "string")
-            {
-                int item = json.value(var_list.at(i).toString()).toInt();
-                m_query.bindValue(":"+var_list.at(i).toString(), item);
-            }
-
-            else if(type.at(i).toString() == "real")
-            {
-                float item = json.value(var_list.at(i).toString()).toDouble();
-                m_query.bindValue(":"+var_list.at(i).toString(), item);
-            }
-
-            else if(type.at(i).toString() == "int")
-            {
-                int item = json.value(var_list.at(i).toString()).toInt();
-                m_query.bindValue(":"+var_list.at(i).toString(), item);
-            }
-
-            else
-            {
-                qDebug() << "Error bindind this value";
-                qDebug() << "Index: " << i;
-            }
-        }
-    }
-
-    m_query.exec();
-}
-
-void DatabaseInterface::onDatabaseStatusChanged(const bool &status)
-{
-    qDebug() << "Database Status : " << status;
-}
-
-void DatabaseInterface::onDatabaseStatusChangedd()
-{
-    qDebug() << "Slot called!";
+    return m_db;
 }

@@ -35,4 +35,5 @@ Window {
         id: montserratFontLoader
         source: "qrc:/assets/fonts/montserrat/Montserrat-Regular.ttf"
     }
+
 }

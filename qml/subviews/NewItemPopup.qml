@@ -16,6 +16,7 @@ Controls2.Popup
     closePolicy: Controls2.Popup.NoAutoClose
 
     property bool isNewItemMode: true
+    property int currentIndex: -1
 
     property string barCode: ""
     property string itemName: ""
@@ -209,14 +210,29 @@ Controls2.Popup
                                 {
                                     anchors.fill: parent
                                     onClicked: {
+                                        var _barcode = barcode.textInput.text
+                                        var _name = name.textInput.text
+                                        var _unit = unit.textInput.text
+                                        var _bp = bp.textInput.text
+                                        var _sp = sp.textInput.text
+                                        var _qty = qty.textInput.text
+                                        var _company = company.textInput.text
 
-                                        if(isNewItemMode)
-                                            addNewItemToDb();
+                                        if(_barcode!=="" && _name !== "" && _unit!=="" && _bp!=="" && _sp!=="" && _qty!=="")
+                                        {
+                                            if(isNewItemMode)
+                                                addNewItemToDb(_barcode,_name,_unit,_bp,_sp,_qty,_company);
+
+                                            else
+                                                updateItemInDb(_barcode,_name,_unit,_bp,_sp,_qty,_company);
+
+                                        }
 
                                         else
-                                            updateItemInDb();
-
-                                        root.close()
+                                        {
+                                            console.log(new Date().getTime());
+                                            console.log(new Date().toISOString());
+                                        }
                                     }
                                 }
                             }
@@ -227,38 +243,43 @@ Controls2.Popup
         }
     }
 
-    function addNewItemToDb()
+    function addNewItemToDb(_barcode,_name,_unit,_bp,_sp,_qty,_company)
     {
-        var _barcode = barcode.textInput.text
-        var _name = name.textInput.text
-        var _unit = unit.textInput.text
-        var _bp = bp.textInput.text
-        var _sp = sp.textInput.text
-        var _qty = qty.textInput.text
-        var _company = company.textInput.text
-
-        console.log(_barcode, " ", _name, " ", _unit , " ", _bp, " ", _sp, " ", _qty, " ", _company)
-
-        var _jsonSQL = '{"barcode": \"' + _barcode + '\",\
-            "item_name": \"' + _name + '\",\
-            "item_unit": \"' + _unit+ '\",\
-            "item_bp": \"' + _bp + '\",\
-            "item_sp": \"' + _sp + '\",\
-            "item_qty":\"' + _qty + '\",\
-            "item_company": \"' + _company + '\"}'
-
-
-        var type = ["string", "string", "string", "real", "real", "int", "string"]
-
-        var jsonSQL = JSON.parse(_jsonSQL)
-
-        var query = "INSERT INTO () WHERE ()";
-
-        QmlInterface.writeToDb(query, jsonSQL, type);
+        var tmspt = new Date().getTime();
+        StockItemModel.addNewItem(_barcode,_name, _unit, _bp, _sp, parseInt(_qty), _company, tmspt, 1 /*category*/);
     }
 
-    function updateItemInDb()
+    function updateItemInDb(_barcode,_name,_unit,_bp,_sp,_qty,_company)
     {
+        StockItemModel.updateItem(_barcode, _name, _unit, _bp, _sp, _company, 1/*category*/, barCode, currentIndex);
+    }
 
+    Connections
+    {
+        target: StockItemModel
+
+        function onItemUpdatedChanged(status)
+        {
+            if(status)
+            {
+                console.log(">> Item Updated Successfuly!");
+                root.close();
+            }
+
+            else
+                console.log(">> Error Updating item");
+        }
+
+        function onItemAddingChanged(status)
+        {
+            if(status)
+            {
+                console.log(">> Item Added Successfuly!");
+                root.close();
+            }
+
+            else
+                console.log(">> Error Adding item");
+        }
     }
 }

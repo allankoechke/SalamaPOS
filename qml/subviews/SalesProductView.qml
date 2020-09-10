@@ -60,7 +60,7 @@ Rectangle {
                         qty: _qty
                         bp: _bp
                         sp: _sp
-                        company: _company
+                        company: _company===""? "---":_company
                     }
                 }
             }

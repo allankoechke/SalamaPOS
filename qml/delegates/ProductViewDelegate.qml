@@ -12,7 +12,7 @@ Rectangle {
     property int _index
     property string itemName
     property string barCode
-    property string unit
+    property string _unit
     property int bp
     property int sp
     property int qty
@@ -59,7 +59,7 @@ Rectangle {
         AppText
         {
             color: "black"
-            text: unit
+            text: _unit
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter

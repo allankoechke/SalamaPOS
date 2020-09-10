@@ -53,5 +53,8 @@
         <file>qml/components/AppTextInput.qml</file>
         <file>qml/subviews/NewItemPopup.qml</file>
         <file>sql/tables.sql</file>
+        <file>qml/subviews/StockPopup.qml</file>
+        <file>qml/components/CustomSpinBox.qml</file>
+        <file>sql/add_item.sql</file>
     </qresource>
 </RCC>

@@ -16,6 +16,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         cpp/databaseinterface.cpp \
         cpp/main.cpp \
+        cpp/models/checkoutitems.cpp \
+        cpp/models/checkoutitemsmodel.cpp \
+        cpp/models/stockitems.cpp \
+        cpp/models/stockitemsmodel.cpp \
         cpp/qmlinterface.cpp \
         cpp/serialportinterface.cpp \
         cpp/webapiinterface.cpp \
@@ -36,6 +40,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     cpp/databaseinterface.h \
+    cpp/models/checkoutitems.h \
+    cpp/models/checkoutitemsmodel.h \
+    cpp/models/stockitems.h \
+    cpp/models/stockitemsmodel.h \
     cpp/qmlinterface.h \
     cpp/serialportinterface.h \
     cpp/webapiinterface.h \

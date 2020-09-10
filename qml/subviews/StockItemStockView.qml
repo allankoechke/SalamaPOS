@@ -41,10 +41,11 @@ Rectangle {
 
             ListView
             {
+                id: listView
                 anchors.fill: parent
                 spacing: 0
 
-                model: StockViewModel {}
+                model: StockItemModel // StockViewModel {}
                 delegate: Component {
                     id: productViewDelegate
 
@@ -52,11 +53,20 @@ Rectangle {
                     {
                         width: scroll.width
                         _index: model.index
-                        itemName: _name
-                        barCode: _code
-                        unit: _unit
-                        qty: _qty
-                        lastUpdated: _dte
+                        itemName: name
+                        barCode: barcode
+                        _unit: unit
+                        qty: quantity
+                        lastUpdated: Qt.formatDateTime(date, "dd MMM, yyyy hh:mm ") + qsTr("Hrs")
+
+                        onClicked: {
+                            listView.currentIndex =  index
+                            stockPopup.open()
+                            stockPopup.currentIndex = index
+                            stockPopup.currentStock = qty;
+                            stockPopup.barcode = barCode;
+
+                        }
                     }
                 }
             }

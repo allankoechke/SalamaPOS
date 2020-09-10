@@ -12,9 +12,11 @@ Rectangle {
     property int _index
     property string itemName
     property string barCode
-    property string unit
+    property string _unit
     property int qty
     property string lastUpdated
+
+    signal clicked()
 
     RowLayout
     {
@@ -55,7 +57,7 @@ Rectangle {
         AppText
         {
             color: "black"
-            text: unit
+            text: _unit
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
@@ -96,6 +98,12 @@ Rectangle {
 
                     Layout.alignment: Qt.AlignVCenter
                 }
+            }
+
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked: root.clicked()
             }
         }
 

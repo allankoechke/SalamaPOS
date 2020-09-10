@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QDebug>
 #include <QSqlQuery>
+#include <QSqlError>
 #include <QVariantMap>
 #include <QSqlDatabase>
 #include <QJsonDocument>
@@ -11,6 +12,7 @@
 #include <QJsonObject>
 #include <exception>
 #include <QFile>
+#include <QDate>
 
 
 class DatabaseInterface : public QObject
@@ -19,25 +21,21 @@ class DatabaseInterface : public QObject
 
 public:
     explicit DatabaseInterface(QObject *parent = nullptr);
+
     ~DatabaseInterface();
 
     void initializeDatabase();
 
-
-private slots:
-    void addToDatabase(const QString &querry, const QVariantMap & map);
+    QSqlDatabase getDb();
 
 signals:
     void databaseStatusChanged(const bool & status);
 
     void databaseStatusChangedd();
 
+    void databaseReady();
+
 public slots:
-    void onDatabaseStatusChanged(const bool & status);
-
-    void onDatabaseStatusChangedd();
-
-    void onWriteToDbChanged(const QString & querry, const QJsonObject & json,const QVariantList & type);
 
 private:
     QSqlDatabase m_db;
