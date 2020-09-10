@@ -81,9 +81,9 @@ bool CheckoutItemsModel::setData(const QModelIndex &index, const QVariant &value
 
     case SellItemBpRole:
     {
-        if( static_cast<int>(checkout->SellItemBp()) != value.toString().toInt())
+        if( static_cast<int>(checkout->buyingPrice()) != value.toString().toInt())
         {
-            stock->setItemBp(value.toString().toFloat());
+            checkout->setBuyingPrice(value.toString().toFloat());
             changed = true;
         }
 
@@ -92,9 +92,9 @@ bool CheckoutItemsModel::setData(const QModelIndex &index, const QVariant &value
 
     case SellItemSpRole:
     {
-        if( static_cast<int>(stock->itemSp()) != value.toString().toInt())
+        if( static_cast<int>(checkout->sellingPrice()) != value.toString().toInt())
         {
-            stock->setItemSp(value.toString().toFloat());
+            checkout->setSellingPrice(value.toString().toFloat());
             changed = true;
         }
 
@@ -103,9 +103,9 @@ bool CheckoutItemsModel::setData(const QModelIndex &index, const QVariant &value
 
     case SellQtyRole:
     {
-        if( checkout->itemQty() != value.toString().toInt())
+        if( checkout->sellQty() != value.toString().toInt())
         {
-            checkout->setItemQty(value.toString().toInt());
+            checkout->setSellQty(value.toString().toInt());
             changed = true;
         }
 
@@ -143,4 +143,98 @@ QHash<int, QByteArray> CheckoutItemsModel::roleNames() const
     roles[SellQtyRole] = "sell_qty";
 
     return roles;
+}
+
+void CheckoutItemsModel::removeSellItem(int index)
+{
+    beginRemoveRows(QModelIndex(), index, index);
+    mCheckoutItem.removeAt(index);
+    endRemoveRows();
+
+    findTotals();
+}
+
+void CheckoutItemsModel::addSellItem(const QVariant sellBarcode, const QVariant  sellItemName, const QVariant  sellItemUnit, const QVariant  buyingPrice, const QVariant  sellingPrice, const QVariant sellQty)
+{
+    qDebug() << ">> Adding new item";
+
+    int response = checkIfItemExistsInModel(sellBarcode.toString());
+
+    qDebug() << "Index: " << response;
+
+    if(response == -1)
+        addItem(new CheckoutItems(sellBarcode.toString(), sellItemName.toString(), sellItemUnit.toString(), buyingPrice.toString().toFloat(), sellingPrice.toString().toFloat(), sellQty.toString().toInt()));
+
+    else
+        if(setData(this->index(response), sellQty.toString().toInt()+data(this->index(response), SellQtyRole).toString().toInt(), SellQtyRole))
+            findTotals();
+}
+
+void CheckoutItemsModel::changeSellStock(const QVariant &qty, QVariant index)
+{
+    setData(this->index(index.toString().toInt()), qty.toString().toInt(), SellQtyRole);
+
+    findTotals();
+}
+
+void CheckoutItemsModel::startANewSell()
+{
+    for(int i=mCheckoutItem.size()-1; i >= 0; i--)
+    {
+        removeSellItem(i);
+    }
+}
+
+void CheckoutItemsModel::findTotals()
+{
+    // Calculates total sell in the model
+    float totals = 0;
+
+    for(int i=0; i<mCheckoutItem.size(); i++)
+    {
+        int _qty = data(this->index(i), SellQtyRole).toString().toInt();
+        float _sp = data(this->index(i), SellItemSpRole).toString().toFloat();
+
+        totals += _qty * _sp;
+    }
+
+    setSellTotals(totals);
+
+    qDebug() << "New Totals: " << sellTotals();
+}
+
+void CheckoutItemsModel::addItem(CheckoutItems *checkout)
+{
+    const int index = mCheckoutItem.size();
+    beginInsertRows(QModelIndex(), index, index);
+    mCheckoutItem.append(checkout);
+    endInsertRows();
+
+    findTotals();
+}
+
+int CheckoutItemsModel::sellTotals() const
+{
+    return m_sellTotals;
+}
+
+void CheckoutItemsModel::setSellTotals(int sellTotals)
+{
+    if (static_cast<int>(m_sellTotals) == static_cast<int>(sellTotals))
+        return;
+
+    m_sellTotals = sellTotals;
+    emit sellTotalsChanged(m_sellTotals);
+}
+
+int CheckoutItemsModel::checkIfItemExistsInModel(const QString &barcode)
+{
+    for(int i=0; i<mCheckoutItem.size(); i++)
+    {
+        QString _barcode = data(this->index(i), SellBarcodeRole).toString();
+        if(barcode == _barcode)
+            return i;
+    }
+
+    return -1;
 }

@@ -2,6 +2,7 @@
 #define CHECKOUTITEMSMODEL_H
 
 #include <QObject>
+#include <QDebug>
 #include <QAbstractListModel>
 #include "checkoutitems.h"
 
@@ -32,10 +33,37 @@ public:
 
     QHash<int, QByteArray> roleNames() const;
 
+    // Properties
+    Q_PROPERTY(int sellTotals READ sellTotals WRITE setSellTotals NOTIFY sellTotalsChanged)
+
+    // Invokables
+    Q_INVOKABLE void removeSellItem(int index);
+
+    Q_INVOKABLE void addSellItem(const QVariant sellBarcode, const QVariant  sellItemName, const QVariant  sellItemUnit, const QVariant  buyingPrice, const QVariant  sellingPrice, const QVariant sellQty);
+
+    Q_INVOKABLE void changeSellStock(const QVariant &qty, QVariant index);
+
+    Q_INVOKABLE void startANewSell();
+
+    Q_INVOKABLE void findTotals();
+
+    // internals
+    void addItem(CheckoutItems * checkout);
+
+    int sellTotals() const;
+
+    void setSellTotals(int sellTotals);
+
+    int checkIfItemExistsInModel(const QString &barcode);
+
 signals:
 
+    void sellTotalsChanged(int sellTotals);
+
 private:
-    CheckoutItems * m_checkoutItem;
+    QList<CheckoutItems *> mCheckoutItem;
+
+    int m_sellTotals = 0;
 };
 
 #endif // CHECKOUTITEMSMODEL_H

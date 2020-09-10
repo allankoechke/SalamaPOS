@@ -15,6 +15,9 @@ Rectangle {
     property int qty
     property int sp
 
+    signal deleted()
+    signal edited()
+
     RowLayout
     {
         anchors.fill: parent
@@ -96,6 +99,34 @@ Rectangle {
 
                     Layout.alignment: Qt.AlignVCenter
                 }
+            }
+
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked: root.edited();
+            }
+        }
+
+        Item{
+            Layout.fillHeight: true
+            Layout.preferredWidth: 30
+            Layout.leftMargin: 5
+            Layout.rightMargin: 5
+
+            AppIcon
+            {
+                size: 15
+                color: "red"
+                icon: "\uf1f8"
+
+                anchors.centerIn: parent
+            }
+
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked: root.deleted()
             }
         }
     }

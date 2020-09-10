@@ -88,5 +88,21 @@ Rectangle {
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.preferredWidth: 100
         }
+
+        Item{
+            Layout.fillHeight: true
+            Layout.preferredWidth: 30
+            Layout.leftMargin: 5
+            Layout.rightMargin: 5
+
+            AppIcon
+            {
+                size: 15
+                color: "white"
+                icon: "\uf057"
+
+                anchors.centerIn: parent
+            }
+        }
     }
 }

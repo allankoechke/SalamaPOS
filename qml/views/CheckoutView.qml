@@ -4,7 +4,7 @@ import QtQuick.Controls 2.4 as Controls2
 
 import "../components"
 import "../subviews"
-import "../models"
+// import "../models"
 import "../delegates"
 
 Item {
@@ -13,6 +13,8 @@ Item {
     Layout.fillHeight: true
     Layout.fillWidth: true
     Layout.margins: 50
+
+    Component.onCompleted: CheckoutModel.sellTotals = 0;
 
     ColumnLayout
     {
@@ -86,6 +88,16 @@ Item {
                                 color: "white"
                                 icon: "\uf002"
                             }
+
+                            MouseArea
+                            {
+                                anchors.fill: parent
+                                onClicked: {
+                                    CheckoutModel.addSellItem("FA76286428", "Milking Salve", "1kg", 175, 234, 2);
+                                    CheckoutModel.addSellItem("FA76286348", "Macklick Super", "2kg", 115, 140, 1);
+                                    CheckoutModel.addSellItem("FA00286428", "Kaolin", "100gms", 78, 100, 1);
+                                }
+                            }
                         }
                     }
                 }
@@ -96,7 +108,7 @@ Item {
                     Layout.fillHeight: true
                     size: 70*0.6
                     color: "black"
-                    text: qsTr("Sales: Ksh. 0.00")
+                    text: qsTr("Sales: Ksh. ") + (sellListView.model.count === 0? "0":parseInt(CheckoutModel.sellTotals).toString())
 
                     verticalAlignment: AppText.AlignVCenter
                 }
@@ -141,10 +153,11 @@ Item {
 
                     ListView
                     {
+                        id: sellListView
                         anchors.fill: parent
                         spacing: 0
 
-                        model: CheckoutViewModel { id: checkoutModel }
+                        model: CheckoutModel
                         delegate: Component {
                             id: checkoutViewDelegate
 
@@ -154,10 +167,20 @@ Item {
                                 anchors.leftMargin: 1
 
                                 _index: model.index
-                                itemName: _name
-                                unit: _unit
-                                qty: _qty
-                                sp: _sp
+                                itemName: sell_name
+                                unit: sell_unit
+                                qty: sell_qty
+                                sp: sell_sp
+
+                                onDeleted: {
+                                    console.log(">> Deleted At: " , index)
+                                    CheckoutModel.removeSellItem(index);
+                                }
+
+                                onEdited: {
+                                    console.log(">> Edited At: " , index)
+                                    // Launch popup
+                                }
                             }
                         }
                     }
@@ -187,14 +210,17 @@ Item {
                 {
                     label: qsTr("CANCEL")
                     _icon: "\uf056"
-                    opacity: checkoutModel.count === 0? 0.6:1
+                    // opacity: checkoutModel.count === 0? 0.6:1
+
+                    onButtonClicked: CheckoutModel.startANewSell();
                 }
 
                 TextIconButton
                 {
                     label: qsTr("CHECKOUT")
                     _icon: "\uf07a"
-                    //opacity: checkoutModel.count === 0? 0.6:1
+                    enabled: sellListView.model.count !== 0
+                    opacity: enabled? 1:0.2
 
                     onButtonClicked: checkoutPopup.open();
                 }
