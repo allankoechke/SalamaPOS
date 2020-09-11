@@ -3,15 +3,12 @@
 StockItemsModel::StockItemsModel(QObject *parent) : QAbstractListModel(parent)
 {
     qDebug() << ">> Stock Item Model Class ";
-
-    m_databaseInterface = new DatabaseInterface;
-
-    connect(m_databaseInterface,&DatabaseInterface::databaseReady,this,&StockItemsModel::onDatabaseReady);
 }
 
 int StockItemsModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
+
     return m_stockItems.size();
 }
 
@@ -188,8 +185,7 @@ QHash<int, QByteArray> StockItemsModel::roleNames() const
 
 void StockItemsModel::addNewItem(const QVariant &barcode, const QVariant &name, const QVariant &unit, const QVariant &bp, const QVariant &sp, const QVariant &qty, const QVariant &company, const QVariant &date, const QVariant &category)
 {
-    auto m_db = m_databaseInterface->getDb();
-    m_db.transaction();
+    QSqlDatabase m_db = QSqlDatabase::database();
 
     QString txt = date.toString();
     QDateTime dt = QDateTime::fromMSecsSinceEpoch(txt.toLong(), Qt::OffsetFromUTC);
@@ -216,7 +212,7 @@ void StockItemsModel::addNewItem(const QVariant &barcode, const QVariant &name, 
         if(query.exec() && stock_query.exec())
         {
             m_db.commit();
-            qDebug() << "New item Added";
+            qDebug() << ">> New item Added";
 
             addNewItem(new StockItems(barcode.toString(), name.toString(), unit.toString(), bp.toString().toFloat(), sp.toString().toFloat(), company.toString(), qty.toInt(),item, category.toInt()));
 
@@ -237,8 +233,7 @@ void StockItemsModel::addNewItem(const QVariant &barcode, const QVariant &name, 
 
 void StockItemsModel::updateItem(const QVariant &barcode, const QVariant &name, const QVariant &unit, const QVariant &bp, const QVariant &sp, const QVariant &company, const QVariant &category, const QVariant &orig_barcode, const QVariant &index)
 {
-    auto m_db = m_databaseInterface->getDb();
-    m_db.transaction();
+    QSqlDatabase m_db = QSqlDatabase::database();
 
     if(m_db.isOpen())
     {
@@ -289,8 +284,7 @@ void StockItemsModel::updateItem(const QVariant &barcode, const QVariant &name, 
 
 void StockItemsModel::updateStock(const QVariant &barcode, const QVariant &qty, const QVariant &date, const QVariant &index)
 {
-    auto m_db = m_databaseInterface->getDb();
-    m_db.transaction();
+    QSqlDatabase m_db = QSqlDatabase::database();
 
     QString txt = date.toString();
     QDateTime dt = QDateTime::fromMSecsSinceEpoch(txt.toLong(), Qt::OffsetFromUTC);
@@ -342,8 +336,7 @@ void StockItemsModel::initializeStockFromDb()
 {
     qInfo() << ">> Fetching Stock Item Data from Database";
 
-    auto m_db = m_databaseInterface->getDb();
-    m_db.transaction();
+    QSqlDatabase m_db = QSqlDatabase::database();
 
     if(m_db.isOpen())
     {
@@ -373,6 +366,24 @@ void StockItemsModel::initializeStockFromDb()
             qDebug() << "Error executing SQL: " << m_db.lastError().text() << " :: " << query.lastError().text();
         }
     }
+}
+
+int StockItemsModel::getItemStock(const QVariant &barcode)
+{
+    for(int i=0; i<m_stockItems.size(); i++)
+    {
+        QVariant bcode = data(this->index(i), BarcodeRole);
+
+        if(bcode == barcode)
+        {
+            int qty = data(this->index(i), ItemQtyRole).toString().toInt();
+            return qty;
+        }
+    }
+
+    qDebug() << ">> This item was not found";
+
+    return -1;
 }
 
 void StockItemsModel::removeItem(int index)

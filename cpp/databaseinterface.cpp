@@ -10,33 +10,22 @@ DatabaseInterface::DatabaseInterface(QObject *parent) : QObject(parent)
     QJsonDocument doc = QJsonDocument::fromJson(jsonString.toUtf8());
     QJsonObject jsonObj = doc.object();
 
-    QString db_uname = jsonObj.value(QString("username")).toString();
-    QString db_pswd = jsonObj.value(QString("password")).toString();
-    QString db_name = jsonObj.value(QString("database")).toString();
+    db_uname = jsonObj.value(QString("username")).toString();
+    db_pswd = jsonObj.value(QString("password")).toString();
+    db_name = jsonObj.value(QString("database")).toString();
 
-    // Debug
-    //qDebug()<< db_uname << ", " << db_pswd << ", " << db_name;
+}
 
-    m_db = QSqlDatabase::addDatabase("QPSQL");
+
+bool DatabaseInterface::initializeDatabase()
+{
+    QSqlDatabase m_db = QSqlDatabase::addDatabase("QPSQL");
     m_db.setHostName("localhost");
     m_db.setUserName(db_uname);
     m_db.setPassword(db_pswd);
     m_db.setDatabaseName(db_name);
-    const bool status = m_db.open();
+    Q_ASSERT(m_db.open());
 
-    //qDebug() << "Is db open? " << status;
-    emit databaseStatusChanged(status);
-
-    initializeDatabase();
-}
-
-DatabaseInterface::~DatabaseInterface()
-{
-    m_db.close();
-}
-
-void DatabaseInterface::initializeDatabase()
-{
     try {
         m_db.transaction();
         QSqlQuery query;
@@ -55,11 +44,16 @@ void DatabaseInterface::initializeDatabase()
             {
                 QString sql;
                 sql = "INSERT INTO product_type(type_name) VALUES ('General')";
+
                 if(query.exec(sql))
                     qDebug() << ">> New ctaegory Added";
+
                 else
                     qDebug() << "Error Adding item: " << query.lastError().text();
             }
+
+            else
+                qInfo() << ">> Categories: " << count;
 
             QFile file(":/sql/tables.sql");
             file.open(QIODevice::ReadOnly);
@@ -68,30 +62,18 @@ void DatabaseInterface::initializeDatabase()
             if(query.exec(sql))
             {
                 m_db.commit();
-
-
-
                 qInfo() << ">> Database has been instantiated ...";
+                return true;
             }
 
             else
-            {
                 qDebug() << "Error Creating Db: " << query.lastError().text();
-
-                // throw query.lastError().text();
-            }
         }
 
     } catch (std::exception &e) {
-        qDebug() << "Error executing SQL: " << e.what();
+        qDebug() << ">> Error executing SQL: " << e.what();
+        return false;
     }
 
-    emit databaseReady();
-
-    qDebug() << ">> database Ready emitted";
-}
-
-QSqlDatabase DatabaseInterface::getDb()
-{
-    return m_db;
+    return false;
 }

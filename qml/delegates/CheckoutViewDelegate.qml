@@ -14,6 +14,7 @@ Rectangle {
     property string unit
     property int qty
     property int sp
+    property string _barcode
 
     signal deleted()
     signal edited()
@@ -36,8 +37,8 @@ Rectangle {
         AppText
         {
             color: "black"
-            text: unit + " " + itemName
-            horizontalAlignment: AppText.AlignHCenter
+            text: " " + unit + "  " + itemName
+            horizontalAlignment: AppText.AlignLeft
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.fillWidth: true

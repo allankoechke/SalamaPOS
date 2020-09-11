@@ -3,9 +3,10 @@
 
 #include <QObject>
 #include <QDebug>
+#include <QSqlDatabase>
 #include <QJsonObject>
 
-// #include "databaseinterface.h"
+#include "databaseinterface.h"
 #include "serialportinterface.h"
 #include "webapiinterface.h"
 #include "websocketsinterface.h"
@@ -18,12 +19,12 @@ public:
     explicit QmlInterface(QObject *parent = nullptr);
 
 signals:
-    void databaseReady();
+    void databaseReadyChanged();
 
 private slots:
 
 private:
-    // DatabaseInterface * m_databaseInterface;
+    DatabaseInterface * m_databaseInterface;
 
 };
 

@@ -4,7 +4,6 @@ import QtQuick.Controls 2.4 as Controls2
 
 import "../components"
 import "../subviews"
-// import "../models"
 import "../delegates"
 
 Item {
@@ -93,9 +92,9 @@ Item {
                             {
                                 anchors.fill: parent
                                 onClicked: {
-                                    CheckoutModel.addSellItem("FA76286428", "Milking Salve", "1kg", 175, 234, 2);
-                                    CheckoutModel.addSellItem("FA76286348", "Macklick Super", "2kg", 115, 140, 1);
-                                    CheckoutModel.addSellItem("FA00286428", "Kaolin", "100gms", 78, 100, 1);
+                                    CheckoutModel.addSellItem("AF1234567", "Milking Salve", "100gms", 75, 110, 2);
+                                    CheckoutModel.addSellItem("AF123456897", "Milking Salve", "100gms", 67, 90, 1);
+                                    CheckoutModel.addSellItem("AS754737", "Mongoose", "1unit", 120, 150, 1);
                                 }
                             }
                         }
@@ -171,15 +170,17 @@ Item {
                                 unit: sell_unit
                                 qty: sell_qty
                                 sp: sell_sp
+                                _barcode: sell_barcode
 
                                 onDeleted: {
-                                    console.log(">> Deleted At: " , index)
                                     CheckoutModel.removeSellItem(index);
                                 }
 
                                 onEdited: {
-                                    console.log(">> Edited At: " , index)
-                                    // Launch popup
+                                    checkoutQtyPopup.open();
+                                    checkoutQtyPopup.inStock = StockItemModel.getItemStock(_barcode)===-1? qty:StockItemModel.getItemStock(_barcode)
+                                    checkoutQtyPopup.currentQty = qty;
+                                    checkoutQtyPopup.barcode = _barcode
                                 }
                             }
                         }

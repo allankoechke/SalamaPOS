@@ -44,23 +44,25 @@ CREATE TABLE IF NOT EXISTS "user" (
 	"lastname"	TEXT NOT NULL,
         "username"	TEXT NOT NULL UNIQUE,
 	"password"	TEXT NOT NULL,
-	"phone_no"	NUMERIC NOT NULL,
-        "to_change_password"	INTEGER DEFAULT 0
+        "phone_no"	TEXT NOT NULL,
+        "to_change_password"	boolean DEFAULT FALSE,
+        "to_delete_account" boolean DEFAULT FALSE
 );
 CREATE TABLE IF NOT EXISTS "priviledges" (
-        "id"	serial PRIMARY KEY,
-	"username"	TEXT NOT NULL,
-        "can_add_user"	boolean DEFAULT FALSE,
+        "id"                    serial PRIMARY KEY,
+        "username"              TEXT NOT NULL,
+        "can_add_user"          boolean DEFAULT TRUE,
         "can_remove_user"	boolean DEFAULT FALSE,
         "can_add_product"	boolean DEFAULT TRUE,
         "can_remove_product"	boolean DEFAULT FALSE,
-        "can_add_stock"	boolean DEFAULT TRUE,
+        "can_add_stock"         boolean DEFAULT TRUE,
+        "can_remove_sales"      boolean DEFAULT FALSE,
         "can_remove_stock"	boolean DEFAULT FALSE,
-        "can_backup"	boolean DEFAULT FALSE,
+        "can_backup"            boolean DEFAULT FALSE,
         FOREIGN KEY("username") REFERENCES "user"("username") ON UPDATE CASCADE ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS "creditee" (
-        "id"	serial PRIMARY KEY,
+        "id"            serial PRIMARY KEY,
 	"firstname"	TEXT NOT NULL,
 	"lastname"	TEXT NOT NULL,
 	"national_id"	NUMERIC NOT NULL,
@@ -69,7 +71,7 @@ CREATE TABLE IF NOT EXISTS "creditee" (
 );
 
 CREATE TABLE IF NOT EXISTS "sales" (
-        "id"	serial PRIMARY KEY,
+        "id"            serial PRIMARY KEY,
         "barcode"	TEXT,
         "sales_date"	TEXT NOT NULL,
         "product_bp"	REAL NOT NULL,
@@ -81,9 +83,9 @@ CREATE TABLE IF NOT EXISTS "sales" (
         FOREIGN KEY("barcode") REFERENCES "product"("barcode") ON UPDATE CASCADE ON DELETE SET NULL
 );
 CREATE TABLE IF NOT EXISTS "payment" (
-        "id"	serial PRIMARY KEY,
-        "cash"	REAL,
-        "mpesa"	REAL,
+        "id"            serial PRIMARY KEY,
+        "cash"          REAL,
+        "mpesa"         REAL,
         "cheque"	REAL,
         "credit"	REAL,
         "sales_id"	INTEGER NOT NULL,
@@ -91,13 +93,13 @@ CREATE TABLE IF NOT EXISTS "payment" (
         FOREIGN KEY("sales_id") REFERENCES "sales"("id")
 );
 CREATE TABLE IF NOT EXISTS "mpesa" (
-        "id"	serial PRIMARY KEY,
+        "id"            serial PRIMARY KEY,
 	"mpesa_id"	TEXT NOT NULL,
 	"payment_id"	INTEGER NOT NULL,
         FOREIGN KEY("payment_id") REFERENCES "payment"("id")
 );
 CREATE TABLE IF NOT EXISTS "credit" (
-        "id"	serial PRIMARY KEY,
+        "id"            serial PRIMARY KEY,
 	"creditee_id"	INTEGER,
         "due_date"	TEXT,
 	"payment_id"	INTEGER NOT NULL,

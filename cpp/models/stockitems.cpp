@@ -2,13 +2,11 @@
 
 StockItems::StockItems(QObject *parent) : QObject(parent)
 {
-
 }
 
 StockItems::StockItems(const QString barCode, const QString itemName, const QString itemUnit, const float itemBp, const float itemSp, const QString itemCompany, const int itemQty, const QString lastUpdate, const int itemCategory, QObject *parent)
     :QObject(parent),m_barCode(barCode),m_itemName(itemName),m_itemUnit(itemUnit),m_itemCompany(itemCompany),m_itemQty(itemQty),m_itemBp(itemBp),m_itemSp(itemSp),m_lastUpdate(lastUpdate),m_itemCategory(itemCategory)
 {
-
 }
 
 QString StockItems::barCode() const

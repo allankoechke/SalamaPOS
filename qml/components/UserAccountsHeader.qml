@@ -18,99 +18,19 @@ Rectangle {
         AppText
         {
             color: "white"
-            text: qsTr("No.")
-            font.bold: true
+            text: qsTr("")
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.preferredWidth: 50
+            Layout.preferredWidth: 55
         }
 
-        VSeparator{}
+        VSeparator {}
 
         AppText
         {
             color: "white"
-            text: qsTr("Item Name")
-            font.bold: true
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.fillWidth: true
-            Layout.minimumWidth: 150
-        }
-
-        VSeparator{}
-
-        AppText
-        {
-            color: "white"
-            text: qsTr("Bar Code")
-            font.bold: true
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.preferredWidth: 150
-        }
-
-        VSeparator{}
-
-        AppText
-        {
-            color: "white"
-            text: qsTr("Unit")
-            font.bold: true
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.preferredWidth: 100
-        }
-
-        VSeparator{}
-
-        AppText
-        {
-            color: "white"
-            text: qsTr("BP")
-            font.bold: true
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.preferredWidth: 150
-        }
-
-        VSeparator{}
-
-        AppText
-        {
-            color: "white"
-            text: qsTr("SP")
-            font.bold: true
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.preferredWidth: 150
-        }
-
-        VSeparator{}
-
-        AppText
-        {
-            color: "white"
-            text: qsTr("Qty.")
-            font.bold: true
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-            Layout.preferredWidth: 100
-        }
-
-        VSeparator{}
-
-        AppText
-        {
-            color: "white"
-            text: qsTr("Company")
+            text: qsTr("Full Name")
             font.bold: true
             horizontalAlignment: AppText.AlignHCenter
 
@@ -120,7 +40,46 @@ Rectangle {
             Layout.maximumWidth: 300
         }
 
-        VSeparator{}
+        VSeparator {}
+
+        AppText
+        {
+            color: "white"
+            text: qsTr("Phone Number")
+            font.bold: true
+            horizontalAlignment: AppText.AlignHCenter
+
+            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+            Layout.preferredWidth: 150
+        }
+
+        VSeparator {}
+
+        AppText
+        {
+            color: "white"
+            text: qsTr("Date Added")
+            font.bold: true
+            horizontalAlignment: AppText.AlignHCenter
+
+            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+            Layout.preferredWidth: 150
+        }
+
+        VSeparator {}
+
+        AppText
+        {
+            color: "white"
+            text: qsTr("Account Priviledges")
+            font.bold: true
+            horizontalAlignment: AppText.AlignHCenter
+
+            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+            Layout.fillWidth: true
+        }
+
+        VSeparator {}
 
         AppText
         {

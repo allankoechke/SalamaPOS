@@ -56,5 +56,14 @@
         <file>qml/subviews/StockPopup.qml</file>
         <file>qml/components/CustomSpinBox.qml</file>
         <file>sql/add_item.sql</file>
+        <file>qml/components/VSeparator.qml</file>
+        <file>qml/subviews/CheckoutQtyEditPopup.qml</file>
+        <file>qml/views/SplashView.qml</file>
+        <file>qml/subviews/LoginPopup.qml</file>
+        <file>qml/views/LoginView.qml</file>
+        <file>qml/components/LoginInputField.qml</file>
+        <file>qml/subviews/UserAccountPopup.qml</file>
+        <file>qml/delegates/UserAccountsDelegate.qml</file>
+        <file>qml/components/UserAccountsHeader.qml</file>
     </qresource>
 </RCC>

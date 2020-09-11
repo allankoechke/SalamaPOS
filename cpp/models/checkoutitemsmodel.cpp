@@ -160,7 +160,7 @@ void CheckoutItemsModel::addSellItem(const QVariant sellBarcode, const QVariant 
 
     int response = checkIfItemExistsInModel(sellBarcode.toString());
 
-    qDebug() << "Index: " << response;
+    // qDebug() << "Index: " << response;
 
     if(response == -1)
         addItem(new CheckoutItems(sellBarcode.toString(), sellItemName.toString(), sellItemUnit.toString(), buyingPrice.toString().toFloat(), sellingPrice.toString().toFloat(), sellQty.toString().toInt()));
@@ -170,11 +170,25 @@ void CheckoutItemsModel::addSellItem(const QVariant sellBarcode, const QVariant 
             findTotals();
 }
 
-void CheckoutItemsModel::changeSellStock(const QVariant &qty, QVariant index)
+void CheckoutItemsModel::changeSellStock(const QVariant &qty, const QVariant &barcode)
 {
-    setData(this->index(index.toString().toInt()), qty.toString().toInt(), SellQtyRole);
+    QString bCode = barcode.toString();
 
-    findTotals();
+    int index = checkIfItemExistsInModel(bCode);
+
+    if(index != -1)
+    {
+        setData(this->index(index), qty.toString().toInt(), SellQtyRole);
+
+        saleQtyChanged(true);
+
+        findTotals();
+    }
+
+    else
+        saleQtyChanged(false);
+
+    qDebug() << ">> " << index;
 }
 
 void CheckoutItemsModel::startANewSell()
@@ -200,7 +214,7 @@ void CheckoutItemsModel::findTotals()
 
     setSellTotals(totals);
 
-    qDebug() << "New Totals: " << sellTotals();
+    // qDebug() << "New Totals: " << sellTotals();
 }
 
 void CheckoutItemsModel::addItem(CheckoutItems *checkout)

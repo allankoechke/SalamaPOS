@@ -19,16 +19,20 @@ Rectangle {
         {
             color: "white"
             text: qsTr("No.")
+            font.bold: true
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.preferredWidth: 50
         }
 
+        VSeparator{}
+
         AppText
         {
             color: "white"
             text: qsTr("Item Name")
+            font.bold: true
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
@@ -36,50 +40,65 @@ Rectangle {
             Layout.minimumWidth: 150
         }
 
+        VSeparator{}
+
         AppText
         {
             color: "white"
             text: qsTr("Bar Code")
+            font.bold: true
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.preferredWidth: 150
         }
+
+        VSeparator{}
 
         AppText
         {
             color: "white"
             text: qsTr("Unit")
+            font.bold: true
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.preferredWidth: 100
         }
+
+        VSeparator{}
 
         AppText
         {
             color: "white"
             text: qsTr("Qty.")
+            font.bold: true
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.preferredWidth: 100
         }
 
+        VSeparator{}
+
         AppText
         {
             color: "white"
             text: qsTr("Action")
+            font.bold: true
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.preferredWidth: 150
         }
 
+        VSeparator{}
+
         AppText
         {
             color: "white"
             text: qsTr("Last Updated")
+            font.bold: true
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter

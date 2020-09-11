@@ -41,7 +41,7 @@ public:
 
     Q_INVOKABLE void addSellItem(const QVariant sellBarcode, const QVariant  sellItemName, const QVariant  sellItemUnit, const QVariant  buyingPrice, const QVariant  sellingPrice, const QVariant sellQty);
 
-    Q_INVOKABLE void changeSellStock(const QVariant &qty, QVariant index);
+    Q_INVOKABLE void changeSellStock(const QVariant &qty, const QVariant &barcode);
 
     Q_INVOKABLE void startANewSell();
 
@@ -59,6 +59,8 @@ public:
 signals:
 
     void sellTotalsChanged(int sellTotals);
+
+    void saleQtyChanged(bool state);
 
 private:
     QList<CheckoutItems *> mCheckoutItem;

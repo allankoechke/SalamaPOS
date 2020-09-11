@@ -5,6 +5,7 @@
 #include "qmlinterface.h"
 #include "models/stockitemsmodel.h"
 #include "models/checkoutitemsmodel.h"
+#include "databaseinterface.h"
 
 int main(int argc, char *argv[])
 {

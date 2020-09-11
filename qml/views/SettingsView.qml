@@ -17,7 +17,7 @@ Item {
     RowLayout
     {
         anchors.fill: parent
-        anchors.margins: 50
+        anchors.margins: 40
         spacing: 10
 
         Rectangle

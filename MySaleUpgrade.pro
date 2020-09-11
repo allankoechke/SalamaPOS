@@ -18,8 +18,12 @@ SOURCES += \
         cpp/main.cpp \
         cpp/models/checkoutitems.cpp \
         cpp/models/checkoutitemsmodel.cpp \
+        cpp/models/saleitem.cpp \
+        cpp/models/saleitemmodel.cpp \
         cpp/models/stockitems.cpp \
         cpp/models/stockitemsmodel.cpp \
+        cpp/models/useraccounts.cpp \
+        cpp/models/useraccountsmodel.cpp \
         cpp/qmlinterface.cpp \
         cpp/serialportinterface.cpp \
         cpp/webapiinterface.cpp \
@@ -42,9 +46,15 @@ HEADERS += \
     cpp/databaseinterface.h \
     cpp/models/checkoutitems.h \
     cpp/models/checkoutitemsmodel.h \
+    cpp/models/saleitem.h \
+    cpp/models/saleitemmodel.h \
     cpp/models/stockitems.h \
     cpp/models/stockitemsmodel.h \
+    cpp/models/useraccounts.h \
+    cpp/models/useraccountsmodel.h \
     cpp/qmlinterface.h \
     cpp/serialportinterface.h \
     cpp/webapiinterface.h \
     cpp/websocketsinterface.h
+
+DISTFILES +=

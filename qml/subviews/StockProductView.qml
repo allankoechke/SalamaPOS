@@ -71,7 +71,7 @@ Rectangle {
                             newItemPopup.itemBp = bp;
                             newItemPopup.itemSp = sp;
                             newItemPopup.itemQty = qty;
-                            newItemPopup.itemCompany = company;
+                            newItemPopup.itemCompany = company==="---"? "":company;
 
                             newItemPopup.qty.textInput.readOnly = true;
                             newItemPopup.qty.textInput.enabled = false;

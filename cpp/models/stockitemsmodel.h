@@ -46,6 +46,8 @@ public:
 
     Q_INVOKABLE void initializeStockFromDb();
 
+    Q_INVOKABLE int getItemStock(const QVariant &barcode);
+
     // Internal functions
     bool addNewItem(StockItems * stockItem);
 
@@ -66,7 +68,7 @@ private slots:
 private:
     QList<StockItems *> m_stockItems;
 
-    DatabaseInterface * m_databaseInterface;
+    // DatabaseInterface * m_databaseInterface;
 };
 
 #endif // STOCKITEMSMODEL_H

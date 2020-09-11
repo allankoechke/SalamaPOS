@@ -22,23 +22,14 @@ class DatabaseInterface : public QObject
 public:
     explicit DatabaseInterface(QObject *parent = nullptr);
 
-    ~DatabaseInterface();
-
-    void initializeDatabase();
-
-    QSqlDatabase getDb();
+    bool initializeDatabase();
 
 signals:
-    void databaseStatusChanged(const bool & status);
-
-    void databaseStatusChangedd();
-
-    void databaseReady();
 
 public slots:
 
 private:
-    QSqlDatabase m_db;
+    QString db_pswd, db_name, db_uname;
 };
 
 #endif // DATABASEINTERFACE_H

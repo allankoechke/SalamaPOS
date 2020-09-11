@@ -8,12 +8,14 @@ Rectangle {
     anchors.fill: parent
     color: "#f4f9fa"
 
-    property int navBarIndex: 0
+    property int navBarIndex: 7
     property string viewText: qsTr("Home")
 
     property alias checkoutPopup: checkoutPopup
     property alias userMenuPopup: userMenuPopup
     property alias stockPopup: stockPopup
+    property alias checkoutQtyPopup: checkoutQtyPopup
+    property alias userAccountPopup: userAccountPopup
 
     onNavBarIndexChanged: {
         switch(navBarIndex)
@@ -42,8 +44,6 @@ Rectangle {
         }
     }
 
-    // Component.onCompleted: StockItemModel.initializeStockFromDb();
-
     RowLayout
     {
         anchors.fill: parent
@@ -52,6 +52,7 @@ Rectangle {
         NavigationBar
         {
             id: navBar
+            visible: false
         }
 
         Item
@@ -66,7 +67,8 @@ Rectangle {
 
                 NotificationBar
                 {
-
+                    id: notificationBar
+                    visible: false
                 }
 
                 Item{
@@ -78,35 +80,23 @@ Rectangle {
                         anchors.fill: parent
                         currentIndex: navBarIndex
 
-                        DashboardView
-                        {
+                        DashboardView {}
 
-                        }
+                        CheckoutView {}
 
-                        CheckoutView
-                        {
+                        StockView {}
 
-                        }
+                        SalesView {}
 
-                        StockView
-                        {
+                        MessagesView {}
 
-                        }
+                        SettingsView {}
 
-                        SalesView
-                        {
+                        AccountsView {}
 
-                        }
+                        SplashView {}
 
-                        MessagesView
-                        {
-
-                        }
-
-                        SettingsView
-                        {
-
-                        }
+                        LoginView {}
                     }
                 }
             }
@@ -132,5 +122,35 @@ Rectangle {
     StockPopup
     {
         id: stockPopup
+    }
+
+    CheckoutQtyEditPopup
+    {
+        id: checkoutQtyPopup
+    }
+
+    UserAccountPopup
+    {
+        id: userAccountPopup
+    }
+
+    function startApp(state)
+    {
+        if(state)
+        {
+            navBarIndex = 0
+            notificationBar.visible = true;
+            navBar.visible = true
+            mainApp.showMaximized();
+        }
+
+        else
+        {
+            navBarIndex = 6
+            notificationBar.visible = !true;
+            navBar.visible = !true
+            mainApp.width = 400;
+            mainApp.height = 600;
+        }
     }
 }

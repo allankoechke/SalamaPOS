@@ -39,7 +39,7 @@ Rectangle {
         {
             color: "black"
             text: itemName
-            horizontalAlignment: AppText.AlignHCenter
+            horizontalAlignment: AppText.AlignLeft
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.fillWidth: true
@@ -50,7 +50,7 @@ Rectangle {
         {
             color: "black"
             text: barCode
-            horizontalAlignment: AppText.AlignHCenter
+            horizontalAlignment: AppText.AlignLeft
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.preferredWidth: 150
@@ -60,7 +60,7 @@ Rectangle {
         {
             color: "black"
             text: _unit
-            horizontalAlignment: AppText.AlignHCenter
+            horizontalAlignment: AppText.AlignLeft
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.preferredWidth: 100
@@ -70,7 +70,7 @@ Rectangle {
         {
             color: "black"
             text: bp.toString()
-            horizontalAlignment: AppText.AlignHCenter
+            horizontalAlignment: AppText.AlignLeft
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.preferredWidth: 150
@@ -80,7 +80,7 @@ Rectangle {
         {
             color: "black"
             text: sp.toString()
-            horizontalAlignment: AppText.AlignHCenter
+            horizontalAlignment: AppText.AlignLeft
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.preferredWidth: 150
@@ -90,7 +90,7 @@ Rectangle {
         {
             color: "black"
             text: qty.toString()
-            horizontalAlignment: AppText.AlignHCenter
+            horizontalAlignment: AppText.AlignLeft
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.preferredWidth: 100
@@ -100,7 +100,7 @@ Rectangle {
         {
             color: "black"
             text: company
-            horizontalAlignment: AppText.AlignHCenter
+            horizontalAlignment: AppText.AlignLeft
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.fillWidth: true

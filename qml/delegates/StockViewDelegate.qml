@@ -36,10 +36,10 @@ Rectangle {
         AppText
         {
             color: "black"
-            text: itemName
-            horizontalAlignment: AppText.AlignHCenter
+            text: " " + itemName
+            horizontalAlignment: AppText.AlignLeft
 
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+            Layout.alignment: Qt.AlignVCenter|Qt.AlignLeft
             Layout.fillWidth: true
             Layout.minimumWidth: 150
         }
@@ -48,7 +48,7 @@ Rectangle {
         {
             color: "black"
             text: barCode
-            horizontalAlignment: AppText.AlignHCenter
+            horizontalAlignment: AppText.AlignLeft
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.preferredWidth: 150
@@ -58,7 +58,7 @@ Rectangle {
         {
             color: "black"
             text: _unit
-            horizontalAlignment: AppText.AlignHCenter
+            horizontalAlignment: AppText.AlignLeft
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.preferredWidth: 100
@@ -68,7 +68,7 @@ Rectangle {
         {
             color: "black"
             text: qty.toString()
-            horizontalAlignment: AppText.AlignHCenter
+            horizontalAlignment: AppText.AlignLeft
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.preferredWidth: 100

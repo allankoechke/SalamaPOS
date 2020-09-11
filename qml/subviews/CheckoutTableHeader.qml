@@ -27,6 +27,8 @@ Rectangle {
             Layout.preferredWidth: 50
         }
 
+        VSeparator{}
+
         AppText
         {
             size: 17
@@ -41,6 +43,8 @@ Rectangle {
             Layout.maximumWidth: 450
         }
 
+        VSeparator{}
+
         AppText
         {
             size: 17
@@ -52,6 +56,8 @@ Rectangle {
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.preferredWidth: 100
         }
+
+        VSeparator{}
 
         AppText
         {
@@ -65,6 +71,8 @@ Rectangle {
             Layout.preferredWidth: 200
         }
 
+        VSeparator{}
+
         AppText
         {
             size: 17
@@ -77,6 +85,9 @@ Rectangle {
             Layout.preferredWidth: 200
         }
 
+
+        VSeparator{}
+
         AppText
         {
             size: 17
@@ -88,6 +99,9 @@ Rectangle {
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.preferredWidth: 100
         }
+
+
+        VSeparator{}
 
         Item{
             Layout.fillHeight: true
