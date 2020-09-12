@@ -31,7 +31,7 @@ Item {
                 AppText
                 {
                     id: usr_name
-                    text: "My Name"
+                    text: fullname
                     color: "grey"
                     size: 14
 
@@ -41,7 +41,7 @@ Item {
 
                 AppText
                 {
-                    text: "Teller"
+                    text: username
                     color: "grey"
                     size: 10
 

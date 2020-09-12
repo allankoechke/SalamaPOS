@@ -18,6 +18,9 @@ Window {
     property string menuColor: "#12679a"
     property string tableHeaderColor: "#5f00ff"
 
+    property string fullname: ""
+    property string username: ""
+
     Component.onCompleted: {
         popupTimer.start();
         timer1.start();
@@ -30,7 +33,11 @@ Window {
         running: false
         interval: 2500
 
-        onTriggered: StockItemModel.initializeStockFromDb();
+        onTriggered: {
+
+            StockItemModel.initializeStockFromDb();
+            AccountsModel.loadAllUserAccounts();
+        }
     }
 
     Timer
@@ -67,6 +74,27 @@ Window {
         function onDatabaseReadyChanged()
         {
             console.log(">> Database Ready Signal in QML!")
+        }
+    }
+
+    Connections
+    {
+        target: AccountsModel
+
+        function onUserAccountsLoaded(status)
+        {
+            if(status)
+                console.log(">> User Accounts have been loaded");
+
+            else
+                console.log(">> Error loading user accounts");
+        }
+
+        function onLoggedInUserChanged()
+        {
+            console.log(">> Logged in user changed ...")
+            fullname = AccountsModel.loggedInUser["firstname"] + " " + AccountsModel.loggedInUser["lastname"]
+            username =  AccountsModel.loggedInUser["username"]
         }
     }
 }

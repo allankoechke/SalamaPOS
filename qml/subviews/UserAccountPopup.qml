@@ -16,6 +16,8 @@ Controls2.Popup
     closePolicy: Controls2.Popup.NoAutoClose
 
     property bool isNewUserAccount: true
+    property bool isError: false
+    property string errorText: ""
 
     contentItem: Rectangle
     {
@@ -120,6 +122,16 @@ Controls2.Popup
 
                     // VerticalSpacer {}
 
+                    AppText
+                    {
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 25
+                        horizontalAlignment: AppText.AlignHCenter
+                        verticalAlignment: AppText.AlignVCenter
+                        color: isError? "red":"transparent"
+                        text: errorText
+                    }
+
                     Item
                     {
                         Layout.fillWidth: true
@@ -197,7 +209,30 @@ Controls2.Popup
                                         var _pswd = pswd.textInput.text
                                         var _cpswd = cpswd.textInput.text
 
+                                        console.log(">> ", _fname, " : ", _lname, " : ", _uname, " : ", _phoneNo, " : ", _pswd, " : ", _cpswd)
 
+                                        if(_fname!=="" && _lname!=="" && _uname!=="" && _phoneNo!=="" && _pswd !=="" && cpswd!=="")
+                                        {
+                                            if(_pswd === _cpswd)
+                                            {
+                                                var tmspt = new Date().getTime();
+                                                AccountsModel.addNewUserAccount(_fname, _lname,_uname,_pswd,_phoneNo, tmspt);
+                                                // isError = false;
+                                            }
+
+                                            else
+                                            {
+                                                isError = true;
+                                                errorText = qsTr("Passwords do not match")
+                                                console.log("Passwords do not match")
+                                            }
+                                        }
+
+                                        else
+                                        {
+                                            isError = true;
+                                            errorText = qsTr("Some required fields are short!")
+                                        }
                                     }
                                 }
                             }
@@ -208,43 +243,51 @@ Controls2.Popup
         }
     }
 
-    function addNewItemToDb(_barcode,_name,_unit,_bp,_sp,_qty,_company)
-    {
-        var tmspt = new Date().getTime();
-        StockItemModel.addNewItem(_barcode,_name, _unit, _bp, _sp, parseInt(_qty), _company, tmspt, 1 /*category*/);
-    }
-
-    function updateItemInDb(_barcode,_name,_unit,_bp,_sp,_qty,_company)
-    {
-        StockItemModel.updateItem(_barcode, _name, _unit, _bp, _sp, _company, 1/*category*/, barCode, currentIndex);
-    }
 
     Connections
     {
-        target: StockItemModel
+        target: AccountsModel
 
-        function onItemUpdatedChanged(status)
+        function onUserAddedChanged(status)
         {
             if(status)
             {
-                console.log(">> Item Updated Successfuly!");
+                console.log(">> User Added Successfuly!");
                 root.close();
             }
 
             else
-                console.log(">> Error Updating item");
+                console.log(">> Error Adding User");
         }
 
-        function onItemAddingChanged(status)
+        function onUserUpdatedChanged(status)
         {
             if(status)
             {
-                console.log(">> Item Added Successfuly!");
+                console.log(">> User Details updated Successfuly!");
+                resetFields();
                 root.close();
             }
 
             else
-                console.log(">> Error Adding item");
+                console.log(">> Error Updating User");
         }
+
+        function onUsernameExistsChanged(status)
+        {
+            console.log(">> QML: Username taken")
+            isError = true;
+            errorText = qsTr("The username is already taken!")
+        }
+    }
+
+    function resetFields()
+    {
+        fname.textInput.text = ""
+        lname.textInput.text = ""
+        uname.textInput.text = ""
+        phoneNo.textInput.text = ""
+        pswd.textInput.text = ""
+        cpswd.textInput.text = ""
     }
 }

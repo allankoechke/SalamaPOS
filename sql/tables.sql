@@ -38,13 +38,14 @@ CREATE TABLE IF NOT EXISTS "messages" (
 	"content"	TEXT NOT NULL,
         "has_read"	INTEGER DEFAULT 0
 );
-CREATE TABLE IF NOT EXISTS "user" (
+CREATE TABLE IF NOT EXISTS "users" (
         "id"	serial PRIMARY KEY,
 	"firstname"	TEXT NOT NULL,
 	"lastname"	TEXT NOT NULL,
         "username"	TEXT NOT NULL UNIQUE,
 	"password"	TEXT NOT NULL,
         "phone_no"	TEXT NOT NULL,
+        "date_added"    TEXT NOT NULL,
         "to_change_password"	boolean DEFAULT FALSE,
         "to_delete_account" boolean DEFAULT FALSE
 );
@@ -59,7 +60,7 @@ CREATE TABLE IF NOT EXISTS "priviledges" (
         "can_remove_sales"      boolean DEFAULT FALSE,
         "can_remove_stock"	boolean DEFAULT FALSE,
         "can_backup"            boolean DEFAULT FALSE,
-        FOREIGN KEY("username") REFERENCES "user"("username") ON UPDATE CASCADE ON DELETE CASCADE
+        FOREIGN KEY("username") REFERENCES "users"("username") ON UPDATE CASCADE ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS "creditee" (
         "id"            serial PRIMARY KEY,
@@ -79,7 +80,7 @@ CREATE TABLE IF NOT EXISTS "sales" (
         "sale_qty"	REAL NOT NULL,
         "username"	TEXT,
         "deleted"	boolean DEFAULT FALSE,
-        FOREIGN KEY("username") REFERENCES "user"("username") ON UPDATE CASCADE ON DELETE SET NULL,
+        FOREIGN KEY("username") REFERENCES "users"("username") ON UPDATE CASCADE ON DELETE SET NULL,
         FOREIGN KEY("barcode") REFERENCES "product"("barcode") ON UPDATE CASCADE ON DELETE SET NULL
 );
 CREATE TABLE IF NOT EXISTS "payment" (

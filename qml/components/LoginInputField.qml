@@ -8,7 +8,7 @@ Item{
 
     property string hintText: ""
     property string ico: ""
-    //property alias text: txt.text
+    property alias textInput: txt
     property bool isCorrect: false
     property bool isPassword: false
 

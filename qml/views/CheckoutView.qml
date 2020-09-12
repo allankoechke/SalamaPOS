@@ -107,7 +107,7 @@ Item {
                     Layout.fillHeight: true
                     size: 70*0.6
                     color: "black"
-                    text: qsTr("Sales: Ksh. ") + (sellListView.model.count === 0? "0":parseInt(CheckoutModel.sellTotals).toString())
+                    text: qsTr("Sales: Ksh. ") + (sellListView.model === null? "0":sellListView.model.count === 0? "0":parseInt(CheckoutModel.sellTotals).toString())
 
                     verticalAlignment: AppText.AlignVCenter
                 }
@@ -220,7 +220,7 @@ Item {
                 {
                     label: qsTr("CHECKOUT")
                     _icon: "\uf07a"
-                    enabled: sellListView.model.count !== 0
+                    enabled: sellListView.model===null? false: sellListView.model.count === 0? false:true
                     opacity: enabled? 1:0.2
 
                     onButtonClicked: checkoutPopup.open();

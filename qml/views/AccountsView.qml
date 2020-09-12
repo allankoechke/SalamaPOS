@@ -122,7 +122,7 @@ Item {
                         anchors.fill: parent
                         spacing: 0
 
-                        model: 10 //SalesViewModel {}
+                        model: AccountsModel
 
                         delegate: Component {
                             id: userAccountDelegate
@@ -132,7 +132,33 @@ Item {
                                 width: scroll.width
 
                                 _index: model.index
+                                fname: user_fname
+                                lname: user_lname
+                                uname: user_username
+                                phoneNo: user_phoneNo
+                                date: date_added
+                                canCreateUser: can_addUsers
+                                canDeleteUser: can_removeUsers
+                                canCreateItems: can_addProducts
+                                canDeleteItems: can_removeProducts
+                                canAddStock: can_addStock
+                                canDeleteStock: can_removeStock
+                                canDeleteSales: can_undoSales
+                                canBackupDb: can_backup
 
+                                onEditedChanged: {
+                                    accountsPopup.open();
+                                    accountsPopup.currentIndex = index
+                                    accountsPopup.currentUser = uname
+                                    accountsPopup.canCreateUser = canCreateUser
+                                    accountsPopup.canDeleteUser = canDeleteUser
+                                    accountsPopup.canCreateItems = canCreateItems
+                                    accountsPopup.canDeleteItems = canDeleteItems
+                                    accountsPopup.canAddStock = canAddStock
+                                    accountsPopup.canDeleteStock = canDeleteStock
+                                    accountsPopup.canDeleteSales = canDeleteSales
+                                    accountsPopup.canBackupDb = canBackupDb
+                                }
                             }
                         }
                     }

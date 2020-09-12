@@ -7,7 +7,8 @@ Item {
     Layout.fillWidth: true
     Layout.fillHeight: true
 
-    property bool isAnimationRunning: !true
+    property bool isError: false
+    property string errorString: ""
 
     ColumnLayout
     {
@@ -62,6 +63,7 @@ Item {
 
                 LoginInputField
                 {
+                    id: _uname
                     ico: "\uf007"
                     hintText: qsTr("Enter Username")
                     isCorrect: false
@@ -69,6 +71,7 @@ Item {
 
                 LoginInputField
                 {
+                    id: _pswd
                     ico: "\uf084"
                     hintText: qsTr("Enter Password")
                     isCorrect: false
@@ -97,10 +100,61 @@ Item {
                     MouseArea
                     {
                         anchors.fill: parent
-                        onClicked: startApp(true);
+                        onClicked: {
+                            var uname = _uname.textInput.text
+                            var pswd = _pswd.textInput.text
+
+                            if(uname !== "" && pswd !== "")
+                            {
+                                AccountsModel.loginUser(uname, pswd);
+                            }
+
+                            else
+                            {
+                                isError = true;
+                                errorString = qsTr("Required field is short")
+                            }
+                        }
                     }
                 }
             }
         }
+
+        AppText
+        {
+            color: isError? "red":"transparent"
+            text: errorString
+
+            Layout.alignment: Qt.AlignHCenter
+
+        }
+    }
+
+    Connections
+    {
+        target: AccountsModel
+        function onLoggingInUsernameStatus(status)
+        {
+            if(!status)
+            {
+                isError = true
+                errorString = qsTr("Invalid login details")
+                console.log("Username doesnt exist")
+            }
+        }
+
+        function onLoggingInPasswordStatus(status)
+        {
+            if(!status)
+            {
+                isError = true
+                errorString = qsTr("Invalid login details")
+                console.log("Wrong Password")
+            }
+
+            else
+                startApp(true);
+        }
+
     }
 }

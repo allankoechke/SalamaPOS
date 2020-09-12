@@ -5,7 +5,7 @@
 #include "qmlinterface.h"
 #include "models/stockitemsmodel.h"
 #include "models/checkoutitemsmodel.h"
-#include "databaseinterface.h"
+#include "models/useraccountsmodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -16,11 +16,13 @@ int main(int argc, char *argv[])
     // Singletons
     QmlInterface qmlInterface;
     StockItemsModel m_stockModel;
-    CheckoutItemsModel mCheckoutItems;
+    CheckoutItemsModel m_checkoutItems;
+    UserAccountsModel m_userAccounts;
 
     engine.rootContext()->setContextProperty("QmlInterface", &qmlInterface);
     engine.rootContext()->setContextProperty("StockItemModel", &m_stockModel);
-    engine.rootContext()->setContextProperty("CheckoutModel", &mCheckoutItems);
+    engine.rootContext()->setContextProperty("CheckoutModel", &m_checkoutItems);
+    engine.rootContext()->setContextProperty("AccountsModel", &m_userAccounts);
 
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

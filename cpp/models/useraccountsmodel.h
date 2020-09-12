@@ -3,7 +3,14 @@
 
 #include <QObject>
 #include <QDebug>
+#include <QFile>
 #include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QDateTime>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QCryptographicHash>
 #include <QAbstractListModel>
 #include "useraccounts.h"
 
@@ -49,21 +56,66 @@ public:
 
     Q_INVOKABLE void updatePassword(const QVariant &userUsername, const QVariant &userPassword);
 
-    Q_INVOKABLE void removeUserAccount(QVariant index);
+    Q_INVOKABLE void removeUserAccount(const QVariant &userUsername, QVariant index);
 
-    Q_INVOKABLE void updateUserAccount(const QVariant &userFirstname, const QVariant &userLastname, const QVariant &userUsername, const QVariant &userPhoneNo, const QVariant &userDateAdded);
+    Q_INVOKABLE void updateUserAccount(const QVariant &userFirstname, const QVariant &userLastname, const QVariant &userUsername, const QVariant &userPhoneNo, const QVariant &orig_username);
+
+    Q_INVOKABLE void updateUserAccount(const QVariant &userUsername, const bool &canAddUsers, const bool &canRemoveUsers, const bool &canAddItems, const bool &canRemoveItems, const bool &canAddStock, const bool &canRemoveStock, const bool &canUndoSales, const bool &canBackupDb);
 
     Q_INVOKABLE void markAccountForDeleting(const QVariant &userUsername);
+
+    Q_INVOKABLE void loadAllUserAccounts();
+
+    Q_INVOKABLE void loginUser(const QVariant &uname, const QVariant &pswd);
+
+    // User Properties
+    Q_PROPERTY(QJsonObject loggedInUser READ loggedInUser WRITE setLoggedInUser NOTIFY loggedInUserChanged)
 
     // Internals
     void addNewUserAccount(UserAccounts * user);
 
     void removeUserAccount(int index);
 
+    QString hashPassword(const QString &pswd);
+
+    bool login(const QString &savedPswd, const QString &inputPswd);
+
+    int getUserIndex(const QString &username);
+
+    // Properties
+    QJsonObject loggedInUser() const;
+
+    void setLoggedInUser(QJsonObject loggedInUser);
+
 signals:
+    void userAddedChanged(bool status);
+
+    void userRemovedChanged(bool status);
+
+    void userUpdatedChanged(bool status);
+
+    void userPriviledgesChanged(bool status);
+
+    void userPasswordChanged(bool status);
+
+    void toDeleteAccountChanged(bool status);
+
+    void loggedInUserChanged(QJsonObject loggedInUser);
+
+    void loggedInUserChanged();
+
+    void loggingInUsernameStatus(bool status);
+
+    void loggingInPasswordStatus(bool status);
+
+    void userAccountsLoaded(bool status);
+
+    void usernameExistsChanged(bool status);
 
 private:
     QList<UserAccounts *> mUserAccounts;
+
+    QJsonObject m_loggedInUser;
 };
 
 #endif // USERACCOUNTSMODEL_H

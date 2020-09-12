@@ -37,6 +37,8 @@ Rectangle {
         priviledges += canBackupDb? "Can backup database": ""
     }
 
+    signal editedChanged()
+
     RowLayout
     {
         anchors.fill: parent
@@ -90,15 +92,19 @@ Rectangle {
             Layout.preferredWidth: 150
         }
 
-        AppText
-        {
-            color: "black"
-            text: priviledges
-            wrapMode: AppText.WordWrap
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+        Item{
             Layout.fillWidth: true
+            Layout.fillHeight: true
+            clip: true
+
+            AppText
+            {
+                color: "black"
+                text: priviledges
+                wrapMode: AppText.WordWrap
+
+                anchors.centerIn: parent
+            }
         }
 
 
@@ -126,6 +132,12 @@ Rectangle {
 
                     Layout.alignment: Qt.AlignVCenter
                 }
+            }
+
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked: root.editedChanged();
             }
         }
     }

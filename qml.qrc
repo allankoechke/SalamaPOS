@@ -65,5 +65,9 @@
         <file>qml/subviews/UserAccountPopup.qml</file>
         <file>qml/delegates/UserAccountsDelegate.qml</file>
         <file>qml/components/UserAccountsHeader.qml</file>
+        <file>json/logged_user.json</file>
+        <file>qml/subviews/AccountsPopup.qml</file>
+        <file>qml/components/AppToggle.qml</file>
+        <file>qml/subviews/Autocompleter.qml</file>
     </qresource>
 </RCC>

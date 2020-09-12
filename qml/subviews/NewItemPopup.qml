@@ -28,6 +28,24 @@ Controls2.Popup
 
     property alias qty: qty
 
+    onClosed: {
+        barCode = ""
+        itemName = ""
+        itemUnit = ""
+        itemBp = -1
+        itemSp = -1
+        itemQty = -1
+        itemCompany = ""
+
+        /*barcode.textInput.text = ""
+        name.textInput.text = ""
+        unit.textInput.text = ""
+        bp.textInput.text = ""
+        sp.textInput.text = ""
+        qty.textInput.text = ""
+        company.textInput.text = ""*/
+    }
+
     contentItem: Rectangle
     {
         color: bgColor
@@ -81,7 +99,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Item Barcode")
                         hintText: qsTr("Scan/enter barcode")
-                        textInput.text: barCode===""? "":barCode
+                        textInput.text: isNewItemMode? "":barCode
                     }
 
                     AppTextInput
@@ -90,7 +108,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Item Name")
                         hintText: qsTr("Enter item name")
-                        textInput.text: itemName===""? "":itemName
+                        textInput.text: isNewItemMode? "":itemName
                     }
 
                     AppTextInput
@@ -99,7 +117,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Unit")
                         hintText: qsTr("Item unit, ie, 1kg, 1g")
-                        textInput.text: itemUnit===""? "":itemUnit
+                        textInput.text: isNewItemMode? "":itemUnit
                     }
 
                     AppTextInput
@@ -108,7 +126,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Buying price")
                         hintText: qsTr("Enter bp in Ksh.")
-                        textInput.text: itemBp===-1? "":itemBp
+                        textInput.text: isNewItemMode? "":itemBp
                     }
 
                     AppTextInput
@@ -117,7 +135,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Selling price")
                         hintText: qsTr("Enter sp in Ksh.")
-                        textInput.text: itemSp===-1? "":itemSp
+                        textInput.text: isNewItemMode? "":itemSp
                     }
 
                     AppTextInput
@@ -126,7 +144,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Quantity")
                         hintText: qsTr("Enter quantity added")
-                        textInput.text: itemQty===-1? "":itemQty
+                        textInput.text: isNewItemMode? "":itemQty
                     }
 
                     AppTextInput
@@ -135,10 +153,8 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Item's Company")
                         hintText: qsTr("Manufacturing company")
-                        textInput.text: itemCompany===""? "":itemCompany
+                        textInput.text: isNewItemMode? "":itemCompany
                     }
-
-                    // VerticalSpacer {}
 
                     Item
                     {

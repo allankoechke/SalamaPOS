@@ -16,6 +16,8 @@ Rectangle {
     property alias stockPopup: stockPopup
     property alias checkoutQtyPopup: checkoutQtyPopup
     property alias userAccountPopup: userAccountPopup
+    property alias accountsPopup: accountsPopup
+    property alias autocompleter: autocompleter
 
     onNavBarIndexChanged: {
         switch(navBarIndex)
@@ -132,6 +134,16 @@ Rectangle {
     UserAccountPopup
     {
         id: userAccountPopup
+    }
+
+    AccountsPopup
+    {
+        id: accountsPopup
+    }
+
+    Autocompleter
+    {
+        id: autocompleter
     }
 
     function startApp(state)
