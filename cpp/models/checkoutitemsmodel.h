@@ -36,6 +36,8 @@ public:
     // Properties
     Q_PROPERTY(int sellTotals READ sellTotals WRITE setSellTotals NOTIFY sellTotalsChanged)
 
+    Q_PROPERTY(int checkoutModelSize READ checkoutModelSize WRITE setCheckoutModelSize NOTIFY checkoutModelSizeChanged)
+
     // Invokables
     Q_INVOKABLE void removeSellItem(int index);
 
@@ -48,6 +50,8 @@ public:
     Q_INVOKABLE void findTotals();
 
     // internals
+    int checkoutModelSize() const;
+
     void addItem(CheckoutItems * checkout);
 
     int sellTotals() const;
@@ -56,16 +60,22 @@ public:
 
     int checkIfItemExistsInModel(const QString &barcode);
 
+    void setCheckoutModelSize(int checkoutModelSize);
+
 signals:
 
     void sellTotalsChanged(int sellTotals);
 
     void saleQtyChanged(bool state);
 
+    void checkoutModelSizeChanged(int checkoutModelSize);
+
 private:
     QList<CheckoutItems *> mCheckoutItem;
 
     int m_sellTotals = 0;
+
+    int m_checkoutModelSize;
 };
 
 #endif // CHECKOUTITEMSMODEL_H

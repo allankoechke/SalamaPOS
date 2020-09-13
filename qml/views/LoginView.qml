@@ -10,151 +10,162 @@ Item {
     property bool isError: false
     property string errorString: ""
 
-    ColumnLayout
-    {
-        anchors.fill: parent
-        anchors.margins: 20
+    Item {
+        id: _root
+        width: 400
+        height: 600
 
-        Item
+        anchors.centerIn: parent
+
+        ColumnLayout
         {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 50
+            anchors.fill: parent
+            anchors.margins: 20
 
-            RowLayout
+            Item
             {
-                anchors.fill: parent
-                spacing: 10
+                Layout.fillWidth: true
+                Layout.preferredHeight: 50
 
-                AppIcon
+                RowLayout
                 {
-                    color: menuColor
-                    size: 30
-                    icon: "\uf78a"
+                    anchors.fill: parent
+                    spacing: 10
 
-                    Layout.alignment: Qt.AlignVCenter|Qt.AlignLeft
-                }
+                    AppIcon
+                    {
+                        color: menuColor
+                        size: 30
+                        icon: "\uf78a"
 
-                AppText
-                {
-                    color: menuColor
-                    text: qsTr("MySale Pro")
-                    font.pixelSize: 25
-
-                    Layout.fillWidth: true
-                    horizontalAlignment: AppText.AlignLeft
-                }
-            }
-        }
-
-        Rectangle
-        {
-            color: "white"
-            radius: 5
-
-            Layout.preferredWidth: root.width*0.8
-            Layout.preferredHeight: 230
-            Layout.alignment: Qt.AlignHCenter
-
-            ColumnLayout
-            {
-                anchors.fill: parent
-                anchors.margins: 10
-                spacing: 5
-
-                LoginInputField
-                {
-                    id: _uname
-                    ico: "\uf007"
-                    hintText: qsTr("Enter Username")
-                    isCorrect: false
-                }
-
-                LoginInputField
-                {
-                    id: _pswd
-                    ico: "\uf084"
-                    hintText: qsTr("Enter Password")
-                    isCorrect: false
-                    isPassword: true
-                }
-
-                Rectangle
-                {
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: 35
-                    Layout.rightMargin: 20
-                    Layout.leftMargin: 20
-
-                    color: menuColor
-                    radius: height/2
+                        Layout.alignment: Qt.AlignVCenter|Qt.AlignLeft
+                    }
 
                     AppText
                     {
-                        color: "white"
-                        text: qsTr("Sign in")
-                        font.pixelSize: 17
+                        color: menuColor
+                        text: qsTr("MySale Pro")
+                        font.pixelSize: 25
 
-                        anchors.centerIn: parent
+                        Layout.fillWidth: true
+                        horizontalAlignment: AppText.AlignLeft
+                    }
+                }
+            }
+
+            Rectangle
+            {
+                color: "white"
+                radius: 5
+
+                border.width: 1
+                border.color: "silver"
+
+                Layout.preferredWidth: _root.width*0.8
+                Layout.preferredHeight: 230
+                Layout.alignment: Qt.AlignHCenter
+
+                ColumnLayout
+                {
+                    anchors.fill: parent
+                    anchors.margins: 10
+                    spacing: 5
+
+                    LoginInputField
+                    {
+                        id: _uname
+                        ico: "\uf007"
+                        hintText: qsTr("Enter Username")
+                        isCorrect: false
                     }
 
-                    MouseArea
+                    LoginInputField
                     {
-                        anchors.fill: parent
-                        onClicked: {
-                            var uname = _uname.textInput.text
-                            var pswd = _pswd.textInput.text
+                        id: _pswd
+                        ico: "\uf084"
+                        hintText: qsTr("Enter Password")
+                        isCorrect: false
+                        isPassword: true
+                    }
 
-                            if(uname !== "" && pswd !== "")
-                            {
-                                AccountsModel.loginUser(uname, pswd);
-                            }
+                    Rectangle
+                    {
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 35
+                        Layout.rightMargin: 20
+                        Layout.leftMargin: 20
 
-                            else
-                            {
-                                isError = true;
-                                errorString = qsTr("Required field is short")
+                        color: menuColor
+                        radius: height/2
+
+                        AppText
+                        {
+                            color: "white"
+                            text: qsTr("Sign in")
+                            font.pixelSize: 17
+
+                            anchors.centerIn: parent
+                        }
+
+                        MouseArea
+                        {
+                            anchors.fill: parent
+                            onClicked: {
+                                var uname = _uname.textInput.text
+                                var pswd = _pswd.textInput.text
+
+                                if(uname !== "" && pswd !== "")
+                                {
+                                    AccountsModel.loginUser(uname, pswd);
+                                }
+
+                                else
+                                {
+                                    isError = true;
+                                    errorString = qsTr("Required field is short")
+                                }
                             }
                         }
                     }
                 }
             }
-        }
 
-        AppText
-        {
-            color: isError? "red":"transparent"
-            text: errorString
-
-            Layout.alignment: Qt.AlignHCenter
-
-        }
-    }
-
-    Connections
-    {
-        target: AccountsModel
-        function onLoggingInUsernameStatus(status)
-        {
-            if(!status)
+            AppText
             {
-                isError = true
-                errorString = qsTr("Invalid login details")
-                console.log("Username doesnt exist")
+                color: isError? "red":"transparent"
+                text: errorString
+
+                Layout.alignment: Qt.AlignHCenter
+
             }
         }
 
-        function onLoggingInPasswordStatus(status)
+        Connections
         {
-            if(!status)
+            target: AccountsModel
+            function onLoggingInUsernameStatus(status)
             {
-                isError = true
-                errorString = qsTr("Invalid login details")
-                console.log("Wrong Password")
+                if(!status)
+                {
+                    isError = true
+                    errorString = qsTr("Invalid login details")
+                    console.log("Username doesnt exist")
+                }
             }
 
-            else
-                startApp(true);
-        }
+            function onLoggingInPasswordStatus(status)
+            {
+                if(!status)
+                {
+                    isError = true
+                    errorString = qsTr("Invalid login details")
+                    console.log("Wrong Password")
+                }
 
+                else
+                    startApp(true);
+            }
+
+        }
     }
 }

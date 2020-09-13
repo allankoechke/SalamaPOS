@@ -7,23 +7,19 @@ import "../components"
 Controls2.Popup
 {
     id: root
+    x: (mainApp.width - width)/2
+    y: (mainApp.height - height)/2
+
+    modal: true
     width: 400
     height: 250
 
-    x: (mainApp.width - width)/2
-    y: (mainApp.height - height)/2
-    modal: true
     closePolicy: Controls2.Popup.NoAutoClose
 
-    onClosed: {
-        inStock = 1;
-        currentQty = 0;
-        qtySpinbox.value = 1;
-    }
-
-    property int inStock: 1
-    property int currentQty: 1
-    property string barcode: ""
+    property alias from: qtySpinbox.from
+    property alias to: qtySpinbox.to
+    property alias value: qtySpinbox.value
+    property string barcode
 
     signal accepted()
 
@@ -88,9 +84,6 @@ Controls2.Popup
                     CustomSpinBox
                     {
                         id: qtySpinbox
-                        value: currentQty
-                        from: 1
-                        to: inStock
                     }
                 }
             }

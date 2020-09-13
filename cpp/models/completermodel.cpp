@@ -1,0 +1,211 @@
+#include "completermodel.h"
+
+CompleterModel::CompleterModel(QObject *parent) : QAbstractListModel(parent)
+{
+
+}
+
+int CompleterModel::rowCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent)
+
+    return m_completer.size();
+}
+
+QVariant CompleterModel::data(const QModelIndex &index, int role) const
+{
+    if(index.row() < 0 || index.row() > m_completer.count())
+        return QVariant();
+
+    Completer * completer = m_completer.at(index.row());
+
+    if(role == CompleterNameRole)
+        return completer->name();
+
+    if(role == CompleterKeyRole)
+        return completer->key();
+
+
+    else return QVariant();
+}
+
+bool CompleterModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    Completer * completer = m_completer.at(index.row());
+    bool changed = false;
+
+    switch (role)
+    {
+    case CompleterNameRole:
+    {
+        if( completer->name() != value.toString())
+        {
+            completer->setName(value.toString());
+            changed = true;
+        }
+
+        break;
+    }
+
+    case CompleterKeyRole:
+    {
+        if( completer->key() != value.toString())
+        {
+            completer->setKey(value.toString());
+            changed = true;
+        }
+
+        break;
+    }
+
+    }
+
+    if(changed)
+    {
+        emit dataChanged(index, index, QVector<int>() << role);
+        return true;
+    }
+
+    return false;
+}
+
+Qt::ItemFlags CompleterModel::flags(const QModelIndex &index) const
+{
+    if(!index.isValid())
+        return Qt::NoItemFlags;
+
+    return Qt::ItemIsEditable;
+}
+
+QHash<int, QByteArray> CompleterModel::roleNames() const
+{
+    QHash<int, QByteArray> roles;
+
+    roles[CompleterNameRole] = "name";
+    roles[CompleterKeyRole] = "key";
+
+    return roles;
+}
+
+void CompleterModel::addCompleterItems(const QVariant &str)
+{
+    // Clear existing model
+    if(m_completer.size() != 0)
+        clearModel();
+
+    if(str.toString() != "" /* str.toString() != " " */)
+    {
+        // Create database object
+        QSqlDatabase m_db = QSqlDatabase::database();
+
+        QSqlQuery query;
+        QString sql = "SELECT barcode, product_name, product_unit, product_company FROM product WHERE product_name ILIKE \'" + str.toString() + "%\'";
+        // query.bindValue(":productname", str.toString());
+
+        if(query.exec(sql))
+        {
+            // qDebug() << "Executed Querry: " << query.executedQuery();
+
+            while (query.next())
+            {
+                QString bcode = query.value(0).toString();
+                QString name = query.value(1).toString();
+                QString unit = query.value(2).toString();
+                QString company = query.value(3).toString();
+
+                QString _c = (company=="" || company==" ")? "":(" ("+company+")");
+
+                QString _name = unit + " " + name + _c;
+
+                // qDebug() << "Key: " << bcode << "\tStr: " << _name;
+
+                addItem(new Completer(_name, bcode));
+            }
+
+            setCompleterSize(size());
+        }
+
+        else
+        {
+            qDebug() << "Error Executing SQL: [" << query.executedQuery() << "] -> " << query.lastError().text();
+        }
+    }
+}
+
+void CompleterModel::removeCompleterItem(const QVariant &str)
+{
+    const int index = findItemIndex(str.toString());
+
+    if(index != -1)
+        removeItem(index);
+
+    setCompleterSize(size());
+}
+
+int CompleterModel::size()
+{
+    return m_completer.size();
+}
+
+QString CompleterModel::getKey(int index)
+{
+    QString key = data(this->index(index), CompleterKeyRole).toString();
+
+    return key;
+}
+
+int CompleterModel::findItemIndex(const QString &str)
+{
+    if(str != "")
+    {
+        for(int i=0; i<m_completer.size(); i++)
+        {
+            QString _key = data(this->index(i), CompleterKeyRole).toString();
+
+            if(str ==  _key)
+                return i;
+        }
+    }
+
+    return -1;
+}
+
+void CompleterModel::addItem(Completer *completer)
+{
+    const int index = m_completer.size();
+
+    beginInsertRows(QModelIndex(), index, index);
+    m_completer.append(completer);
+    endInsertRows();
+}
+
+void CompleterModel::removeItem(int index)
+{
+    beginRemoveRows(QModelIndex() , index, index);
+    m_completer.removeAt(index);
+    endRemoveRows();
+}
+
+void CompleterModel::clearModel()
+{
+    for(int i=m_completer.size()-1; i>=0; i--)
+    {
+        removeItem(i);
+    }
+
+    setCompleterSize(size());
+}
+
+int CompleterModel::completerSize() const
+{
+    return m_completerSize;
+}
+
+void CompleterModel::setCompleterSize(int completerSize)
+{
+    if (m_completerSize == completerSize)
+        return;
+
+    m_completerSize = completerSize;
+    emit completerSizeChanged(m_completerSize);
+}

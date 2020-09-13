@@ -18,6 +18,8 @@ SOURCES += \
         cpp/main.cpp \
         cpp/models/checkoutitems.cpp \
         cpp/models/checkoutitemsmodel.cpp \
+        cpp/models/completer.cpp \
+        cpp/models/completermodel.cpp \
         cpp/models/saleitem.cpp \
         cpp/models/saleitemmodel.cpp \
         cpp/models/stockitems.cpp \
@@ -46,6 +48,8 @@ HEADERS += \
     cpp/databaseinterface.h \
     cpp/models/checkoutitems.h \
     cpp/models/checkoutitemsmodel.h \
+    cpp/models/completer.h \
+    cpp/models/completermodel.h \
     cpp/models/saleitem.h \
     cpp/models/saleitemmodel.h \
     cpp/models/stockitems.h \

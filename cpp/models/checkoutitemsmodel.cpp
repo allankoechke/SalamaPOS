@@ -2,6 +2,7 @@
 
 CheckoutItemsModel::CheckoutItemsModel(QObject *parent) : QAbstractListModel(parent)
 {
+    setCheckoutModelSize(0);
 }
 
 int CheckoutItemsModel::rowCount(const QModelIndex &parent) const
@@ -156,11 +157,7 @@ void CheckoutItemsModel::removeSellItem(int index)
 
 void CheckoutItemsModel::addSellItem(const QVariant sellBarcode, const QVariant  sellItemName, const QVariant  sellItemUnit, const QVariant  buyingPrice, const QVariant  sellingPrice, const QVariant sellQty)
 {
-    qDebug() << ">> Adding new item";
-
     int response = checkIfItemExistsInModel(sellBarcode.toString());
-
-    // qDebug() << "Index: " << response;
 
     if(response == -1)
         addItem(new CheckoutItems(sellBarcode.toString(), sellItemName.toString(), sellItemUnit.toString(), buyingPrice.toString().toFloat(), sellingPrice.toString().toFloat(), sellQty.toString().toInt()));
@@ -187,8 +184,6 @@ void CheckoutItemsModel::changeSellStock(const QVariant &qty, const QVariant &ba
 
     else
         saleQtyChanged(false);
-
-    qDebug() << ">> " << index;
 }
 
 void CheckoutItemsModel::startANewSell()
@@ -201,6 +196,9 @@ void CheckoutItemsModel::startANewSell()
 
 void CheckoutItemsModel::findTotals()
 {
+    // Get current Qty
+    setCheckoutModelSize(mCheckoutItem.size());
+
     // Calculates total sell in the model
     float totals = 0;
 
@@ -215,6 +213,11 @@ void CheckoutItemsModel::findTotals()
     setSellTotals(totals);
 
     // qDebug() << "New Totals: " << sellTotals();
+}
+
+int CheckoutItemsModel::checkoutModelSize() const
+{
+    return m_checkoutModelSize;
 }
 
 void CheckoutItemsModel::addItem(CheckoutItems *checkout)
@@ -251,4 +254,13 @@ int CheckoutItemsModel::checkIfItemExistsInModel(const QString &barcode)
     }
 
     return -1;
+}
+
+void CheckoutItemsModel::setCheckoutModelSize(int checkoutModelSize)
+{
+    if (m_checkoutModelSize == checkoutModelSize)
+        return;
+
+    m_checkoutModelSize = checkoutModelSize;
+    emit checkoutModelSizeChanged(m_checkoutModelSize);
 }

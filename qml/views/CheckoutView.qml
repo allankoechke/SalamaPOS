@@ -33,70 +33,67 @@ Item {
                 anchors.margins: 10
                 spacing: 10
 
+                Item
+                {
+                    id: textField
+                    Layout.preferredWidth: _text.width + 20
+                    Layout.fillHeight: true
+
+                    AppText{
+                        id: _text
+                        size: 15
+                        color: "#2e2e2e"
+                        text: qsTr("Scan Barcode to add items or Use the search button")
+
+                        anchors.left: parent.left
+                        anchors.leftMargin: 5
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+
+                }
+
                 Rectangle
                 {
                     Layout.preferredHeight: 50
-                    Layout.fillWidth: true
-                    Layout.minimumWidth: 300
+                    Layout.preferredWidth: 150
+                    Layout.margins: 1
 
-                    color: "white"
-                    border.width: 1
-                    border.color: "grey"
-                    radius: 3
+                    color: menuColor
+                    radius: 5
 
                     RowLayout
                     {
-                        anchors.fill: parent
-                        spacing: 0
+                        anchors.centerIn: parent
+                        spacing: 10
 
-                        TextInput
+                        AppIcon
                         {
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            verticalAlignment: TextInput.AlignVCenter
-                            horizontalAlignment: TextInput.AlignLeft
-                            Layout.leftMargin: 5
-                            color: "black"
-                            font.pixelSize: 17
-                            font.family: montserratFontLoader.name
-                            selectByMouse: true
+                            size: 18
+                            color: "white"
+                            icon: "\uf002"
 
-                            AppText{
-                                size: parent.font.pixelSize-3
-                                color: "grey"
-                                text: qsTr("Search by Item name or Scan Barcode")
-                                visible: parent.text===""
-
-                                anchors.left: parent.left
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
+                            Layout.alignment: Qt.AlignVCenter
                         }
 
-                        Rectangle
-                        {
-                            Layout.fillHeight: true
-                            width: 50
-                            Layout.margins: 1
+                        AppText{
+                            size: 20
+                            color: "white"
+                            font.bold: true
+                            text: qsTr("Search")
 
-                            color: menuColor
 
-                            AppIcon
-                            {
-                                anchors.centerIn: parent
-                                size: 16
-                                color: "white"
-                                icon: "\uf002"
-                            }
+                            Layout.alignment: Qt.AlignVCenter
+                        }
+                    }
 
-                            MouseArea
-                            {
-                                anchors.fill: parent
-                                onClicked: {
-                                    CheckoutModel.addSellItem("AF1234567", "Milking Salve", "100gms", 75, 110, 2);
-                                    CheckoutModel.addSellItem("AF123456897", "Milking Salve", "100gms", 67, 90, 1);
-                                    CheckoutModel.addSellItem("AS754737", "Mongoose", "1unit", 120, 150, 1);
-                                }
-                            }
+                    MouseArea
+                    {
+                        anchors.fill: parent
+                        onClicked: {
+                            //CheckoutModel.addSellItem("AF123456897", "Milking Salve", "100gms", 67, 90, 1);
+                            //CheckoutModel.addSellItem("AS754737", "Mongoose", "1unit", 120, 150, 1);
+
+                            addItemDialog.show();
                         }
                     }
                 }
@@ -178,9 +175,10 @@ Item {
 
                                 onEdited: {
                                     checkoutQtyPopup.open();
-                                    checkoutQtyPopup.inStock = StockItemModel.getItemStock(_barcode)===-1? qty:StockItemModel.getItemStock(_barcode)
-                                    checkoutQtyPopup.currentQty = qty;
-                                    checkoutQtyPopup.barcode = _barcode
+                                    checkoutQtyPopup.to = StockItemModel.getItemStock(_barcode)===-1? qty:StockItemModel.getItemStock(_barcode)
+                                    checkoutQtyPopup.value = qty;
+                                    checkoutQtyPopup.from = 1;
+                                    checkoutQtyPopup.barcode = _barcode;
                                 }
                             }
                         }
@@ -211,7 +209,8 @@ Item {
                 {
                     label: qsTr("CANCEL")
                     _icon: "\uf056"
-                    // opacity: checkoutModel.count === 0? 0.6:1
+                    enabled: CheckoutModel.checkoutModelSize===0? false:true
+                    opacity: CheckoutModel.checkoutModelSize===0? 0.4:1
 
                     onButtonClicked: CheckoutModel.startANewSell();
                 }
@@ -220,12 +219,19 @@ Item {
                 {
                     label: qsTr("CHECKOUT")
                     _icon: "\uf07a"
-                    enabled: sellListView.model===null? false: sellListView.model.count === 0? false:true
-                    opacity: enabled? 1:0.2
+                    enabled: CheckoutModel.checkoutModelSize===0? false:true
+                    opacity: CheckoutModel.checkoutModelSize===0? 0.4:1
 
                     onButtonClicked: checkoutPopup.open();
                 }
             }
         }
+    }
+
+    function positionDialog()
+    {
+        var globalCoordinares = textField.mapToItem(mainAppViewRoot , 0, 0)
+        addItemDialog.x = globalCoordinares.x
+        addItemDialog.y = globalCoordinares.y + height + 70
     }
 }

@@ -120,8 +120,6 @@ Item {
                             newItemPopup.itemCompany = "";
 
                             newItemPopup.isNewItemMode = true;
-                            newItemPopup.qty.textInput.readOnly = false;
-                            newItemPopup.qty.textInput.enabled = true;
                         }
                     }
                 }

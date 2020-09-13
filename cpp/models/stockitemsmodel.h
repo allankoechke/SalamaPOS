@@ -48,8 +48,12 @@ public:
 
     Q_INVOKABLE int getItemStock(const QVariant &barcode);
 
+    Q_INVOKABLE QJsonObject getItemData(const QString &barcode);
+
     // Internal functions
     bool addNewItem(StockItems * stockItem);
+
+    int getItemIndex(const QVariant &bcode);
 
     void removeItem(int index);
 
@@ -62,6 +66,11 @@ signals:
 
     void itemAddingChanged(bool state);
 
+    void itemDataChanged(bool status, QJsonObject json); // Notify if fetching data from bcode was successful
+
+    void itemStockWarningChanged(); // Notify if stock qty is less that qty needed to sell
+
+
 private slots:
     void onDatabaseReady();
 
@@ -69,6 +78,7 @@ private:
     QList<StockItems *> m_stockItems;
 
     // DatabaseInterface * m_databaseInterface;
+    QJsonObject m_itemDetails;
 };
 
 #endif // STOCKITEMSMODEL_H

@@ -17,6 +17,7 @@ Window {
     property string bgColor: "#f4f9fa"
     property string menuColor: "#12679a"
     property string tableHeaderColor: "#5f00ff"
+    property bool isDialogClosedAfterEachAdd: false
 
     property string fullname: ""
     property string username: ""

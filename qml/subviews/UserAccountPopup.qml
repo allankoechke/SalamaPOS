@@ -12,12 +12,20 @@ Controls2.Popup
 
     x: (mainApp.width - width)/2
     y: (mainApp.height - height)/2
+
     modal: true
     closePolicy: Controls2.Popup.NoAutoClose
 
     property bool isNewUserAccount: true
-    property bool isError: false
-    property string errorText: ""
+
+    property alias isError: err.visible
+    property alias errorText: err.text
+    property alias ufname: fname.text
+    property alias ulname: lname.text
+    property alias uname: uname.text
+    property alias uphone: phoneNo.text
+    property alias pass: pswd.text
+    property alias cpass: cpswd.text
 
     contentItem: Rectangle
     {
@@ -72,7 +80,6 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Firstname")
                         hintText: qsTr("Enter firstname")
-                        //textInput.text: barCode===""? "":barCode
                     }
 
                     AppTextInput
@@ -81,7 +88,6 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Lastname")
                         hintText: qsTr("Enter lastname")
-                        //textInput.text: itemName===""? "":itemName
                     }
 
                     AppTextInput
@@ -90,7 +96,6 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Username")
                         hintText: qsTr("Choose a username")
-                        //textInput.text: itemUnit===""? "":itemUnit
                     }
 
                     AppTextInput
@@ -99,7 +104,6 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Mobile Phone")
                         hintText: qsTr("Enter phone number")
-                        //textInput.text: itemBp===-1? "":itemBp
                     }
 
                     AppTextInput
@@ -108,7 +112,6 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Password")
                         hintText: qsTr("Pick a password")
-                        //textInput.text: itemSp===-1? "":itemSp
                     }
 
                     AppTextInput
@@ -117,19 +120,16 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Confirm password")
                         hintText: qsTr("Re-enter password")
-                        //textInput.text: itemQty===-1? "":itemQty
                     }
-
-                    // VerticalSpacer {}
 
                     AppText
                     {
+                        id: err
                         Layout.fillWidth: true
                         Layout.preferredHeight: 25
                         horizontalAlignment: AppText.AlignHCenter
                         verticalAlignment: AppText.AlignVCenter
                         color: isError? "red":"transparent"
-                        text: errorText
                     }
 
                     Item
@@ -202,22 +202,12 @@ Controls2.Popup
                                 {
                                     anchors.fill: parent
                                     onClicked: {
-                                        var _fname = fname.textInput.text
-                                        var _lname = lname.textInput.text
-                                        var _uname = uname.textInput.text
-                                        var _phoneNo = phoneNo.textInput.text
-                                        var _pswd = pswd.textInput.text
-                                        var _cpswd = cpswd.textInput.text
-
-                                        console.log(">> ", _fname, " : ", _lname, " : ", _uname, " : ", _phoneNo, " : ", _pswd, " : ", _cpswd)
-
-                                        if(_fname!=="" && _lname!=="" && _uname!=="" && _phoneNo!=="" && _pswd !=="" && cpswd!=="")
+                                        if(ufname!=="" && ulname!=="" && uname!=="" && uphone!=="" && pass !=="" && cpass!=="")
                                         {
-                                            if(_pswd === _cpswd)
+                                            if(pass === cpass)
                                             {
                                                 var tmspt = new Date().getTime();
-                                                AccountsModel.addNewUserAccount(_fname, _lname,_uname,_pswd,_phoneNo, tmspt);
-                                                // isError = false;
+                                                AccountsModel.addNewUserAccount(ufname, ulname,uname,pass,uphone, tmspt);
                                             }
 
                                             else
@@ -265,7 +255,7 @@ Controls2.Popup
             if(status)
             {
                 console.log(">> User Details updated Successfuly!");
-                resetFields();
+                // resetFields();
                 root.close();
             }
 
@@ -283,11 +273,11 @@ Controls2.Popup
 
     function resetFields()
     {
-        fname.textInput.text = ""
-        lname.textInput.text = ""
-        uname.textInput.text = ""
-        phoneNo.textInput.text = ""
-        pswd.textInput.text = ""
-        cpswd.textInput.text = ""
+        ufname = ""
+        ulname = ""
+        uname = ""
+        uphone = ""
+        pass = ""
+        cpass = ""
     }
 }

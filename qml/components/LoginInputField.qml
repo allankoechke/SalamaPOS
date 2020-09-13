@@ -30,7 +30,7 @@ Item{
         {
             id: txt
             text: ""
-            color: menuColor
+            color: "#2e2e2e"
             font.pixelSize: 15
             echoMode: isPassword? TextInput.Password:TextInput.Normal
 
@@ -41,7 +41,7 @@ Item{
 
             AppText
             {
-                color: menuColor
+                color: parent.color
                 opacity: 0.5
                 text: hintText
                 font.pixelSize: 13

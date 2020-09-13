@@ -6,6 +6,7 @@
 #include <QFile>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QSqlDriver>
 #include <QSqlError>
 #include <QDateTime>
 #include <QJsonObject>

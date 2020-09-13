@@ -7,10 +7,10 @@ Item
     Layout.fillWidth: true
     Layout.preferredHeight: 30
 
-    property string label
-    property alias textInput: textInput
+    property alias label: textLabel.text
     property real prefWidth: 0
-    property string hintText: ""
+    property alias text: textInput.text
+    property alias hintText: textInput.placeholderText
 
     RowLayout
     {
@@ -27,7 +27,6 @@ Item
                 id: textLabel
                 color: "#555555"
                 size: 15
-                text: label
 
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
@@ -45,7 +44,6 @@ Item
             color: "black" //"#535353"
             font.pixelSize: 15
             font.family: montserratFontLoader.name
-            placeholderText: hintText
         }
     }
 }

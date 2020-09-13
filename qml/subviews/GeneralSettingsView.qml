@@ -124,19 +124,19 @@ Item {
                     AppTextInput
                     {
                         label: qsTr("Organization Name")
-                        textInput.placeholderText: qsTr("Enter organization name")
+                        hintText: qsTr("Enter organization name")
                     }
 
                     AppTextInput
                     {
                         label: qsTr("Organization Slogan")
-                        textInput.placeholderText: qsTr("Enter organization slogan/motto")
+                        hintText: qsTr("Enter organization slogan/motto")
                     }
 
                     AppTextInput
                     {
                         label: qsTr("Organization Address")
-                        textInput.placeholderText: qsTr("Enter organization postal address")
+                        hintText: qsTr("Enter organization postal address")
                     }
 
                     Item
@@ -152,7 +152,7 @@ Item {
                             AppTextInput
                             {
                                 label: qsTr("Organization Logo")
-                                textInput.placeholderText: qsTr("Path to organization logo")
+                                hintText: qsTr("Path to organization logo")
                             }
 
                             Controls2.Button

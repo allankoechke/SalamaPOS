@@ -17,28 +17,15 @@ Controls2.Popup
 
     property int currentIndex: -1
     property string currentUser: ""
-    property bool canCreateUser: false
-    property bool canDeleteUser: false
-    property bool canCreateItems: false
-    property bool canDeleteItems: false
-    property bool canAddStock: false
-    property bool canDeleteStock: false
-    property bool canDeleteSales: false
-    property bool canBackupDb: false
 
-    onClosed:
-    {
-        currentIndex = -1
-        currentUser = ""
-        canCreateUser = false
-        canDeleteUser = false
-        canCreateItems = false
-        canDeleteItems = false
-        canAddStock = false
-        canDeleteStock = false
-        canDeleteSales = false
-        canBackupDb = false
-    }
+    property alias canAddUsers: addUsers.isChecked
+    property alias canRemoveUsers: deleteUsers.isChecked
+    property alias canAddItems: addProducts.isChecked
+    property alias canRemoveItems: deleteProducts.isChecked
+    property alias canAddStock: addStock.isChecked
+    property alias canDeleteStock: deleteStock.isChecked
+    property alias canUndoSales: deleteSales.isChecked
+    property alias canBackupDb: backup.isChecked
 
     contentItem: Rectangle
     {
@@ -92,7 +79,6 @@ Controls2.Popup
                         id: addUsers
                         prefWidth: 150
                         label: qsTr("Can Add New User Accounts")
-                        isChecked: canCreateUser
                     }
 
                     AppToggle
@@ -100,7 +86,6 @@ Controls2.Popup
                         id: deleteUsers
                         prefWidth: 150
                         label: qsTr("Can Remove User Accounts")
-                        isChecked: canDeleteUser
                     }
 
                     AppToggle
@@ -108,7 +93,6 @@ Controls2.Popup
                         id: addProducts
                         prefWidth: 150
                         label: qsTr("Can Add New Products")
-                        isChecked: canCreateItems
                     }
 
                     AppToggle
@@ -116,7 +100,6 @@ Controls2.Popup
                         id: deleteProducts
                         prefWidth: 150
                         label: qsTr("Can Remove/Delete Products")
-                        isChecked: canDeleteItems
                     }
 
                     AppToggle
@@ -124,7 +107,6 @@ Controls2.Popup
                         id: addStock
                         prefWidth: 150
                         label: qsTr("Can Add Stock")
-                        isChecked: canAddStock
                     }
 
                     AppToggle
@@ -132,7 +114,6 @@ Controls2.Popup
                         id: deleteStock
                         prefWidth: 150
                         label: qsTr("Can Remove/Delete Stock")
-                        isChecked: canDeleteStock
 
                     }
 
@@ -141,7 +122,6 @@ Controls2.Popup
                         id: deleteSales
                         prefWidth: 150
                         label: qsTr("Can Undo/Delete Sales")
-                        isChecked: canDeleteSales
                     }
 
                     AppToggle
@@ -149,7 +129,6 @@ Controls2.Popup
                         id: backup
                         prefWidth: 150
                         label: qsTr("Can Backup the Database")
-                        isChecked: canBackupDb
                     }
 
                     Item
@@ -247,18 +226,7 @@ Controls2.Popup
                                 {
                                     anchors.fill: parent
                                     onClicked: {
-                                        var _addUsers = addUsers.toggleSwitch.checked
-                                        var _removeUsers = addUsers.toggleSwitch.checked
-                                        var _addItems = addProducts.toggleSwitch.checked
-                                        var _removeItems = deleteProducts.toggleSwitch.checked
-                                        var _addStock = addStock.toggleSwitch.checked
-                                        var _removeStock = deleteStock.toggleSwitch.checked
-                                        var _undoSales = deleteSales.toggleSwitch.checked
-                                        var _backupDb = backup.toggleSwitch.checked
-
-                                        console.log(currentUser, " : ", _addUsers, " : ", _removeUsers, " : ", _addItems, " : ", _removeItems, " : ", _addStock, " : ", _removeStock, " : ", _undoSales, " : ", _backupDb)
-
-                                        AccountsModel.updateUserAccount(currentUser, _addUsers, _removeUsers, _addItems, _removeItems, _addStock, _removeStock, _undoSales, _backupDb);
+                                        AccountsModel.updateUserAccount(currentUser, canAddUsers, canRemoveUsers, canAddItems, canRemoveItems, canAddStock, canDeleteStock, canUndoSales, canBackupDb);
                                     }
                                 }
                             }

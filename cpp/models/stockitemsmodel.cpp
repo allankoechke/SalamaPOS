@@ -2,7 +2,13 @@
 
 StockItemsModel::StockItemsModel(QObject *parent) : QAbstractListModel(parent)
 {
-    qDebug() << ">> Stock Item Model Class ";
+    QFile file(":/json/sale_item.json");
+    file.open(QIODevice::ReadOnly|QIODevice::Text);
+    QString jsonString = file.readAll();
+    file.close();
+
+    QJsonDocument doc = QJsonDocument::fromJson(jsonString.toUtf8());
+    m_itemDetails = doc.object();
 }
 
 int StockItemsModel::rowCount(const QModelIndex &parent) const
@@ -212,7 +218,7 @@ void StockItemsModel::addNewItem(const QVariant &barcode, const QVariant &name, 
         if(query.exec() && stock_query.exec())
         {
             m_db.commit();
-            qDebug() << ">> New item Added";
+            // qDebug() << ">> New item Added";
 
             addNewItem(new StockItems(barcode.toString(), name.toString(), unit.toString(), bp.toString().toFloat(), sp.toString().toFloat(), company.toString(), qty.toInt(),item, category.toInt()));
 
@@ -255,8 +261,8 @@ void StockItemsModel::updateItem(const QVariant &barcode, const QVariant &name, 
 
         if(query.exec() && stock_query.exec())
         {
-            m_db.commit();
-            qDebug() << "Item At index" << index << " updated";
+            // m_db.commit();
+            // qDebug() << "Item At index" << index << " updated";
 
             // Reflect changes on the model
             setData(this->index(index.toString().toInt()), barcode, BarcodeRole);
@@ -300,7 +306,6 @@ void StockItemsModel::updateStock(const QVariant &barcode, const QVariant &qty, 
 
         if(stock_query.exec())
         {
-            m_db.commit();
             // qDebug() << "Stock Data Updated";
 
             // Reflect changes on the model
@@ -330,6 +335,24 @@ bool StockItemsModel::addNewItem(StockItems *stockItem)
     endInsertRows();
 
     return true;
+}
+
+int StockItemsModel::getItemIndex(const QVariant &bcode)
+{
+    if(bcode == "")
+        return -1;
+
+    for(int i=0; i<m_stockItems.size(); i++)
+    {
+        QVariant _bcode = data(this->index(i), BarcodeRole);
+
+        if(_bcode == bcode)
+        {
+            return i;
+        }
+    }
+
+    return -1;
 }
 
 void StockItemsModel::initializeStockFromDb()
@@ -386,6 +409,54 @@ int StockItemsModel::getItemStock(const QVariant &barcode)
     return -1;
 }
 
+QJsonObject StockItemsModel::getItemData(const QString &barcode)
+{
+    const int index = getItemIndex(barcode);
+
+    qDebug() << "Index: " << index;
+
+    if(index != -1)
+    {
+        int qty = data(this->index(index), ItemQtyRole).toString().toInt();
+
+        if(qty > 0)
+        {
+            QString name = data(this->index(index), ItemNameRole).toString();
+            QString unit = data(this->index(index), ItemUnitRole).toString();
+            float bp = data(this->index(index), ItemBpRole).toString().toInt();
+            float sp = data(this->index(index), ItemSpRole).toString().toInt();
+
+            m_itemDetails["sellBarcode"] = barcode;
+            m_itemDetails["sellItemName"] = name;
+            m_itemDetails["sellItemUnit"] = unit;
+            m_itemDetails["buyingPrice"] = bp;
+            m_itemDetails["sellingPrice"] = sp;
+            m_itemDetails["sellQty"] = qty;
+
+            emit itemDataChanged(true, m_itemDetails);
+
+            QJsonDocument doc(m_itemDetails);
+
+            return m_itemDetails;
+        }
+
+        else
+        {
+            // qDebug() << ">> Low Stock on item .. ";
+
+            emit itemStockWarningChanged();
+
+            return m_itemDetails;
+        }
+
+    }
+
+    else
+        emit itemDataChanged(false, m_itemDetails);
+
+    return m_itemDetails;
+}
+
 void StockItemsModel::removeItem(int index)
 {
     beginRemoveRows(QModelIndex(), index, index);
@@ -395,7 +466,7 @@ void StockItemsModel::removeItem(int index)
 
 void StockItemsModel::onDatabaseReady()
 {
-    qDebug() << ">> database Ready Signal Received";
+    // qDebug() << ">> database Ready Signal Received";
 
     initializeStockFromDb();
 }

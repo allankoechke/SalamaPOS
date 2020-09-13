@@ -508,8 +508,6 @@ void UserAccountsModel::updateUserAccount(const QVariant &userUsername, const bo
             query.bindValue(":can_backup", canBackupDb);
             query.bindValue(":username", userUsername.toString());
 
-            qDebug() << canAddItems;
-
             if(query.exec())
             {
                 m_db.commit();

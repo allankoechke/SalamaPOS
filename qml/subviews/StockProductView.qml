@@ -73,8 +73,6 @@ Rectangle {
                             newItemPopup.itemQty = qty;
                             newItemPopup.itemCompany = company==="---"? "":company;
 
-                            newItemPopup.qty.textInput.readOnly = true;
-                            newItemPopup.qty.textInput.enabled = false;
                             newItemPopup.isNewItemMode = false;
                         }
                     }

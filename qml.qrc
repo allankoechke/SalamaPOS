@@ -69,5 +69,10 @@
         <file>qml/subviews/AccountsPopup.qml</file>
         <file>qml/components/AppToggle.qml</file>
         <file>qml/subviews/Autocompleter.qml</file>
+        <file>qml/components/BasicListItem.qml</file>
+        <file>qml/components/AbstractListItem.qml</file>
+        <file>qml/delegates/AutocompleteDelegate.qml</file>
+        <file>qml/subviews/AddItemDialog.qml</file>
+        <file>json/sale_item.json</file>
     </qresource>
 </RCC>

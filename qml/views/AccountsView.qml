@@ -150,13 +150,13 @@ Item {
                                     accountsPopup.open();
                                     accountsPopup.currentIndex = index
                                     accountsPopup.currentUser = uname
-                                    accountsPopup.canCreateUser = canCreateUser
-                                    accountsPopup.canDeleteUser = canDeleteUser
-                                    accountsPopup.canCreateItems = canCreateItems
-                                    accountsPopup.canDeleteItems = canDeleteItems
+                                    accountsPopup.canAddUsers = canCreateUser
+                                    accountsPopup.canRemoveUsers = canDeleteUser
+                                    accountsPopup.canAddItems = canCreateItems
+                                    accountsPopup.canRemoveItems = canDeleteItems
                                     accountsPopup.canAddStock = canAddStock
                                     accountsPopup.canDeleteStock = canDeleteStock
-                                    accountsPopup.canDeleteSales = canDeleteSales
+                                    accountsPopup.canUndoSales = canDeleteSales
                                     accountsPopup.canBackupDb = canBackupDb
                                 }
                             }

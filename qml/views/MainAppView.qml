@@ -5,6 +5,7 @@ import "../components"
 import "../subviews"
 
 Rectangle {
+    id: mainAppViewRoot
     anchors.fill: parent
     color: "#f4f9fa"
 
@@ -144,6 +145,11 @@ Rectangle {
     Autocompleter
     {
         id: autocompleter
+    }
+
+    AddItemDialog
+    {
+        id: addItemDialog
     }
 
     function startApp(state)

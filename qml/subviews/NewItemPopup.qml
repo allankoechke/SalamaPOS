@@ -15,7 +15,7 @@ Controls2.Popup
     modal: true
     closePolicy: Controls2.Popup.NoAutoClose
 
-    property bool isNewItemMode: true
+    property bool isNewItemMode
     property int currentIndex: -1
 
     property string barCode: ""
@@ -37,13 +37,13 @@ Controls2.Popup
         itemQty = -1
         itemCompany = ""
 
-        /*barcode.textInput.text = ""
-        name.textInput.text = ""
-        unit.textInput.text = ""
-        bp.textInput.text = ""
-        sp.textInput.text = ""
-        qty.textInput.text = ""
-        company.textInput.text = ""*/
+        /*barcode.text = ""
+        name.text = ""
+        unit.text = ""
+        bp.text = ""
+        sp.text = ""
+        qty.text = ""
+        company.text = ""*/
     }
 
     contentItem: Rectangle
@@ -99,7 +99,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Item Barcode")
                         hintText: qsTr("Scan/enter barcode")
-                        textInput.text: isNewItemMode? "":barCode
+                        text: isNewItemMode? "":barCode
                     }
 
                     AppTextInput
@@ -108,7 +108,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Item Name")
                         hintText: qsTr("Enter item name")
-                        textInput.text: isNewItemMode? "":itemName
+                        text: isNewItemMode? "":itemName
                     }
 
                     AppTextInput
@@ -117,7 +117,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Unit")
                         hintText: qsTr("Item unit, ie, 1kg, 1g")
-                        textInput.text: isNewItemMode? "":itemUnit
+                        text: isNewItemMode? "":itemUnit
                     }
 
                     AppTextInput
@@ -126,7 +126,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Buying price")
                         hintText: qsTr("Enter bp in Ksh.")
-                        textInput.text: isNewItemMode? "":itemBp
+                        text: isNewItemMode? "":itemBp
                     }
 
                     AppTextInput
@@ -135,16 +135,17 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Selling price")
                         hintText: qsTr("Enter sp in Ksh.")
-                        textInput.text: isNewItemMode? "":itemSp
+                        text: isNewItemMode? "":itemSp
                     }
 
                     AppTextInput
                     {
                         id: qty
+                        visible: isNewItemMode
                         prefWidth: 150
                         label: qsTr("Quantity")
                         hintText: qsTr("Enter quantity added")
-                        textInput.text: isNewItemMode? "":itemQty
+                        text: isNewItemMode? "":itemQty
                     }
 
                     AppTextInput
@@ -153,7 +154,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Item's Company")
                         hintText: qsTr("Manufacturing company")
-                        textInput.text: isNewItemMode? "":itemCompany
+                        text: isNewItemMode? "":itemCompany
                     }
 
                     Item
@@ -226,13 +227,13 @@ Controls2.Popup
                                 {
                                     anchors.fill: parent
                                     onClicked: {
-                                        var _barcode = barcode.textInput.text
-                                        var _name = name.textInput.text
-                                        var _unit = unit.textInput.text
-                                        var _bp = bp.textInput.text
-                                        var _sp = sp.textInput.text
-                                        var _qty = qty.textInput.text
-                                        var _company = company.textInput.text
+                                        var _barcode = barcode.text
+                                        var _name = name.text
+                                        var _unit = unit.text
+                                        var _bp = bp.text
+                                        var _sp = sp.text
+                                        var _qty = qty.text
+                                        var _company = company.text
 
                                         if(_barcode!=="" && _name !== "" && _unit!=="" && _bp!=="" && _sp!=="" && _qty!=="")
                                         {
