@@ -5,6 +5,11 @@
 #include <QDebug>
 #include <QSqlDatabase>
 #include <QJsonObject>
+#include <QRect>
+#include <QScreen>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QGuiApplication>
 
 #include "databaseinterface.h"
 #include "serialportinterface.h"
@@ -17,6 +22,8 @@ class QmlInterface : public QObject
 
 public:
     explicit QmlInterface(QObject *parent = nullptr);
+
+    Q_INVOKABLE QJsonObject getScreenSize();
 
 signals:
     void databaseReadyChanged();

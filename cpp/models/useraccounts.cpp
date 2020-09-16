@@ -5,8 +5,8 @@ UserAccounts::UserAccounts(QObject *parent) : QObject(parent)
 
 }
 
-UserAccounts::UserAccounts(const QString &userFirstname, const QString &userLastname, const QString &userUsername, const QString &userPhoneNo, const QString &userPassword, const QString &userDateAdded, const bool &canAddUsers, const bool &canRemoveUsers, const bool &canAddItems, const bool &canRemoveItems, const bool &canAddStock, const bool &canRemoveStock, const bool &canUndoSales, const bool &canBackupDb, const bool &changePassword, QObject *parent)
-    :QObject(parent), m_userFirstname(userFirstname), m_userLastname(userLastname), m_userUsername(userUsername), m_userPhoneNo(userPhoneNo), m_userPassword(userPassword), m_userDateAdded(userDateAdded), m_canAddUsers(canAddUsers), m_canRemoveUsers(canRemoveUsers), m_canAddItems(canAddItems), m_canRemoveItems(canRemoveItems), m_canAddStock(canAddStock), m_canRemoveStock(canRemoveStock), m_canUndoSales(canUndoSales), m_canBackupDb(canBackupDb), m_changePassword(changePassword)
+UserAccounts::UserAccounts(const QString &userFirstname, const QString &userLastname, const QString &userUsername, const QString &userPhoneNo, const QString &userPassword, const QString &userDateAdded, const bool &canAddUsers, const bool &canRemoveUsers, const bool &canAddItems, const bool &canRemoveItems, const bool &canAddStock, const bool &canRemoveStock, const bool &canUndoSales, const bool &canBackupDb, const bool &changePassword, const QString &role, QObject *parent)
+    :QObject(parent), m_userFirstname(userFirstname), m_userLastname(userLastname), m_userUsername(userUsername), m_userPhoneNo(userPhoneNo), m_userPassword(userPassword), m_userDateAdded(userDateAdded), m_canAddUsers(canAddUsers), m_canRemoveUsers(canRemoveUsers), m_canAddItems(canAddItems), m_canRemoveItems(canRemoveItems), m_canAddStock(canAddStock), m_canRemoveStock(canRemoveStock), m_canUndoSales(canUndoSales), m_canBackupDb(canBackupDb), m_changePassword(changePassword), m_rolesString(role)
 {
 
 }
@@ -84,6 +84,11 @@ bool UserAccounts::canBackupDb() const
 bool UserAccounts::changePassword() const
 {
     return m_changePassword;
+}
+
+QString UserAccounts::rolesString() const
+{
+    return m_rolesString;
 }
 
 void UserAccounts::setUserFirstname(QString userFirstname)
@@ -219,4 +224,13 @@ void UserAccounts::setChangePassword(bool changePassword)
 
     m_changePassword = changePassword;
     emit changePasswordChanged(m_changePassword);
+}
+
+void UserAccounts::setRolesString(QString rolesString)
+{
+    if (m_rolesString == rolesString)
+        return;
+
+    m_rolesString = rolesString;
+    emit rolesStringChanged(m_rolesString);
 }

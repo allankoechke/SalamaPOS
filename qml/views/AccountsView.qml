@@ -14,6 +14,7 @@ Item {
     Layout.margins: 50
 
     property var currentScreen: 0
+    property string priviledges_string: ""
 
     ColumnLayout
     {
@@ -79,7 +80,13 @@ Item {
                     MouseArea
                     {
                         anchors.fill: parent
-                        onClicked: userAccountPopup.open()
+                        onClicked: {
+                            if(loggedUser_canAddAccounts)
+                                userAccountPopup.open()
+
+                            else
+                                console.log("[Error] User doesnt have rights to add users")
+                        }
                     }
                 }
             }
@@ -145,6 +152,7 @@ Item {
                                 canDeleteStock: can_removeStock
                                 canDeleteSales: can_undoSales
                                 canBackupDb: can_backup
+                                priviledges: user_roles
 
                                 onEditedChanged: {
                                     accountsPopup.open();
@@ -162,10 +170,8 @@ Item {
                             }
                         }
                     }
-
                 }
             }
         }
-
     }
 }

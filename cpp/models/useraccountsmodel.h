@@ -34,7 +34,8 @@ class UserAccountsModel : public QAbstractListModel
         CanRemoveStockRole,
         CanUndoSalesRole,
         CanBackupDbRole,
-        ChangePasswordRole
+        ChangePasswordRole,
+        RolesStringRole
     };
 
 public:
@@ -69,8 +70,12 @@ public:
 
     Q_INVOKABLE void loginUser(const QVariant &uname, const QVariant &pswd);
 
+    Q_INVOKABLE QJsonObject getUpdatedPriviledges(int index);
+
     // User Properties
     Q_PROPERTY(QJsonObject loggedInUser READ loggedInUser WRITE setLoggedInUser NOTIFY loggedInUserChanged)
+
+    // Q_PROPERTY(QString priviledgesString READ priviledgesString WRITE setPriviledgesString NOTIFY priviledgesStringChanged)
 
     // Internals
     void addNewUserAccount(UserAccounts * user);
@@ -82,6 +87,10 @@ public:
     bool login(const QString &savedPswd, const QString &inputPswd);
 
     int getUserIndex(const QString &username);
+
+    QString stringifyBool(const bool &state);
+
+    QString getUserRoleAsAString(const bool &canAddUsers, const bool &canRemoveUsers, const bool &canAddItems, const bool &canRemoveItems, const bool &canAddStock, const bool &canRemoveStock, const bool &canUndoSales, const bool &canBackupDb);
 
     // Properties
     QJsonObject loggedInUser() const;
@@ -103,7 +112,7 @@ signals:
 
     void loggedInUserChanged(QJsonObject loggedInUser);
 
-    void loggedInUserChanged();
+    void logged_inUserChanged();
 
     void loggingInUsernameStatus(bool status);
 
@@ -116,7 +125,7 @@ signals:
 private:
     QList<UserAccounts *> mUserAccounts;
 
-    QJsonObject m_loggedInUser;
+    QJsonObject m_loggedInUser, m_status;
 };
 
 #endif // USERACCOUNTSMODEL_H

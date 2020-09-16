@@ -44,6 +44,8 @@ public:
 
     Q_INVOKABLE void updateStock(const QVariant &barcode, const QVariant &qty, const QVariant &date, const QVariant &index);
 
+    Q_INVOKABLE void updateStockOnSale(const QVariant &bcode, const int &qty);
+
     Q_INVOKABLE void initializeStockFromDb();
 
     Q_INVOKABLE int getItemStock(const QVariant &barcode);
@@ -63,6 +65,8 @@ signals:
     void itemAddedChanged(bool state);
 
     void itemStockChanged(bool state);
+
+    void itemStockAfterSaleChanged(bool state);
 
     void itemAddingChanged(bool state);
 

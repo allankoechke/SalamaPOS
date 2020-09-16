@@ -1,0 +1,10 @@
+{
+    "canAddUser":true,
+    "canRemoveUsers":false,
+    "canAddItems":true,
+    "canRemoveItems":false,
+    "canAddStock":true,
+    "canRemoveStock":false,
+    "canUndoSales":false,
+    "canBackupDb":false
+}

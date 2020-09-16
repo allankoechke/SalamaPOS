@@ -26,17 +26,6 @@ Rectangle {
     property bool canDeleteSales: false
     property bool canBackupDb: false
 
-    Component.onCompleted: {
-        priviledges += canCreateUser? "Can create accounts, ":""
-        priviledges += canDeleteUser? "Can delete accounts, ":""
-        priviledges += canCreateItems? "Can add products, ":""
-        priviledges += canDeleteItems? "Can delete products, ":""
-        priviledges += canAddStock? "Can add stock, ":""
-        priviledges += canDeleteStock? "Can delete stock, ":""
-        priviledges += canDeleteSales? "Can delete sales, ":""
-        priviledges += canBackupDb? "Can backup database": ""
-    }
-
     signal editedChanged()
 
     RowLayout
@@ -101,9 +90,12 @@ Rectangle {
             {
                 color: "black"
                 text: priviledges
-                wrapMode: AppText.WordWrap
+                width: parent.width
+                elide: AppText.ElideRight
 
-                anchors.centerIn: parent
+                anchors.left: parent.left
+                anchors.leftMargin: 10
+                anchors.verticalCenter: parent.verticalCenter
             }
         }
 

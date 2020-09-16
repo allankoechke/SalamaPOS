@@ -18,33 +18,13 @@ Controls2.Popup
     property bool isNewItemMode
     property int currentIndex: -1
 
-    property string barCode: ""
-    property string itemName: ""
-    property string itemUnit: ""
-    property real itemBp: -1
-    property real itemSp: -1
-    property real itemQty: -1
-    property string itemCompany: ""
-
-    property alias qty: qty
-
-    onClosed: {
-        barCode = ""
-        itemName = ""
-        itemUnit = ""
-        itemBp = -1
-        itemSp = -1
-        itemQty = -1
-        itemCompany = ""
-
-        /*barcode.text = ""
-        name.text = ""
-        unit.text = ""
-        bp.text = ""
-        sp.text = ""
-        qty.text = ""
-        company.text = ""*/
-    }
+    property alias barCode: barcode.text
+    property alias itemName: name.text
+    property alias itemUnit: unit.text
+    property alias itemBp: bp.text
+    property alias itemSp: sp.text
+    property alias itemQty: qty.text
+    property alias itemCompany: company.text
 
     contentItem: Rectangle
     {
@@ -99,7 +79,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Item Barcode")
                         hintText: qsTr("Scan/enter barcode")
-                        text: isNewItemMode? "":barCode
+                        validator: RegExpValidator {regExp: RegExp("[a-zA-Z0-9]+")}
                     }
 
                     AppTextInput
@@ -108,7 +88,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Item Name")
                         hintText: qsTr("Enter item name")
-                        text: isNewItemMode? "":itemName
+                        validator: RegExpValidator {regExp: RegExp("[a-zA-Z0-9]+[\s]+")}
                     }
 
                     AppTextInput
@@ -117,7 +97,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Unit")
                         hintText: qsTr("Item unit, ie, 1kg, 1g")
-                        text: isNewItemMode? "":itemUnit
+                        validator: RegExpValidator {regExp: RegExp("[a-zA-Z0-9\s]+")}
                     }
 
                     AppTextInput
@@ -126,7 +106,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Buying price")
                         hintText: qsTr("Enter bp in Ksh.")
-                        text: isNewItemMode? "":itemBp
+                        validator: IntValidator {bottom: 1; top: 1000000}
                     }
 
                     AppTextInput
@@ -135,7 +115,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Selling price")
                         hintText: qsTr("Enter sp in Ksh.")
-                        text: isNewItemMode? "":itemSp
+                        validator: IntValidator {bottom: 1; top: 1000000}
                     }
 
                     AppTextInput
@@ -145,7 +125,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Quantity")
                         hintText: qsTr("Enter quantity added")
-                        text: isNewItemMode? "":itemQty
+                        validator: IntValidator {bottom: 1; top: 100000}
                     }
 
                     AppTextInput
@@ -154,7 +134,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Item's Company")
                         hintText: qsTr("Manufacturing company")
-                        text: isNewItemMode? "":itemCompany
+                        validator: RegExpValidator {regExp: RegExp("[a-zA-Z0-9]+")}
                     }
 
                     Item
@@ -227,13 +207,13 @@ Controls2.Popup
                                 {
                                     anchors.fill: parent
                                     onClicked: {
-                                        var _barcode = barcode.text
-                                        var _name = name.text
-                                        var _unit = unit.text
-                                        var _bp = bp.text
-                                        var _sp = sp.text
-                                        var _qty = qty.text
-                                        var _company = company.text
+                                        var _barcode = barCode
+                                        var _name = itemName
+                                        var _unit = itemUnit
+                                        var _bp = itemBp
+                                        var _sp = itemSp
+                                        var _qty = itemQty
+                                        var _company = itemCompany
 
                                         if(_barcode!=="" && _name !== "" && _unit!=="" && _bp!=="" && _sp!=="" && _qty!=="")
                                         {
@@ -247,8 +227,6 @@ Controls2.Popup
 
                                         else
                                         {
-                                            console.log(new Date().getTime());
-                                            console.log(new Date().toISOString());
                                         }
                                     }
                                 }
@@ -263,12 +241,12 @@ Controls2.Popup
     function addNewItemToDb(_barcode,_name,_unit,_bp,_sp,_qty,_company)
     {
         var tmspt = new Date().getTime();
-        StockItemModel.addNewItem(_barcode,_name, _unit, _bp, _sp, parseInt(_qty), _company, tmspt, 1 /*category*/);
+        StockItemModel.addNewItem(_barcode,_name, _unit, _bp, _sp, parseInt(_qty), _company, tmspt, '1658977' /*category*/);
     }
 
     function updateItemInDb(_barcode,_name,_unit,_bp,_sp,_qty,_company)
     {
-        StockItemModel.updateItem(_barcode, _name, _unit, _bp, _sp, _company, 1/*category*/, barCode, currentIndex);
+        StockItemModel.updateItem(_barcode, _name, _unit, _bp, _sp, _company, '1658977'/*category*/, barCode, currentIndex);
     }
 
     Connections
@@ -279,24 +257,24 @@ Controls2.Popup
         {
             if(status)
             {
-                console.log(">> Item Updated Successfuly!");
+                console.log(" [INFO] Item Updated Successfuly!");
                 root.close();
             }
 
             else
-                console.log(">> Error Updating item");
+                console.log(" [ERROR] Error Updating item");
         }
 
         function onItemAddingChanged(status)
         {
             if(status)
             {
-                console.log(">> Item Added Successfuly!");
+                console.log(" [INFO] Item Added Successfuly!");
                 root.close();
             }
 
             else
-                console.log(">> Error Adding item");
+                console.log(" [ERROR] Error Adding item");
         }
     }
 }

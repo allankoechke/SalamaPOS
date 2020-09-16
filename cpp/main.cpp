@@ -7,6 +7,7 @@
 #include "models/checkoutitemsmodel.h"
 #include "models/useraccountsmodel.h"
 #include "models/completermodel.h"
+#include "models/saleitemsmodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -20,12 +21,14 @@ int main(int argc, char *argv[])
     CheckoutItemsModel m_checkoutItems;
     UserAccountsModel m_userAccounts;
     CompleterModel m_completer;
+    saleItemsModel m_saleItem;
 
     engine.rootContext()->setContextProperty("QmlInterface", &qmlInterface);
     engine.rootContext()->setContextProperty("StockItemModel", &m_stockModel);
     engine.rootContext()->setContextProperty("CheckoutModel", &m_checkoutItems);
     engine.rootContext()->setContextProperty("AccountsModel", &m_userAccounts);
     engine.rootContext()->setContextProperty("CompleterModel", &m_completer);
+    engine.rootContext()->setContextProperty("SalesModel", &m_saleItem);
 
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

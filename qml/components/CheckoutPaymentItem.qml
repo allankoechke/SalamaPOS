@@ -9,7 +9,8 @@ Item
     Layout.preferredHeight: 100
 
     property string label: ""
-    property string _icon
+    property alias icon: _icon.icon
+    property alias text: _textInput.text
 
     RowLayout
     {
@@ -24,11 +25,11 @@ Item
 
             AppIcon
             {
+                id: _icon
                 anchors.centerIn: parent
 
                 size: 30
                 color: "white"
-                icon: _icon
             }
 
         }
@@ -99,6 +100,7 @@ Item
 
                             TextInput
                             {
+                                id: _textInput
                                 anchors.fill: parent
                                 verticalAlignment: TextInput.AlignVCenter
                                 horizontalAlignment: TextInput.AlignLeft
@@ -109,12 +111,13 @@ Item
                                 font.family: montserratFontLoader.name
                                 selectByMouse: true
                                 clip: true
+                                validator: IntValidator{bottom: 1; top: 100000000}
 
                                 AppText{
                                     size: parent.font.pixelSize-2
                                     color: "grey"
                                     text: qsTr("0.00")
-                                    visible: parent.text===""
+                                    visible: _textInput.text===""
 
                                     anchors.left: parent.left
                                     anchors.verticalCenter: parent.verticalCenter

@@ -6,8 +6,11 @@ import "./views"
 Window {
     id: mainApp
     visible: true
-    width: 400
-    height: 600
+    width: 600
+    height: 500
+    x: (QmlInterface.getScreenSize()["width"]-width)/2
+    y: (QmlInterface.getScreenSize()["height"]-height)/2
+    flags: mainAppView.navBarIndex===7? Qt.FramelessWindowHint:Qt.Window
     title: qsTr("MySale App")
 
     property alias montserratFontLoader: montserratFontLoader
@@ -19,8 +22,17 @@ Window {
     property string tableHeaderColor: "#5f00ff"
     property bool isDialogClosedAfterEachAdd: false
 
-    property string fullname: ""
-    property string username: ""
+    // Logged in user
+    property string loggedUser_fullname: ""
+    property string loggedUser_username: ""
+    property bool loggedUser_canAddAccounts: false
+    property bool loggedUser_canDeleteAccounts: false
+    property bool loggedUser_canAddItems: false
+    property bool loggedUser_canDeleteItems: false
+    property bool loggedUser_canAddStock: false
+    property bool loggedUser_canDeleteStock: false
+    property bool loggedUser_canUndoSales: false
+    property bool loggedUser_canBackupDb: false
 
     Component.onCompleted: {
         popupTimer.start();
@@ -35,7 +47,6 @@ Window {
         interval: 2500
 
         onTriggered: {
-
             StockItemModel.initializeStockFromDb();
             AccountsModel.loadAllUserAccounts();
         }
@@ -48,7 +59,7 @@ Window {
         repeat: false
         running: false
 
-        onTriggered: mainAppView.navBarIndex = 8
+        onTriggered: mainAppView.startApp(true);
     }
 
     MainAppView
@@ -91,11 +102,23 @@ Window {
                 console.log(">> Error loading user accounts");
         }
 
-        function onLoggedInUserChanged()
+        function onLogged_inUserChanged()
         {
-            console.log(">> Logged in user changed ...")
-            fullname = AccountsModel.loggedInUser["firstname"] + " " + AccountsModel.loggedInUser["lastname"]
-            username =  AccountsModel.loggedInUser["username"]
+            console.log(" [QML-INFO] Logged in user changed ...")
+        }
+
+        function onLoggedInUserChanged(json)
+        {
+            loggedUser_fullname = json["firstname"] + " " + json["lastname"]
+            loggedUser_username =  json["username"]
+            loggedUser_canAddAccounts =  json["canAddUser"]
+            loggedUser_canDeleteAccounts =  json["canRemoveUsers"]
+            loggedUser_canAddItems =  json["canAddItems"]
+            loggedUser_canDeleteItems =  json["canRemoveItems"]
+            loggedUser_canAddStock =  json["canAddStock"]
+            loggedUser_canDeleteStock =  json["canRemoveStock"]
+            loggedUser_canUndoSales =  json["canUndoSales"]
+            loggedUser_canBackupDb =  json["canBackupDb"]
         }
     }
 }

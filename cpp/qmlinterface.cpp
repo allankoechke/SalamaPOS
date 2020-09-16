@@ -8,7 +8,23 @@ QmlInterface::QmlInterface(QObject *parent) : QObject(parent)
     if(status)
         emit databaseReadyChanged();
 
-    qDebug() << ">> " << status;
+    // qDebug() << ">> " << status;
+}
+
+QJsonObject QmlInterface::getScreenSize()
+{
+    QJsonDocument doc = QJsonDocument::fromVariant("{ \"width\":0, \"height\":0}");
+    QJsonObject size = doc.object();
+
+    QScreen *screen = QGuiApplication::primaryScreen();
+    QRect  screenGeometry = screen->geometry();
+    int height = screenGeometry.height();
+    int width = screenGeometry.width();
+
+    size["width"] = width;
+    size["height"] = height;
+
+    return size;
 }
 
 

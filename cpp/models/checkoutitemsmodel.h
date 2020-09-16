@@ -49,6 +49,10 @@ public:
 
     Q_INVOKABLE void findTotals();
 
+    Q_INVOKABLE QString getBarcodeAt(int index);
+
+    Q_INVOKABLE int getSellQtyAt(int index);
+
     // internals
     int checkoutModelSize() const;
 

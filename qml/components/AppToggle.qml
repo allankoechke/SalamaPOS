@@ -10,7 +10,7 @@ Item
     property string label
     property alias toggleSwitch: toggleSwitch
     property real prefWidth: 0
-    property bool isChecked: false
+    property alias isChecked: toggleSwitch.checked
 
     RowLayout
     {

@@ -18,7 +18,6 @@ Rectangle {
     property alias checkoutQtyPopup: checkoutQtyPopup
     property alias userAccountPopup: userAccountPopup
     property alias accountsPopup: accountsPopup
-    property alias autocompleter: autocompleter
 
     onNavBarIndexChanged: {
         switch(navBarIndex)
@@ -142,11 +141,6 @@ Rectangle {
         id: accountsPopup
     }
 
-    Autocompleter
-    {
-        id: autocompleter
-    }
-
     AddItemDialog
     {
         id: addItemDialog
@@ -156,19 +150,17 @@ Rectangle {
     {
         if(state)
         {
-            navBarIndex = 0
-            notificationBar.visible = true;
-            navBar.visible = true
+            navBarIndex = 8
             mainApp.showMaximized();
         }
 
         else
         {
-            navBarIndex = 6
+            navBarIndex = 7
             notificationBar.visible = !true;
             navBar.visible = !true
-            mainApp.width = 400;
-            mainApp.height = 600;
+            mainApp.width = 600;
+            mainApp.height = 500;
         }
     }
 }

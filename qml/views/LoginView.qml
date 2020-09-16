@@ -13,7 +13,7 @@ Item {
     Item {
         id: _root
         width: 400
-        height: 600
+        height: 450
 
         anchors.centerIn: parent
 
@@ -22,33 +22,55 @@ Item {
             anchors.fill: parent
             anchors.margins: 20
 
-            Item
-            {
+            Item {
                 Layout.fillWidth: true
-                Layout.preferredHeight: 50
+                Layout.preferredHeight: 60
 
-                RowLayout
+                ColumnLayout
                 {
-                    anchors.fill: parent
-                    spacing: 10
+                    anchors.centerIn: parent
+                    spacing: 5
 
-                    AppIcon
+                    Item
                     {
-                        color: menuColor
-                        size: 30
-                        icon: "\uf78a"
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 30
 
-                        Layout.alignment: Qt.AlignVCenter|Qt.AlignLeft
+                        RowLayout
+                        {
+                            anchors.centerIn: parent
+                            spacing: 10
+
+                            AppIcon
+                            {
+                                color: menuColor
+                                size: 30
+                                icon: "\uf78a"
+
+                                Layout.alignment: Qt.AlignVCenter|Qt.AlignLeft
+                            }
+
+                            AppText
+                            {
+                                color: "#ff8900"
+                                text: qsTr("Salama P.O.S.")
+                                font.pixelSize: 35
+
+                                Layout.fillWidth: true
+                                horizontalAlignment: AppText.AlignLeft
+                            }
+                        }
                     }
 
                     AppText
                     {
-                        color: menuColor
-                        text: qsTr("MySale Pro")
-                        font.pixelSize: 25
+                        color: "#00a4c7"
+                        text: qsTr("Point of sale technology")
+                        font.pixelSize: 20
+                        font.italic: true
 
                         Layout.fillWidth: true
-                        horizontalAlignment: AppText.AlignLeft
+                        horizontalAlignment: AppText.AlignHCenter
                     }
                 }
             }
@@ -61,8 +83,8 @@ Item {
                 border.width: 1
                 border.color: "silver"
 
-                Layout.preferredWidth: _root.width*0.8
-                Layout.preferredHeight: 230
+                Layout.preferredWidth: _root.width*0.9
+                Layout.preferredHeight: 250
                 Layout.alignment: Qt.AlignHCenter
 
                 ColumnLayout
@@ -163,7 +185,12 @@ Item {
                 }
 
                 else
-                    startApp(true);
+                {
+                    // startApp(true);
+                    notificationBar.visible = true;
+                    navBar.visible = true
+                    navBarIndex = 0;
+                }
             }
 
         }

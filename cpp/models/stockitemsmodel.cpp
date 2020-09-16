@@ -144,9 +144,9 @@ bool StockItemsModel::setData(const QModelIndex &index, const QVariant &value, i
 
     case ItemCategoryRole:
     {
-        if( stock->itemCategory() != value.toString().toInt())
+        if( stock->itemCategory() != value.toString())
         {
-            stock->setItemCategory(value.toString().toInt());
+            stock->setItemCategory(value.toString());
             changed = true;
         }
 
@@ -207,7 +207,7 @@ void StockItemsModel::addNewItem(const QVariant &barcode, const QVariant &name, 
         query.bindValue(":product_bp", bp.toString().toFloat());
         query.bindValue(":product_sp", sp.toString().toFloat());
         query.bindValue(":product_company", company.toString());
-        query.bindValue(":type_id", category.toString().toInt());
+        query.bindValue(":type_id", category.toString());
 
         QSqlQuery stock_query;
         stock_query.prepare("INSERT INTO \"stock\"(barcode,stock_qty,last_update) VALUES (:barcode,:stock_qty,:last_update)");
@@ -220,7 +220,7 @@ void StockItemsModel::addNewItem(const QVariant &barcode, const QVariant &name, 
             m_db.commit();
             // qDebug() << ">> New item Added";
 
-            addNewItem(new StockItems(barcode.toString(), name.toString(), unit.toString(), bp.toString().toFloat(), sp.toString().toFloat(), company.toString(), qty.toInt(),item, category.toInt()));
+            addNewItem(new StockItems(barcode.toString(), name.toString(), unit.toString(), bp.toString().toFloat(), sp.toString().toFloat(), company.toString(), qty.toInt(),item, category.toString()));
 
             emit itemAddingChanged(true);
 
@@ -261,9 +261,6 @@ void StockItemsModel::updateItem(const QVariant &barcode, const QVariant &name, 
 
         if(query.exec() && stock_query.exec())
         {
-            // m_db.commit();
-            // qDebug() << "Item At index" << index << " updated";
-
             // Reflect changes on the model
             setData(this->index(index.toString().toInt()), barcode, BarcodeRole);
             setData(this->index(index.toString().toInt()), name, ItemNameRole);
@@ -306,8 +303,6 @@ void StockItemsModel::updateStock(const QVariant &barcode, const QVariant &qty, 
 
         if(stock_query.exec())
         {
-            // qDebug() << "Stock Data Updated";
-
             // Reflect changes on the model
             setData(this->index(index.toString().toInt()), qty, ItemQtyRole);
             setData(this->index(index.toString().toInt()), QVariant::fromValue(lastUpdate), ItemLastUpdateRole);
@@ -324,6 +319,39 @@ void StockItemsModel::updateStock(const QVariant &barcode, const QVariant &qty, 
             emit itemStockChanged(false);
         }
     }
+}
+
+void StockItemsModel::updateStockOnSale(const QVariant &bcode, const int &qty)
+{
+    QSqlDatabase m_db = QSqlDatabase::database();
+
+    int ind = getItemIndex(bcode);
+
+    if(ind != -1)
+        if(m_db.isOpen())
+        {
+            int c_qty = data(this->index(ind), ItemQtyRole).toString().toInt();
+            int _cqty = c_qty - qty;
+
+            QSqlQuery stock_query;
+            stock_query.prepare("UPDATE \"stock\" SET stock_qty=:stock_qty WHERE barcode=:barcode");
+            stock_query.bindValue(":barcode", bcode.toString());
+            stock_query.bindValue(":stock_qty", _cqty);
+
+            if(stock_query.exec())
+            {
+                setData(this->index(ind), _cqty, ItemQtyRole);
+
+                emit itemStockAfterSaleChanged(true);
+            }
+
+            else
+            {
+                qDebug() << "Error executing SQL: " << m_db.lastError().text();
+
+                emit itemStockAfterSaleChanged(false);
+            }
+        }
 }
 
 bool StockItemsModel::addNewItem(StockItems *stockItem)
@@ -376,7 +404,7 @@ void StockItemsModel::initializeStockFromDb()
                 float bp = query.value(3).toFloat();
                 float sp = query.value(4).toFloat();
                 QString company = query.value(5).toString();
-                int category = query.value(6).toInt();
+                QString category = query.value(6).toString();
                 int qty = query.value(7).toInt();
                 QString item = query.value(8).toString();
 

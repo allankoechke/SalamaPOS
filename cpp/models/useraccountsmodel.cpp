@@ -10,6 +10,14 @@ UserAccountsModel::UserAccountsModel(QObject *parent) : QAbstractListModel(paren
 
     QJsonDocument doc = QJsonDocument::fromJson(jsonString.toUtf8());
     m_loggedInUser = doc.object();
+
+    QFile status_file(":/json/status.json");
+    status_file.open(QIODevice::ReadOnly|QIODevice::Text);
+    QString jsonStatus = status_file.readAll();
+    status_file.close();
+
+    QJsonDocument docStatus = QJsonDocument::fromJson(jsonStatus.toUtf8());
+    m_status = docStatus.object();
 }
 
 int UserAccountsModel::rowCount(const QModelIndex &parent) const
@@ -70,6 +78,9 @@ QVariant UserAccountsModel::data(const QModelIndex &index, int role) const
 
     if(role == ChangePasswordRole)
         return accounts->changePassword();
+
+    if(role == RolesStringRole)
+        return accounts->rolesString();
 
     else return QVariant();
 }
@@ -247,6 +258,17 @@ bool UserAccountsModel::setData(const QModelIndex &index, const QVariant &value,
         break;
     }
 
+    case RolesStringRole:
+    {
+        if( accounts->rolesString() != value.toString())
+        {
+            accounts->setRolesString(value.toString());
+            changed = true;
+        }
+
+        break;
+    }
+
     }
 
     if(changed)
@@ -285,6 +307,7 @@ QHash<int, QByteArray> UserAccountsModel::roleNames() const
     roles[CanUndoSalesRole] = "can_undoSales";
     roles[CanBackupDbRole] = "can_backup";
     roles[ChangePasswordRole] = "to_changePassword";
+    roles[RolesStringRole] = "user_roles";
 
     return roles;
 }
@@ -306,6 +329,7 @@ void UserAccountsModel::addNewUserAccount(const QVariant &userFirstname, const Q
         QString item =  dt.toString(Qt::ISODateWithMs);
 
         QString password = hashPassword(userPassword.toString());
+        // userDateAdded = QString(QDateTime::currentDateTime().toLocalTime().toMSecsSinceEpoch())
 
         if(m_db.isOpen())
         {
@@ -318,6 +342,8 @@ void UserAccountsModel::addNewUserAccount(const QVariant &userFirstname, const Q
             query.bindValue(":phone_no", userPhoneNo.toString());
             query.bindValue(":date_added", item);
 
+            qDebug() << "Username: " << userUsername;
+
             QSqlQuery priviledges_query;
             priviledges_query.prepare("INSERT INTO \"priviledges\"(username) VALUES (:username)");
             priviledges_query.bindValue(":username", userUsername.toString());
@@ -327,7 +353,7 @@ void UserAccountsModel::addNewUserAccount(const QVariant &userFirstname, const Q
                 m_db.commit();
                 qDebug() << ">> New User Added";
 
-                addNewUserAccount(new UserAccounts(userFirstname.toString(), userLastname.toString(), userUsername.toString(), userPhoneNo.toString(), password, item, true, false, true, false, true, false, false, false, false));
+                addNewUserAccount(new UserAccounts(userFirstname.toString(), userLastname.toString(), userUsername.toString(), userPhoneNo.toString(), password, item, true, false, true, false, true, false, false, false, false, getUserRoleAsAString(true, false, true, false, true, false, false, false)));
 
                 emit userAddedChanged(true);
 
@@ -444,7 +470,7 @@ void UserAccountsModel::updateUserAccount(const QVariant &userFirstname, const Q
                 if(query.exec())
                 {
                     m_db.commit();
-                    qDebug() << ">> User Details updated";
+                    qDebug() << " [INFO] User Details updated";
 
                     setData(this->index(index_), userFirstname, UserFirstnameRole);
                     setData(this->index(index_), userLastname, UserLastnameRole);
@@ -460,7 +486,7 @@ void UserAccountsModel::updateUserAccount(const QVariant &userFirstname, const Q
                         m_loggedInUser["username"] = data(this->index(index_), UserUsernameRole).toString();
                         m_loggedInUser["phone_no"] = data(this->index(index_), UserPhoneNoRole).toString();
 
-                        emit loggedInUserChanged();
+                        emit logged_inUserChanged();
                     }
 
                 }
@@ -487,6 +513,8 @@ void UserAccountsModel::updateUserAccount(const QVariant &userUsername, const bo
 {
     int index_ = getUserIndex(userUsername.toString());
 
+    // qDebug() << " [Info] " << userUsername.toString() << " : " << canAddUsers << " : " << canRemoveUsers << " : " << canAddItems << " : " << canRemoveItems << " : " << canAddStock << " : " << canRemoveStock << " : " << canUndoSales << " : " << canBackupDb;
+
     if(index_ == -1)
         emit userPriviledgesChanged(false);
 
@@ -497,21 +525,20 @@ void UserAccountsModel::updateUserAccount(const QVariant &userUsername, const bo
         if(m_db.isOpen())
         {
             QSqlQuery query;
-            query.prepare("UPDATE priviledge SET can_add_user=:can_add_user,can_remove_user=:can_remove_user,can_add_product=:can_add_product,can_remove_product=:can_remove_product, can_add_stock=:can_add_stock,can_remove_stock=:can_remove_stock,can_remove_sales=:can_remove_sales,can_backup=:can_backup WHERE username=:username");
-            query.bindValue(":can_add_user", canAddUsers);
-            query.bindValue(":can_remove_user", canRemoveUsers);
-            query.bindValue(":can_add_product", canAddItems);
-            query.bindValue(":can_remove_product", canRemoveItems);
-            query.bindValue(":can_add_stock", canAddStock);
-            query.bindValue(":can_remove_stock", canRemoveStock);
-            query.bindValue(":can_remove_sales", canUndoSales);
-            query.bindValue(":can_backup", canBackupDb);
+            query.prepare("UPDATE priviledges SET can_add_user=:can_add_user,can_remove_user=:can_remove_user,can_add_product=:can_add_product,can_remove_product=:can_remove_product, can_add_stock=:can_add_stock,can_remove_stock=:can_remove_stock,can_remove_sales=:can_remove_sales,can_backup=:can_backup WHERE username=:username");
+            query.bindValue(":can_add_user", stringifyBool(canAddUsers));
+            query.bindValue(":can_remove_user", stringifyBool(canRemoveUsers));
+            query.bindValue(":can_add_product", stringifyBool(canAddItems));
+            query.bindValue(":can_remove_product", stringifyBool(canRemoveItems));
+            query.bindValue(":can_add_stock", stringifyBool(canAddStock));
+            query.bindValue(":can_remove_stock", stringifyBool(canRemoveStock));
+            query.bindValue(":can_remove_sales", stringifyBool(canUndoSales));
+            query.bindValue(":can_backup", stringifyBool(canBackupDb));
             query.bindValue(":username", userUsername.toString());
 
             if(query.exec())
             {
-                m_db.commit();
-                qDebug() << ">> User Priviledges updated";
+                qDebug() << " [Info] User Priviledges updated";
 
                 setData(this->index(index_), canAddUsers, CanAddUsersRole);
                 setData(this->index(index_), canRemoveUsers, CanRemoveUsersRole);
@@ -522,20 +549,28 @@ void UserAccountsModel::updateUserAccount(const QVariant &userUsername, const bo
                 setData(this->index(index_), canUndoSales, CanUndoSalesRole);
                 setData(this->index(index_), canBackupDb, CanBackupDbRole);
 
+                QString str = getUserRoleAsAString(canAddUsers, canRemoveUsers, canAddItems, canRemoveItems, canAddStock, canRemoveStock, canUndoSales, canBackupDb);
+                setData(this->index(index_), str, RolesStringRole);
+
                 emit userPriviledgesChanged(true);
 
                 if(m_loggedInUser.value("username").toString() == userUsername.toString())
                 {
-                    m_loggedInUser["canAddUser"] = data(this->index(index_), CanAddUsersRole).toString();
-                    m_loggedInUser["canRemoveUsers"] = data(this->index(index_), CanRemoveUsersRole).toString();
-                    m_loggedInUser["canAddItems"] = data(this->index(index_), CanAddItemsRole).toString();
-                    m_loggedInUser["canRemoveItems"] = data(this->index(index_), CanRemoveItemsRole).toString();
-                    m_loggedInUser["canAddStock"] = data(this->index(index_), CanAddStockRole).toString();
-                    m_loggedInUser["canRemoveStock"] = data(this->index(index_), CanRemoveStockRole).toString();
-                    m_loggedInUser["canUndoSales"] = data(this->index(index_), CanUndoSalesRole).toString();
-                    m_loggedInUser["canBackupDb"] = data(this->index(index_), CanBackupDbRole).toString();
+                    QJsonDocument doc(m_loggedInUser);
+                    QJsonObject docObj = doc.object();
 
-                    emit loggedInUserChanged();
+                    docObj["canAddUser"] = data(this->index(index_), CanAddUsersRole).toBool();
+                    docObj["canRemoveUsers"] = data(this->index(index_), CanRemoveUsersRole).toBool();
+                    docObj["canAddItems"] = data(this->index(index_), CanAddItemsRole).toBool();
+                    docObj["canRemoveItems"] = data(this->index(index_), CanRemoveItemsRole).toBool();
+                    docObj["canAddStock"] = data(this->index(index_), CanAddStockRole).toBool();
+                    docObj["canRemoveStock"] = data(this->index(index_), CanRemoveStockRole).toBool();
+                    docObj["canUndoSales"] = data(this->index(index_), CanUndoSalesRole).toBool();
+                    docObj["canBackupDb"] = data(this->index(index_), CanBackupDbRole).toBool();
+
+                    setLoggedInUser(docObj);
+
+                    emit logged_inUserChanged();
                 }
             }
 
@@ -622,7 +657,9 @@ void UserAccountsModel::loadAllUserAccounts()
                 bool canBackupDb = query.value(13).toBool();
                 bool changePassword = query.value(14).toBool();
 
-                addNewUserAccount(new UserAccounts(userFirstName, userLastname, userUsername, userPhoneNo, password, userDateAdded, canAddUsers, canRemoveUsers, canAddItems, canRemoveItems, canAddStock, canRemoveStock, canUndoSales, canBackupDb,changePassword));
+                QString role = getUserRoleAsAString(canAddUsers, canRemoveUsers, canAddItems, canRemoveItems, canAddStock, canRemoveStock, canUndoSales, canBackupDb);
+
+                addNewUserAccount(new UserAccounts(userFirstName, userLastname, userUsername, userPhoneNo, password, userDateAdded, canAddUsers, canRemoveUsers, canAddItems, canRemoveItems, canAddStock, canRemoveStock, canUndoSales, canBackupDb,changePassword, role));
 
             }
             emit userAccountsLoaded(true);
@@ -659,22 +696,25 @@ void UserAccountsModel::loginUser(const QVariant &uname, const QVariant &pswd)
         {
             emit loggingInPasswordStatus(true);
 
-            m_loggedInUser["firstname"] = data(this->index(ind), UserFirstnameRole).toString();
-            m_loggedInUser["lastname"] = data(this->index(ind), UserLastnameRole).toString();
-            m_loggedInUser["username"] = data(this->index(ind), UserUsernameRole).toString();
-            m_loggedInUser["phone_no"] = data(this->index(ind), UserPhoneNoRole).toString();
-            m_loggedInUser["canAddUser"] = data(this->index(ind), CanAddUsersRole).toBool();
-            m_loggedInUser["canRemoveUsers"] = data(this->index(ind), CanRemoveUsersRole).toBool();
-            m_loggedInUser["canAddItems"] = data(this->index(ind), CanAddItemsRole).toBool();
-            m_loggedInUser["canRemoveItems"] = data(this->index(ind), CanRemoveItemsRole).toBool();
-            m_loggedInUser["canAddStock"] = data(this->index(ind), CanAddStockRole).toBool();
-            m_loggedInUser["canRemoveStock"] = data(this->index(ind), CanRemoveStockRole).toBool();
-            m_loggedInUser["canUndoSales"] = data(this->index(ind), CanUndoSalesRole).toBool();
-            m_loggedInUser["canBackupDb"] = data(this->index(ind), CanBackupDbRole).toBool();
-
             QJsonDocument doc(m_loggedInUser);
+            QJsonObject docObj = doc.object();
 
-            emit loggedInUserChanged();
+            docObj["firstname"] = data(this->index(ind), UserFirstnameRole).toString();
+            docObj["lastname"] = data(this->index(ind), UserLastnameRole).toString();
+            docObj["username"] = data(this->index(ind), UserUsernameRole).toString();
+            docObj["phone_no"] = data(this->index(ind), UserPhoneNoRole).toString();
+            docObj["canAddUser"] = data(this->index(ind), CanAddUsersRole).toBool();
+            docObj["canRemoveUsers"] = data(this->index(ind), CanRemoveUsersRole).toBool();
+            docObj["canAddItems"] = data(this->index(ind), CanAddItemsRole).toBool();
+            docObj["canRemoveItems"] = data(this->index(ind), CanRemoveItemsRole).toBool();
+            docObj["canAddStock"] = data(this->index(ind), CanAddStockRole).toBool();
+            docObj["canRemoveStock"] = data(this->index(ind), CanRemoveStockRole).toBool();
+            docObj["canUndoSales"] = data(this->index(ind), CanUndoSalesRole).toBool();
+            docObj["canBackupDb"] = data(this->index(ind), CanBackupDbRole).toBool();
+
+            setLoggedInUser(docObj);
+
+            emit logged_inUserChanged();
         }
 
         else
@@ -684,6 +724,27 @@ void UserAccountsModel::loginUser(const QVariant &uname, const QVariant &pswd)
             qDebug() << ">> Wrong User password";
         }
     }
+}
+
+QJsonObject UserAccountsModel::getUpdatedPriviledges(int index)
+{
+    if(index < mUserAccounts.size())
+    {
+        m_status["canAddUser"] = data(this->index(index), CanAddUsersRole).toBool();
+        m_status["canRemoveUsers"] = data(this->index(index), CanRemoveUsersRole).toBool();
+        m_status["canAddItems"] = data(this->index(index), CanAddItemsRole).toBool();
+        m_status["canRemoveItems"] = data(this->index(index), CanRemoveItemsRole).toBool();
+        m_status["canAddStock"] = data(this->index(index), CanAddStockRole).toBool();
+        m_status["canRemoveStock"] = data(this->index(index), CanRemoveStockRole).toBool();
+        m_status["canUndoSales"] = data(this->index(index), CanUndoSalesRole).toBool();
+        m_status["canBackupDb"] = data(this->index(index), CanBackupDbRole).toBool();
+
+        return m_status;
+    }
+
+    qDebug() << " [ERROR] Invalid User Account index...";
+
+    return QJsonObject();
 }
 
 void UserAccountsModel::addNewUserAccount(UserAccounts *user)
@@ -739,6 +800,36 @@ int UserAccountsModel::getUserIndex(const QString &username)
     }
 
     return -1;
+}
+
+QString UserAccountsModel::stringifyBool(const bool &state)
+{
+    if(state)
+        return "true";
+
+    return "false";
+}
+
+QString UserAccountsModel::getUserRoleAsAString(const bool &canAddUsers, const bool &canRemoveUsers, const bool &canAddItems, const bool &canRemoveItems, const bool &canAddStock, const bool &canRemoveStock, const bool &canUndoSales, const bool &canBackupDb)
+{
+    QString _string;
+
+    _string += canAddUsers? "Can create accounts, ":"";
+    _string += canRemoveUsers? "Can delete accounts, ":"";
+    _string += canAddItems? "Can add products, ":"";
+    _string += canRemoveItems? "Can delete products, ":"";
+    _string += canAddStock? "Can add stock, ":"";
+    _string += canRemoveStock? "Can delete stock, ":"";
+    _string += canUndoSales? "Can delete sales, ":"";
+    _string += canBackupDb? "Can backup database": "";
+
+    if(_string.toStdString()[_string.length()-2] == ',')
+        _string = _string.left(_string.length()-2);
+
+    if(_string == "")
+        _string = "---";
+
+    return _string;
 }
 
 QJsonObject UserAccountsModel::loggedInUser() const

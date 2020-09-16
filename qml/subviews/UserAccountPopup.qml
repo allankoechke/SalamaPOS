@@ -22,7 +22,7 @@ Controls2.Popup
     property alias errorText: err.text
     property alias ufname: fname.text
     property alias ulname: lname.text
-    property alias uname: uname.text
+    property alias u_name: uname.text
     property alias uphone: phoneNo.text
     property alias pass: pswd.text
     property alias cpass: cpswd.text
@@ -80,6 +80,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Firstname")
                         hintText: qsTr("Enter firstname")
+                        validator: RegExpValidator {regExp: RegExp("[a-zA-Z]+")}
                     }
 
                     AppTextInput
@@ -88,6 +89,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Lastname")
                         hintText: qsTr("Enter lastname")
+                        validator: RegExpValidator {regExp: RegExp("[a-zA-Z]+")}
                     }
 
                     AppTextInput
@@ -96,6 +98,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Username")
                         hintText: qsTr("Choose a username")
+                        RegExpValidator {regExp: RegExp("[a-zA-Z0-9]+")}
                     }
 
                     AppTextInput
@@ -104,6 +107,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Mobile Phone")
                         hintText: qsTr("Enter phone number")
+                        validator: DoubleValidator{ bottom: 0 ; top: 100000000000}
                     }
 
                     AppTextInput
@@ -112,6 +116,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Password")
                         hintText: qsTr("Pick a password")
+                        echoMode: TextInput.Password
                     }
 
                     AppTextInput
@@ -120,6 +125,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Confirm password")
                         hintText: qsTr("Re-enter password")
+                        echoMode: TextInput.Password
                     }
 
                     AppText
@@ -129,7 +135,7 @@ Controls2.Popup
                         Layout.preferredHeight: 25
                         horizontalAlignment: AppText.AlignHCenter
                         verticalAlignment: AppText.AlignVCenter
-                        color: isError? "red":"transparent"
+                        color: "red"
                     }
 
                     Item
@@ -202,12 +208,12 @@ Controls2.Popup
                                 {
                                     anchors.fill: parent
                                     onClicked: {
-                                        if(ufname!=="" && ulname!=="" && uname!=="" && uphone!=="" && pass !=="" && cpass!=="")
+                                        if(ufname!=="" && ulname!=="" && u_name!=="" && uphone!=="" && pass !=="" && cpass!=="")
                                         {
                                             if(pass === cpass)
                                             {
                                                 var tmspt = new Date().getTime();
-                                                AccountsModel.addNewUserAccount(ufname, ulname,uname,pass,uphone, tmspt);
+                                                AccountsModel.addNewUserAccount(ufname, ulname,u_name,pass,uphone, tmspt);
                                             }
 
                                             else
@@ -242,30 +248,30 @@ Controls2.Popup
         {
             if(status)
             {
-                console.log(">> User Added Successfuly!");
+                console.log(" [INFO] User Added Successfuly!");
                 root.close();
             }
 
             else
-                console.log(">> Error Adding User");
+                console.log(" [ERROR] Error Adding User");
         }
 
         function onUserUpdatedChanged(status)
         {
             if(status)
             {
-                console.log(">> User Details updated Successfuly!");
+                console.log(" [INFO] User Details updated Successfuly!");
                 // resetFields();
                 root.close();
             }
 
             else
-                console.log(">> Error Updating User");
+                console.log(" [ERROR] Error Updating User");
         }
 
         function onUsernameExistsChanged(status)
         {
-            console.log(">> QML: Username taken")
+            console.log(">> [ERROR] Username taken")
             isError = true;
             errorText = qsTr("The username is already taken!")
         }

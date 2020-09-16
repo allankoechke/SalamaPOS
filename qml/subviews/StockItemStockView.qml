@@ -57,14 +57,20 @@ Rectangle {
                         barCode: barcode
                         _unit: unit
                         qty: quantity
-                        lastUpdated: Qt.formatDateTime(date, "dd MMM, yyyy hh:mm ") + qsTr("Hrs")
+                        lastUpdated: Qt.formatDateTime(date, "dddd dd MMM, yyyy hh:mm ") + qsTr("Hrs")
 
                         onClicked: {
-                            listView.currentIndex =  index
-                            stockPopup.open()
-                            stockPopup.currentIndex = index
-                            stockPopup.currentStock = qty;
-                            stockPopup.barcode = barCode;
+                            if(loggedUser_canAddStock | loggedUser_canDeleteStock)
+                            {
+                                listView.currentIndex =  index
+                                stockPopup.open()
+                                stockPopup.currentIndex = index
+                                stockPopup.currentStock = qty;
+                                stockPopup.barcode = barCode;
+                            }
+
+                            else
+                                console.log(" [ERROR] User has no priviledges to perform action")
 
                         }
                     }

@@ -76,7 +76,7 @@ Item {
 
                 Rectangle
                 {
-                    visible: currentScreen===0
+                    visible: currentScreen===0 //&& loggedUser_canAddItems
                     Layout.preferredHeight: 45
                     Layout.preferredWidth: 120
                     Layout.alignment: Qt.AlignVCenter
@@ -110,16 +110,23 @@ Item {
                     {
                         anchors.fill: parent
                         onClicked: {
-                            newItemPopup.open()
-                            newItemPopup.barCode = "";
-                            newItemPopup.itemName = "";
-                            newItemPopup.itemUnit = "";
-                            newItemPopup.itemBp = -1;
-                            newItemPopup.itemSp = -1;
-                            newItemPopup.itemQty = -1;
-                            newItemPopup.itemCompany = "";
 
-                            newItemPopup.isNewItemMode = true;
+                            if(loggedUser_canAddItems)
+                            {
+                                newItemPopup.open()
+                                newItemPopup.barCode = new Date().getTime().toString();
+                                newItemPopup.itemName = "";
+                                newItemPopup.itemUnit = "";
+                                newItemPopup.itemBp = "";
+                                newItemPopup.itemSp = "";
+                                newItemPopup.itemQty = "";
+                                newItemPopup.itemCompany = "";
+
+                                newItemPopup.isNewItemMode = true;
+                            }
+
+                            else
+                                console.log(" [ERROR] User has no rights to add item")
                         }
                     }
                 }

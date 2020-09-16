@@ -15,12 +15,12 @@ Controls2.Popup
     modal: true
     closePolicy: Controls2.Popup.NoAutoClose
 
-    onClosed: {
+    /*onClosed: {
         combo.currentIndex = 0;
         currentStock = 0;
         addStock.value = 1;
         reduceStock.value = 0;
-    }
+    }*/
 
     property int currentIndex: -1
 
@@ -32,6 +32,27 @@ Controls2.Popup
     property int valueQty: combo.currentIndex===0? addStock.value:reduceStock.value
 
     signal accepted()
+
+    onOpened: {
+        if(loggedUser_canAddItems)
+        {
+            combo.currentIndex = 0;
+
+            if(!loggedUser_canDeleteStock)
+            {
+                combo.enabled = false;
+            }
+        }
+
+        else
+        {
+            combo.currentIndex = 1;
+            combo.enabled = false;
+        }
+
+
+
+    }
 
     contentItem: Rectangle
     {

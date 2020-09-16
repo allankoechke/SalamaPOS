@@ -29,46 +29,56 @@ bool DatabaseInterface::initializeDatabase()
     try {
         m_db.transaction();
         QSqlQuery query;
+        QString sql;
 
-        if(query.exec("SELECT * FROM product_type"))
+        QFile file(":/sql/tables.sql");
+        file.open(QIODevice::ReadOnly);
+        sql = file.readAll();
+
+        if(query.exec(sql))
         {
-            int count = 0;
-            QString sql;
+            m_db.commit();
+            qInfo() << ">> Database has been instantiated ... "; //[" << query.executedQuery() << " ]";
 
-            while(query.next())
+            if(query.exec("SELECT * FROM product_type"))
             {
-                count++;
-            }
+                int count = 0;
 
-            if(count == 0)
-            {
-                QString sql;
-                sql = "INSERT INTO product_type(type_name) VALUES ('General')";
+                while(query.next())
+                {
+                    count++;
+                }
 
-                if(query.exec(sql))
-                    qDebug() << ">> New ctaegory Added";
+                if(count == 0)
+                {
+                    QString sql;
+                    sql = "INSERT INTO product_type(type_id, type_name) VALUES ('1658977', 'General')";
+
+                    if(query.exec(sql))
+                    {
+                        qDebug() << ">> New ctaegory Added";
+                        return true;
+                    }
+
+                    else
+                    {
+                        qDebug() << "Error Adding item: " << query.lastError().text();
+                        return false;
+                    }
+                }
 
                 else
-                    qDebug() << "Error Adding item: " << query.lastError().text();
+                    qInfo() << ">> Categories: " << count;
             }
-
-            else
-                qInfo() << ">> Categories: " << count;
-
-            QFile file(":/sql/tables.sql");
-            file.open(QIODevice::ReadOnly);
-            sql = file.readAll();
-
-            if(query.exec(sql))
-            {
-                m_db.commit();
-                qInfo() << ">> Database has been instantiated ...";
-                return true;
-            }
-
-            else
-                qDebug() << "Error Creating Db: " << query.lastError().text();
         }
+
+        else
+        {
+            qDebug() << "Error Creating Db: " << query.lastError().text();
+            return false;
+        }
+
+
 
     } catch (std::exception &e) {
         qDebug() << ">> Error executing SQL: " << e.what();

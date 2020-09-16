@@ -10,7 +10,9 @@ Item
     property alias label: textLabel.text
     property real prefWidth: 0
     property alias text: textInput.text
+    property alias validator: textInput.validator
     property alias hintText: textInput.placeholderText
+    property alias echoMode: textInput.echoMode
 
     RowLayout
     {
@@ -42,6 +44,7 @@ Item
             horizontalAlignment: Controls2.TextField.AlignLeft
 
             color: "black" //"#535353"
+            selectByMouse: true
             font.pixelSize: 15
             font.family: montserratFontLoader.name
         }

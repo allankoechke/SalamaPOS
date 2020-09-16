@@ -39,8 +39,8 @@ Item {
 
     AppText
     {
-        color: menuColor
-        text: qsTr("MySale Pro")
+        color: "#ff8900"
+        text: qsTr("Salama P.O.S.")
         font.pixelSize: 30
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: logo.bottom
@@ -53,7 +53,7 @@ Item {
         width: parent.width
 
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 100
+        anchors.bottomMargin: 20
 
         RowLayout
         {
@@ -63,8 +63,8 @@ Item {
             AppIcon
             {
                 id: ico
-                color: menuColor
-                size: p.height
+                color: "#00a4c7"
+                size: 30
                 icon: "\uf110"
 
                 Layout.alignment: Qt.AlignVCenter
@@ -72,7 +72,7 @@ Item {
 
             AppText
             {
-                color: "black"
+                color: "#00a4c7"
                 text: qsTr("Loading ...")
                 font.pixelSize: 20
 
@@ -89,6 +89,7 @@ Item {
 
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 20
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.right: parent.right
+        anchors.rightMargin: 20
     }
 }

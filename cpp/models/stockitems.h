@@ -11,7 +11,7 @@ class StockItems : public QObject
 
 public:
     explicit StockItems(QObject *parent = nullptr);
-    StockItems(const QString barCode, const QString itemName, const QString itemUnit, const float itemBp, const float itemSp, const QString itemCompany, const int itemQty, const QString lastUpdate, const int itemCategory, QObject *parent = nullptr);
+    StockItems(const QString barCode, const QString itemName, const QString itemUnit, const float itemBp, const float itemSp, const QString itemCompany, const int itemQty, const QString lastUpdate, const QString itemCategory, QObject *parent = nullptr);
 
     Q_PROPERTY(QString barCode READ barCode WRITE setBarCode NOTIFY barCodeChanged)
     Q_PROPERTY(QString itemName READ itemName WRITE setItemName NOTIFY itemNameChanged)
@@ -21,7 +21,7 @@ public:
     Q_PROPERTY(int itemQty READ itemQty WRITE setItemQty NOTIFY itemQtyChanged)
     Q_PROPERTY(QString itemCompany READ itemCompany WRITE setItemCompany NOTIFY itemCompanyChanged)
     Q_PROPERTY(QString lastUpdate READ lastUpdate WRITE setLastUpdate NOTIFY lastUpdateChanged)
-    Q_PROPERTY(int itemCategory READ itemCategory WRITE setItemCategory NOTIFY itemCategoryChanged)
+    Q_PROPERTY(QString itemCategory READ itemCategory WRITE setItemCategory NOTIFY itemCategoryChanged)
 
     // Getters
     QString barCode() const;
@@ -40,7 +40,7 @@ public:
 
     QString lastUpdate() const;
 
-    int itemCategory() const;
+    QString itemCategory() const;
 
     // Setters
     void setBarCode(QString barCode);
@@ -59,7 +59,7 @@ public:
 
     void setLastUpdate(QString lastUpdate);
 
-    void setItemCategory(int itemCategory);
+    void setItemCategory(QString itemCategory);
 
 signals:
     void barCodeChanged(QString barCode);
@@ -70,15 +70,14 @@ signals:
     void itemQtyChanged(int itemQty);
     void itemCompanyChanged(QString itemCompany);
     void lastUpdateChanged(QString lastUpdate);
-
-    void itemCategoryChanged(int itemCategory);
+    void itemCategoryChanged(QString itemCategory);
 
 private:
-    QString m_barCode, m_itemName, m_itemUnit, m_itemCompany, m_lastUpdate;
+    QString m_barCode, m_itemName, m_itemUnit, m_itemCompany, m_lastUpdate, m_itemCategory;
 
     float m_itemBp, m_itemSp;
 
-    int m_itemQty, m_itemCategory;
+    int m_itemQty;
 };
 
 #endif // STOCKITEMS_H

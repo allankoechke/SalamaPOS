@@ -9,7 +9,7 @@ class UserAccounts : public QObject
 
 public:
     explicit UserAccounts(QObject *parent = nullptr);
-    UserAccounts(const QString &userFirstname, const QString &userLastname, const QString &userUsername, const QString &userPhoneNo, const QString &userPassword,const QString &userDateAdded, const bool &canAddUsers, const bool &canRemoveUsers, const bool &canAddItems, const bool &canRemoveItems, const bool &canAddStock, const bool &canRemoveStock, const bool &canUndoSales, const bool &canBackupDb, const bool &changePassword, QObject *parent = nullptr);
+    UserAccounts(const QString &userFirstname, const QString &userLastname, const QString &userUsername, const QString &userPhoneNo, const QString &userPassword,const QString &userDateAdded, const bool &canAddUsers, const bool &canRemoveUsers, const bool &canAddItems, const bool &canRemoveItems, const bool &canAddStock, const bool &canRemoveStock, const bool &canUndoSales, const bool &canBackupDb, const bool &changePassword, const QString &role, QObject *parent = nullptr);
 
     // Properties
     Q_PROPERTY(QString userFirstname READ userFirstname WRITE setUserFirstname NOTIFY userFirstnameChanged)
@@ -27,6 +27,7 @@ public:
     Q_PROPERTY(bool canUndoSales READ canUndoSales WRITE setCanUndoSales NOTIFY canUndoSalesChanged)
     Q_PROPERTY(bool canBackupDb READ canBackupDb WRITE setCanBackupDb NOTIFY canBackupDbChanged)
     Q_PROPERTY(bool changePassword READ changePassword WRITE setChangePassword NOTIFY changePasswordChanged)
+    Q_PROPERTY(QString rolesString READ rolesString WRITE setRolesString NOTIFY rolesStringChanged)
 
     // Getters
     QString userFirstname() const;
@@ -59,6 +60,8 @@ public:
 
     bool changePassword() const;
 
+    QString rolesString() const;
+
     // Setters
     void setUserFirstname(QString userFirstname);
 
@@ -90,6 +93,8 @@ public:
 
     void setChangePassword(bool changePassword);
 
+    void setRolesString(QString rolesString);
+
 signals:
 
     void userFirstnameChanged(QString userFirstname);
@@ -109,10 +114,13 @@ signals:
 
     void changePasswordChanged(bool changePassword);
 
+    void rolesStringChanged(QString rolesString);
+
 private:
     QString m_userFirstname, m_userLastname, m_userUsername, m_userPhoneNo, m_userPassword, m_userDateAdded;
 
     bool m_canAddUsers, m_canRemoveUsers, m_canAddItems, m_canRemoveItems, m_canAddStock, m_canRemoveStock, m_canUndoSales, m_canBackupDb, m_changePassword;
+    QString m_rolesString;
 };
 
 #endif // USERACCOUNTS_H

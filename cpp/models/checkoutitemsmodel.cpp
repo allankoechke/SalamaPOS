@@ -215,6 +215,26 @@ void CheckoutItemsModel::findTotals()
     // qDebug() << "New Totals: " << sellTotals();
 }
 
+QString CheckoutItemsModel::getBarcodeAt(int index)
+{
+    if(index < mCheckoutItem.size())
+    {
+        return data(this->index(index), SellBarcodeRole).toString();
+    }
+
+    return "";
+}
+
+int CheckoutItemsModel::getSellQtyAt(int index)
+{
+    if(index < mCheckoutItem.size())
+    {
+        return data(this->index(index), SellQtyRole).toInt();
+    }
+
+    return -1;
+}
+
 int CheckoutItemsModel::checkoutModelSize() const
 {
     return m_checkoutModelSize;

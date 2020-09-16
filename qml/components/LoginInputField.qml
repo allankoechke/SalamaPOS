@@ -15,12 +15,12 @@ Item{
     RowLayout
     {
         anchors.fill: parent
-        spacing: 10
+        spacing: 20
 
         AppIcon
         {
             color: menuColor
-            size: 18
+            size: 25
             icon: ico
 
             Layout.alignment: Qt.AlignVCenter
@@ -30,11 +30,12 @@ Item{
         {
             id: txt
             text: ""
-            color: "#2e2e2e"
-            font.pixelSize: 15
+            color: "black"
+            font.pixelSize: 18
             echoMode: isPassword? TextInput.Password:TextInput.Normal
 
             Layout.fillWidth: true
+            Layout.leftMargin: 5
             Layout.preferredHeight: 30
             verticalAlignment: TextInput.AlignVCenter
             horizontalAlignment: AppText.AlignLeft
@@ -57,10 +58,11 @@ Item{
             {
                 color: "black"
                 height: 2
-                width: parent.width
+                width: parent.width + 10
                 opacity: 0.09
 
                 anchors.bottom: parent.bottom
+                anchors.right: parent.right
                 anchors.bottomMargin: -5
             }
         }

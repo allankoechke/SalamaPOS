@@ -226,6 +226,7 @@ Controls2.Popup
                                 {
                                     anchors.fill: parent
                                     onClicked: {
+                                        // console.log("[QMl-Info] ", addUsers.isChecked, " : ", deleteUsers.isChecked, " : ", addProducts.isChecked, " : ", deleteProducts.isChecked, " : ", addStock.isChecked, " : ", deleteStock.isChecked, " : ", deleteSales.isChecked, " : ", backup.isChecked)
                                         AccountsModel.updateUserAccount(currentUser, canAddUsers, canRemoveUsers, canAddItems, canRemoveItems, canAddStock, canDeleteStock, canUndoSales, canBackupDb);
                                     }
                                 }
@@ -245,24 +246,24 @@ Controls2.Popup
         {
             if(status)
             {
-                console.log(">> User deleted successfully!");
+                console.log(" [INFO] User deleted successfully!");
                 root.close();
             }
 
             else
-                console.log(">> Error Deleting User");
+                console.log(" [ERROR] Error Deleting User");
         }
 
         function onUserPriviledgesChanged(status)
         {
             if(status)
             {
-                console.log(">> User priviledges updated Successfuly!");
+                console.log(" [INFO] User priviledges updated Successfuly!");
                 root.close();
             }
 
             else
-                console.log(">> Error Updating User Priviledges");
+                console.log(" [ERROR] Error Updating User Priviledges");
         }
     }
 }

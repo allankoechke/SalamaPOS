@@ -63,6 +63,7 @@ Window {
                     font.pixelSize: 17
                     font.family: montserratFontLoader.name
                     selectByMouse: true
+                    validator: RegExpValidator {regExp: RegExp("[a-zA-Z0-9]+")}
 
                     placeholderText: qsTr("Enter item Name")
 
