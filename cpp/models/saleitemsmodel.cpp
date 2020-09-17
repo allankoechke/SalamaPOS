@@ -266,10 +266,26 @@ void saleItemsModel::addSaleItem(const QVariant &barcode, const int &qty, const 
 
                     if(writeSales.exec())
                     {
-                        qDebug() << ">> Success writing to db";
+                        qDebug() << ">> Success writing Sale to db";
 
-                        emit updateStockChanged(barcode.toString(), qty);
+                        int c_qty = currentStock - qty;
 
+                        QSqlQuery stock_query;
+                        stock_query.prepare("UPDATE \"stock\" SET stock_qty=:stock_qty WHERE barcode=:barcode");
+                        stock_query.bindValue(":barcode", barcode.toString());
+                        stock_query.bindValue(":stock_qty", c_qty);
+
+                        if(stock_query.exec())
+                        {
+                            emit updateStockChanged(barcode.toString(), c_qty);
+
+                            emit updateSalesModelChanged(barcode.toString(), qty);
+                        }
+
+                        else
+                        {
+                            qDebug() << " [ERROR] Updating Stock after sale -> " << stock_query.lastError().text();
+                        }
                         emit saleItemAddedChanged(true);
                     }
 

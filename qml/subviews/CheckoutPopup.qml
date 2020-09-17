@@ -261,5 +261,10 @@ Controls2.Drawer {
         {
             StockItemModel.updateStockOnSale(_barcode, _qty);
         }
+
+        function onUpdateSalesModelChanged(_barcode, _qty)
+        {
+            ProductSalesModel.addSalesData(_barcode, _qty);
+        }
     }
 }

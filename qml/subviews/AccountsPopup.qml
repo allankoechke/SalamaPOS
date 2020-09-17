@@ -148,6 +148,7 @@ Controls2.Popup
 
                                 color: "#b8352c"
                                 radius: 3
+                                visible: loggedUser_username !== currentUser
 
 
                                 AppText

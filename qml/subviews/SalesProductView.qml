@@ -41,10 +41,11 @@ Rectangle {
 
             ListView
             {
+                id: list
                 anchors.fill: parent
                 spacing: 0
 
-                model: SalesViewModel {}
+                model: ProductSalesModel
 
                 delegate: Component {
                     id: productViewDelegate
@@ -54,13 +55,15 @@ Rectangle {
                         width: scroll.width
 
                         _index: model.index
-                        itemName: _name
-                        barCode: _code
-                        unit: _unit
-                        qty: _qty
-                        bp: _bp
-                        sp: _sp
-                        company: _company===""? "---":_company
+                        itemName: p_name
+                        barCode: p_barcode
+                        unit: p_unit
+                        qty: p_qty
+                        bp: p_bp
+                        sp: p_sp
+                        company: "---"
+                        sub_totals: p_sp*p_qty
+                        profit: (p_sp-p_bp) * p_qty
                     }
                 }
             }

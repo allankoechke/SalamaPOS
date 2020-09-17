@@ -96,7 +96,7 @@ Item {
                     LoginInputField
                     {
                         id: _uname
-                        ico: "\uf007"
+                        icon: "\uf007"
                         hintText: qsTr("Enter Username")
                         isCorrect: false
                     }
@@ -104,7 +104,7 @@ Item {
                     LoginInputField
                     {
                         id: _pswd
-                        ico: "\uf084"
+                        icon: "\uf084"
                         hintText: qsTr("Enter Password")
                         isCorrect: false
                         isPassword: true
@@ -133,8 +133,8 @@ Item {
                         {
                             anchors.fill: parent
                             onClicked: {
-                                var uname = _uname.textInput.text
-                                var pswd = _pswd.textInput.text
+                                var uname = _uname.text
+                                var pswd = _pswd.text
 
                                 if(uname !== "" && pswd !== "")
                                 {
@@ -190,6 +190,9 @@ Item {
                     notificationBar.visible = true;
                     navBar.visible = true
                     navBarIndex = 0;
+
+                    // Load the days sales
+                    ProductSalesModel.loadSalesData();
                 }
             }
 

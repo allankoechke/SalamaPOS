@@ -328,30 +328,15 @@ void StockItemsModel::updateStockOnSale(const QVariant &bcode, const int &qty)
     int ind = getItemIndex(bcode);
 
     if(ind != -1)
-        if(m_db.isOpen())
-        {
-            int c_qty = data(this->index(ind), ItemQtyRole).toString().toInt();
-            int _cqty = c_qty - qty;
+    {
+        setData(this->index(ind), qty, ItemQtyRole);
 
-            QSqlQuery stock_query;
-            stock_query.prepare("UPDATE \"stock\" SET stock_qty=:stock_qty WHERE barcode=:barcode");
-            stock_query.bindValue(":barcode", bcode.toString());
-            stock_query.bindValue(":stock_qty", _cqty);
+        emit itemStockAfterSaleChanged(true);
+    }
 
-            if(stock_query.exec())
-            {
-                setData(this->index(ind), _cqty, ItemQtyRole);
+    else
+        qDebug() << " [ERROR] Couldn't find index of item barcode: " <<bcode.toString();
 
-                emit itemStockAfterSaleChanged(true);
-            }
-
-            else
-            {
-                qDebug() << "Error executing SQL: " << m_db.lastError().text();
-
-                emit itemStockAfterSaleChanged(false);
-            }
-        }
 }
 
 bool StockItemsModel::addNewItem(StockItems *stockItem)
@@ -441,7 +426,7 @@ QJsonObject StockItemsModel::getItemData(const QString &barcode)
 {
     const int index = getItemIndex(barcode);
 
-    qDebug() << "Index: " << index;
+    // qDebug() << "Index: " << index;
 
     if(index != -1)
     {

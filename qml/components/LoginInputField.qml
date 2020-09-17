@@ -1,13 +1,15 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.3
+import QtQuick.Controls 2.4
 import "../components"
 
 Item{
     Layout.fillWidth: true
     Layout.preferredHeight: 40
 
-    property string hintText: ""
-    property string ico: ""
+    property alias hintText: txt.placeholderText
+    property alias text: txt.text
+    property alias icon: ico.icon
     property alias textInput: txt
     property bool isCorrect: false
     property bool isPassword: false
@@ -19,19 +21,20 @@ Item{
 
         AppIcon
         {
+            id: ico
             color: menuColor
             size: 25
-            icon: ico
 
             Layout.alignment: Qt.AlignVCenter
         }
 
-        TextInput
+        TextField
         {
             id: txt
             text: ""
             color: "black"
-            font.pixelSize: 18
+            font.pixelSize: text===""? 13:15
+            placeholderText: hintText
             echoMode: isPassword? TextInput.Password:TextInput.Normal
 
             Layout.fillWidth: true
@@ -40,29 +43,20 @@ Item{
             verticalAlignment: TextInput.AlignVCenter
             horizontalAlignment: AppText.AlignLeft
 
-            AppText
+            background: Rectangle
             {
-                color: parent.color
-                opacity: 0.5
-                text: hintText
-                font.pixelSize: 13
-                visible: parent.text === ""
-                height: parent.height
-                verticalAlignment: AppText.AlignVCenter
-
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
+                color: "transparent"
+                border.width: 0
             }
 
             Rectangle
             {
-                color: "black"
-                height: 2
+                color: "silver"
+                height: 1
                 width: parent.width + 10
-                opacity: 0.09
 
                 anchors.bottom: parent.bottom
-                anchors.right: parent.right
+                anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottomMargin: -5
             }
         }

@@ -9,14 +9,16 @@ Rectangle {
     height: 45
     color: ((_index+1)%2)===0? "#eeeeee":"white"
 
-    property int _index
-    property string itemName
+    property int _index: ind
+    property alias itemName: itemName.text
     property string barCode
-    property string unit
+    property alias unit: unit.text
     property int bp
-    property int sp
-    property int qty
+    property alias sp: sp.text
+    property alias qty: qty.text
     property string company
+    property alias profit: pr.text
+    property alias sub_totals: ttals.text
 
     RowLayout
     {
@@ -35,11 +37,12 @@ Rectangle {
 
         AppText
         {
+            id: itemName
             color: "black"
-            text: itemName
-            horizontalAlignment: AppText.AlignHCenter
+            horizontalAlignment: AppText.AlignLeft
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+            Layout.leftMargin: 5
             Layout.fillWidth: true
             Layout.minimumWidth: 150
         }
@@ -47,7 +50,7 @@ Rectangle {
         AppText
         {
             color: "black"
-            text: unit
+            id: unit
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
@@ -57,7 +60,7 @@ Rectangle {
         AppText
         {
             color: "black"
-            text: qty.toString()
+            id: qty
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
@@ -67,7 +70,7 @@ Rectangle {
         AppText
         {
             color: "black"
-            text: sp.toString()
+            id: sp
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
@@ -76,8 +79,8 @@ Rectangle {
 
         AppText
         {
+            id: ttals
             color: "black"
-            text: (sp*qty).toString()
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
@@ -86,8 +89,8 @@ Rectangle {
 
         AppText
         {
+            id: pr
             color: "black"
-            text: (sp-bp)*qty
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter

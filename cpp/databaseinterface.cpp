@@ -38,7 +38,7 @@ bool DatabaseInterface::initializeDatabase()
         if(query.exec(sql))
         {
             m_db.commit();
-            qInfo() << ">> Database has been instantiated ... "; //[" << query.executedQuery() << " ]";
+            qInfo() << " [INFO] Database has been instantiated ... "; //[" << query.executedQuery() << " ]";
 
             if(query.exec("SELECT * FROM product_type"))
             {
@@ -67,8 +67,8 @@ bool DatabaseInterface::initializeDatabase()
                     }
                 }
 
-                else
-                    qInfo() << ">> Categories: " << count;
+                // else
+                //qInfo() << ">> Categories: " << count;
             }
         }
 

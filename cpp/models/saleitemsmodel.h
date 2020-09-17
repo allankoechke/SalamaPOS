@@ -67,6 +67,8 @@ signals:
 
     void updateStockChanged(QString bcode, int qty);
 
+    void updateSalesModelChanged(QString bcode, int qty);
+
 
 private:
     QList<SaleItems *> m_saleItems;
