@@ -11,6 +11,7 @@
 #include <QSqlError>
 
 #include "productsales.h"
+#include "../datetime.h"
 
 class ProductSalesModel : public QAbstractListModel
 {
@@ -64,7 +65,9 @@ public:
 
     int getSaleItemIndex(QString barcode);
 
-    bool executeQuery(QSqlQuery query);
+    bool executeQuery(const QStringList &list);
+
+    void clearModel();
 
 signals:
 
@@ -72,6 +75,8 @@ private:
     QList<ProductSales *> m_productSales;
 
     QJsonObject m_json;
+
+    DateTime * m_dateTime;
 };
 
 #endif // PRODUCTSALESMODEL_H

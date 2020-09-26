@@ -7,7 +7,7 @@ import "../components"
 Rectangle {
     id: root
     height: 55
-    color: ((_index+1)%2)===0? "#eeeeee":"white"
+    color: QmlInterface.isDarkTheme? (((_index+1)%2)===0? Qt.lighter("#29292d", 1.3):Qt.lighter("#29292d", 1.5)):(((_index+1)%2)===0? "#eeeeee":"white")
 
     property int _index
     property string fname: ""
@@ -50,7 +50,7 @@ Rectangle {
 
         AppText
         {
-            color: "black"
+            color: QmlInterface.isDarkTheme? "#999fa6":"black"
             text: fname + " " + lname
             wrapMode: AppText.WordWrap
             horizontalAlignment: AppText.AlignHCenter
@@ -63,7 +63,7 @@ Rectangle {
 
         AppText
         {
-            color: "black"
+            color: QmlInterface.isDarkTheme? "#999fa6":"black"
             text: phoneNo
             horizontalAlignment: AppText.AlignHCenter
 
@@ -73,7 +73,7 @@ Rectangle {
 
         AppText
         {
-            color: "black"
+            color: QmlInterface.isDarkTheme? "#999fa6":"black"
             text: Qt.formatDateTime(date, "dd MMM, yyyy")
             horizontalAlignment: AppText.AlignHCenter
 
@@ -88,7 +88,7 @@ Rectangle {
 
             AppText
             {
-                color: "black"
+                color: QmlInterface.isDarkTheme? "#999fa6":"black"
                 text: priviledges
                 width: parent.width
                 elide: AppText.ElideRight
@@ -119,7 +119,7 @@ Rectangle {
 
                 AppText
                 {
-                    color: "black"
+                    color: QmlInterface.isDarkTheme? "#999fa6":"black"
                     text: qsTr("Edit")
 
                     Layout.alignment: Qt.AlignVCenter

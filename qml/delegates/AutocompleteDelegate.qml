@@ -12,7 +12,7 @@ Rectangle {
     signal clicked()
 
     height: 40
-    color: isHighlighted? Qt.lighter(menuColor):"#eeeeee"
+    color: isHighlighted? Qt.lighter(menuColor):QmlInterface.isDarkTheme? Qt.lighter("#29292d", 1.3):"#eeeeee"
 
     RowLayout
     {
@@ -27,7 +27,7 @@ Rectangle {
             horizontalAlignment: AppText.AlignLeft
 
             text: (labelIndex+1).toString()+". "
-            color: isHighlighted? "white":"black"
+            color: isHighlighted? "white":QmlInterface.isDarkTheme? "#f4f4f4":"black"
         }
 
         Item{
@@ -42,7 +42,7 @@ Rectangle {
                 anchors.leftMargin: 15
 
                 text: label
-                color: isHighlighted? "white":"black"
+                color: isHighlighted? "white":QmlInterface.isDarkTheme? "#f4f4f4":"black"
             }
         }
     }

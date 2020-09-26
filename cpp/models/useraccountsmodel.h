@@ -14,6 +14,7 @@
 #include <QCryptographicHash>
 #include <QAbstractListModel>
 #include "useraccounts.h"
+#include "../datetime.h"
 
 class UserAccountsModel : public QAbstractListModel
 {
@@ -54,7 +55,7 @@ public:
 
     // Q_INVOKABLES
 
-    Q_INVOKABLE void addNewUserAccount(const QVariant &userFirstname, const QVariant &userLastname, const QVariant &userUsername, const QVariant &userPassword, const QVariant &userPhoneNo, const QVariant &userDateAdded);
+    Q_INVOKABLE void addNewUserAccount(const QVariant &userFirstname, const QVariant &userLastname, const QVariant &userUsername, const QVariant &userPassword, const QVariant &userPhoneNo, const QVariant &userDateAdded = "");
 
     Q_INVOKABLE void updatePassword(const QVariant &userUsername, const QVariant &userPassword);
 
@@ -126,6 +127,8 @@ private:
     QList<UserAccounts *> mUserAccounts;
 
     QJsonObject m_loggedInUser, m_status;
+
+    DateTime * m_dateTime;
 };
 
 #endif // USERACCOUNTSMODEL_H

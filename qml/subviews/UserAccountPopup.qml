@@ -29,7 +29,7 @@ Controls2.Popup
 
     contentItem: Rectangle
     {
-        color: bgColor
+        color: QmlInterface.isDarkTheme? "#1e2027":bgColor
         anchors.fill: parent
 
 

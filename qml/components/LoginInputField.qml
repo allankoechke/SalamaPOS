@@ -31,19 +31,17 @@ Item{
         TextField
         {
             id: txt
-            text: ""
             color: "black"
-            font.pixelSize: text===""? 13:15
-            placeholderText: hintText
+            font.pixelSize: 15
             echoMode: isPassword? TextInput.Password:TextInput.Normal
 
             Layout.fillWidth: true
             Layout.leftMargin: 5
-            Layout.preferredHeight: 30
-            verticalAlignment: TextInput.AlignVCenter
+            Layout.preferredHeight: 40
+            verticalAlignment: TextInput.AlignBottom
             horizontalAlignment: AppText.AlignLeft
 
-            background: Rectangle
+            /*background: Rectangle
             {
                 color: "transparent"
                 border.width: 0
@@ -58,7 +56,7 @@ Item{
                 anchors.bottom: parent.bottom
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottomMargin: -5
-            }
+            }*/
         }
 
         AppIcon

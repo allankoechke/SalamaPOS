@@ -8,7 +8,11 @@ QmlInterface::QmlInterface(QObject *parent) : QObject(parent)
     if(status)
         emit databaseReadyChanged();
 
-    // qDebug() << ">> " << status;
+    QCoreApplication::setOrganizationName("lalanke");
+    QCoreApplication::setOrganizationDomain("lalanke.com");
+    QCoreApplication::setApplicationName("Salama P.O.S.");
+
+    bool isFirstTime = m_settings.value("General/isFirstTime", true).toBool();
 }
 
 QJsonObject QmlInterface::getScreenSize()
@@ -25,6 +29,20 @@ QJsonObject QmlInterface::getScreenSize()
     size["height"] = height;
 
     return size;
+}
+
+bool QmlInterface::isDarkTheme() const
+{
+    return m_isDarkTheme;
+}
+
+void QmlInterface::setIsDarkTheme(bool isDarkTheme)
+{
+    if (m_isDarkTheme == isDarkTheme)
+        return;
+
+    m_isDarkTheme = isDarkTheme;
+    emit isDarkThemeChanged(m_isDarkTheme);
 }
 
 

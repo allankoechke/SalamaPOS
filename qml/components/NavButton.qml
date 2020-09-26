@@ -22,7 +22,7 @@ Rectangle {
     {
         visible: isMenuCurrentlyActive
         width: 50; height: 50
-        color: "#f4f9fa"
+        color: QmlInterface.isDarkTheme? "#1e2027":"#f4f9fa"
         rotation: 45
 
         x: 70

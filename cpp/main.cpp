@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <QQmlContext>
+#include <QQuickStyle>
 #include <QQmlApplicationEngine>
 
 #include "qmlinterface.h"
@@ -13,6 +14,7 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QQuickStyle::setStyle(QStringLiteral("Material"));
     QApplication app(argc, argv);
     QQmlApplicationEngine engine;
 

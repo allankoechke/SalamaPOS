@@ -7,7 +7,7 @@ import "../components"
 Rectangle {
     id: root
     height: 45
-    color: ((_index+1)%2)===0? "#eeeeee":"white"
+    color: QmlInterface.isDarkTheme? (((_index+1)%2)===0? Qt.lighter("#29292d", 1.3):Qt.lighter("#29292d", 1.5)):(((_index+1)%2)===0? "#eeeeee":"white")
 
     property int _index
     property string itemName
@@ -26,7 +26,7 @@ Rectangle {
 
         AppText
         {
-            color: "black"
+            color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
             text: (_index+1).toString()+"."
             horizontalAlignment: AppText.AlignHCenter
 
@@ -36,7 +36,7 @@ Rectangle {
 
         AppText
         {
-            color: "black"
+            color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
             text: " " + unit + "  " + itemName
             horizontalAlignment: AppText.AlignLeft
 
@@ -48,7 +48,7 @@ Rectangle {
 
         AppText
         {
-            color: "black"
+            color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
             text: qty.toString()
             horizontalAlignment: AppText.AlignHCenter
 
@@ -58,7 +58,7 @@ Rectangle {
 
         AppText
         {
-            color: "black"
+            color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
             text: sp.toString()
             horizontalAlignment: AppText.AlignHCenter
 
@@ -68,7 +68,7 @@ Rectangle {
 
         AppText
         {
-            color: "black"
+            color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
             text: (qty*sp).toString()
             horizontalAlignment: AppText.AlignHCenter
 

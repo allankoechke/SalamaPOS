@@ -13,6 +13,7 @@ Item {
     Layout.margins: 50
 
     property var currentScreen: 0
+    property alias currentIndex: cb.currentIndex
 
     ColumnLayout
     {
@@ -44,27 +45,47 @@ Item {
 
                 AppText
                 {
-                    color: "black"
+                    color: QmlInterface.isDarkTheme? "grey":"black"
                     size: 17
-                    text: qsTr("Showing Sales for : ") + ["Today", "Yesterday", "This Week", "This Month", "This Year", "Custom"][cb.currentIndex]
+                    text: qsTr("Showing Sales for : ") /// + ["Today", "Yesterday", "This Week", "This Month", "This Year", "All Time", "Custom"][cb.currentIndex]
 
                     Layout.alignment: Qt.AlignVCenter
                 }
-
-                HorizontalSpacer {}
 
                 Controls2.ComboBox
                 {
                     id: cb
                     height: 45
-                    width: 140
+                    Layout.minimumWidth: 220
                     currentIndex: 0
 
                     editable: false
-                    model: ["Today", "Yesterday", "This Week", "This Month", "This Year", "Custom"]
+                    model: ["Today", "Yesterday", "This Week", "This Month", "This Year", "All Time", "Custom"]
 
                     Layout.rightMargin: 10
+
+                    onCurrentIndexChanged: {
+                        if(currentIndex === 0)
+                            ProductSalesModel.showTodaysSales();
+
+                        else if(currentIndex === 1)
+                            ProductSalesModel.showYesterdaysSales();
+
+                        else if(currentIndex === 2)
+                            ProductSalesModel.showThisWeeksSales();
+
+                        else if(currentIndex === 3)
+                            ProductSalesModel.showThisMonthsSales();
+
+                        else if(currentIndex === 4)
+                            ProductSalesModel.showThisYearsSales();
+
+                        else
+                            ProductSalesModel.loadSalesData();
+                    }
                 }
+
+                HorizontalSpacer {}
 
                 Rectangle
                 {
@@ -73,7 +94,7 @@ Item {
                     Layout.minimumWidth: 100
                     Layout.maximumWidth: 300
 
-                    color: "white"
+                    color: QmlInterface.isDarkTheme? "#29292d":"white"
                     border.width: 1
                     border.color: "grey"
                     radius: 3

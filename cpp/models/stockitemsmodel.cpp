@@ -9,6 +9,8 @@ StockItemsModel::StockItemsModel(QObject *parent) : QAbstractListModel(parent)
 
     QJsonDocument doc = QJsonDocument::fromJson(jsonString.toUtf8());
     m_itemDetails = doc.object();
+
+    m_dateTime = new DateTime();
 }
 
 int StockItemsModel::rowCount(const QModelIndex &parent) const
@@ -192,10 +194,9 @@ QHash<int, QByteArray> StockItemsModel::roleNames() const
 void StockItemsModel::addNewItem(const QVariant &barcode, const QVariant &name, const QVariant &unit, const QVariant &bp, const QVariant &sp, const QVariant &qty, const QVariant &company, const QVariant &date, const QVariant &category)
 {
     QSqlDatabase m_db = QSqlDatabase::database();
+    Q_UNUSED(date)
 
-    QString txt = date.toString();
-    QDateTime dt = QDateTime::fromMSecsSinceEpoch(txt.toLong(), Qt::OffsetFromUTC);
-    QString item =  dt.toString(Qt::ISODateWithMs);
+    QString dateNow = m_dateTime->getTimestamp("now").at(0);
 
     if(m_db.isOpen())
     {
@@ -213,14 +214,14 @@ void StockItemsModel::addNewItem(const QVariant &barcode, const QVariant &name, 
         stock_query.prepare("INSERT INTO \"stock\"(barcode,stock_qty,last_update) VALUES (:barcode,:stock_qty,:last_update)");
         stock_query.bindValue(":barcode", barcode.toString());
         stock_query.bindValue(":stock_qty", qty.toString().toInt());
-        stock_query.bindValue(":last_update", item);
+        stock_query.bindValue(":last_update", dateNow);
 
         if(query.exec() && stock_query.exec())
         {
             m_db.commit();
             // qDebug() << ">> New item Added";
 
-            addNewItem(new StockItems(barcode.toString(), name.toString(), unit.toString(), bp.toString().toFloat(), sp.toString().toFloat(), company.toString(), qty.toInt(),item, category.toString()));
+            addNewItem(new StockItems(barcode.toString(), name.toString(), unit.toString(), bp.toString().toFloat(), sp.toString().toFloat(), company.toString(), qty.toInt(), dateNow, category.toString()));
 
             emit itemAddingChanged(true);
 
@@ -287,11 +288,11 @@ void StockItemsModel::updateItem(const QVariant &barcode, const QVariant &name, 
 
 void StockItemsModel::updateStock(const QVariant &barcode, const QVariant &qty, const QVariant &date, const QVariant &index)
 {
+    Q_UNUSED(date)
     QSqlDatabase m_db = QSqlDatabase::database();
 
-    QString txt = date.toString();
-    QDateTime dt = QDateTime::fromMSecsSinceEpoch(txt.toLong(), Qt::OffsetFromUTC);
-    QString lastUpdate =  dt.toString(Qt::ISODateWithMs);
+    QString dateToday = m_dateTime->getTimestamp("now").at(0);
+    // qDebug() << "Stock Update at : " << dateToday;
 
     if(m_db.isOpen())
     {
@@ -299,13 +300,13 @@ void StockItemsModel::updateStock(const QVariant &barcode, const QVariant &qty, 
         stock_query.prepare("UPDATE \"stock\" SET stock_qty=:stock_qty,last_update=:last_update WHERE barcode=:barcode");
         stock_query.bindValue(":barcode", barcode.toString());
         stock_query.bindValue(":stock_qty", qty.toString().toInt());
-        stock_query.bindValue(":last_update", lastUpdate);
+        stock_query.bindValue(":last_update", dateToday);
 
         if(stock_query.exec())
         {
             // Reflect changes on the model
             setData(this->index(index.toString().toInt()), qty, ItemQtyRole);
-            setData(this->index(index.toString().toInt()), QVariant::fromValue(lastUpdate), ItemLastUpdateRole);
+            setData(this->index(index.toString().toInt()), QVariant::fromValue(dateToday), ItemLastUpdateRole);
 
             emit itemStockChanged(true);
         }
@@ -475,11 +476,4 @@ void StockItemsModel::removeItem(int index)
     beginRemoveRows(QModelIndex(), index, index);
     m_stockItems.removeAt(index);
     endRemoveRows();
-}
-
-void StockItemsModel::onDatabaseReady()
-{
-    // qDebug() << ">> database Ready Signal Received";
-
-    initializeStockFromDb();
 }

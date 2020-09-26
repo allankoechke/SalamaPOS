@@ -6,6 +6,7 @@
 #include <QAbstractListModel>
 #include "stockitems.h"
 #include "../databaseinterface.h"
+#include "../datetime.h"
 
 class StockItemsModel : public QAbstractListModel
 {
@@ -74,15 +75,15 @@ signals:
 
     void itemStockWarningChanged(); // Notify if stock qty is less that qty needed to sell
 
-
 private slots:
-    void onDatabaseReady();
 
 private:
     QList<StockItems *> m_stockItems;
 
     // DatabaseInterface * m_databaseInterface;
     QJsonObject m_itemDetails;
+
+    DateTime * m_dateTime;
 };
 
 #endif // STOCKITEMSMODEL_H

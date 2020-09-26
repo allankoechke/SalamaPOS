@@ -1,3 +1,5 @@
+SET timezone = 'Africa/Nairobi';
+
 CREATE TABLE IF NOT EXISTS product_type (
         id          serial PRIMARY KEY,
         type_id     VARCHAR(64) NOT NULL UNIQUE,
@@ -22,7 +24,7 @@ CREATE TABLE IF NOT EXISTS stock (
         id              serial PRIMARY KEY,
         barcode         VARCHAR ( 50 ),
         stock_qty	INTEGER NOT NULL DEFAULT 0,
-        last_update	TEXT NOT NULL,
+        last_update	TIMESTAMP WITH TIME ZONE NOT NULL,
 
         FOREIGN KEY(barcode) REFERENCES product (barcode) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -34,7 +36,7 @@ CREATE TABLE IF NOT EXISTS users (
         username                VARCHAR (128) NOT NULL UNIQUE,
         password                VARCHAR (128) NOT NULL,
         phone_no                VARCHAR (128) NOT NULL,
-        date_added              VARCHAR (128) NOT NULL,
+        date_added              TIMESTAMP WITH TIME ZONE NOT NULL,
         to_change_password	boolean DEFAULT FALSE,
         to_delete_account       boolean DEFAULT FALSE
 );
@@ -59,7 +61,8 @@ CREATE TABLE IF NOT EXISTS creditee (
         lastname	TEXT NOT NULL,
         national_id	NUMERIC NOT NULL,
         phone_no	NUMERIC NOT NULL,
-        amount_due	REAL DEFAULT 0
+        amount_due	REAL DEFAULT 0,
+        date_added      TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'Africa/Nairobi')
 );
 
 CREATE TABLE IF NOT EXISTS payment (
@@ -76,7 +79,7 @@ CREATE TABLE IF NOT EXISTS sales (
         id              serial PRIMARY KEY,
         sales_id        VARCHAR (128) NOT NULL,
         barcode         VARCHAR ( 50 ),
-        sales_date	TEXT NOT NULL,
+        sales_date	TIMESTAMP NOT NULL,
         product_bp	REAL NOT NULL,
         product_sp	REAL NOT NULL,
         sale_qty	int NOT NULL,
@@ -99,7 +102,7 @@ CREATE TABLE IF NOT EXISTS mpesa (
 CREATE TABLE IF NOT EXISTS credit (
         id              serial PRIMARY KEY,
         creditee_id	INTEGER,
-        due_date	VARCHAR (128) NOT NULL,
+        due_date	TIMESTAMP NOT NULL,
         sales_id	VARCHAR (128) NOT NULL,
 
         FOREIGN KEY (creditee_id) REFERENCES creditee (id) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -112,14 +115,14 @@ CREATE TABLE IF NOT EXISTS notifications (
         message     TEXT NOT NULL,
         muted       boolean DEFAULT FALSE,
         solved      boolean DEFAULT FALSE,
-        notify_date TEXT NOT NULL
+        notify_date TIMESTAMP NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS messages (
         id          serial PRIMARY KEY,
         sender          TEXT NOT NULL,
         receiver        TEXT NOT NULL,
-        date        TEXT NOT NULL,
+        date        TIMESTAMP NOT NULL,
         content     TEXT NOT NULL,
         has_read    boolean DEFAULT FALSE
 );

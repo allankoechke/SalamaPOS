@@ -2,7 +2,7 @@
 
 saleItemsModel::saleItemsModel(QObject *parent) : QAbstractListModel(parent)
 {
-
+    m_dateTime = new DateTime();
 }
 
 int saleItemsModel::rowCount(const QModelIndex &parent) const
@@ -239,6 +239,8 @@ QHash<int, QByteArray> saleItemsModel::roleNames() const
 
 void saleItemsModel::addSaleItem(const QVariant &barcode, const int &qty, const QVariant &uname, const QVariant &saleid, const QVariant &dt)
 {
+    QString dateToday = m_dateTime->getTimestamp("now").at(0);
+
     QSqlDatabase m_db = QSqlDatabase::database();
 
     if(m_db.isOpen())
@@ -259,14 +261,14 @@ void saleItemsModel::addSaleItem(const QVariant &barcode, const int &qty, const 
                 {
                     QSqlQuery writeSales;
                     //writeSales.prepare("INSERT INTO sales(sales_id,barcode,sales_date,product_bp,product_sp,sale_qty,username) VALUES(:id"+saleid.toString()+",:barcode,:date,:bp,:sp,:qty,:uname)");
-                    writeSales.prepare("INSERT INTO sales(sales_id,barcode,sales_date,product_bp,product_sp,sale_qty,username) VALUES('"+saleid.toString()+"','" +barcode.toString()+ "','"+dt.toString()+"',:bp,:sp,:qty,'"+uname.toString()+"')");
+                    writeSales.prepare("INSERT INTO sales(sales_id,barcode,sales_date,product_bp,product_sp,sale_qty,username) VALUES('"+saleid.toString()+"','" +barcode.toString()+ "','"+ dateToday +"',:bp,:sp,:qty,'"+uname.toString()+"')");
                     writeSales.bindValue(":bp", QString::number(bp));
                     writeSales.bindValue(":sp", QString::number(sp));
                     writeSales.bindValue(":qty", QString::number(qty));
 
                     if(writeSales.exec())
                     {
-                        qDebug() << ">> Success writing Sale to db";
+                        // qDebug() << ">> Success writing Sale to db";
 
                         int c_qty = currentStock - qty;
 

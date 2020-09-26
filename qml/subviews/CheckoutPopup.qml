@@ -188,19 +188,41 @@ Controls2.Drawer {
                             {
                                 anchors.fill: parent
                                 onClicked: {
-                                    uniqueSaleDate = SalesModel.getCurrentTimeString()
-                                    uniqueSaleId = SalesModel.getUniqueSaleId();
+                                    if(cashAmount === "")
+                                        cashAmount =  '0'
 
-                                    var _js = '{ "cash":0, "mpesa":0, "credit":0, "cheque":0 }'
-                                    var json = JSON.parse(_js)
+                                    if(mpesaAmount === "")
+                                        mpesaAmount = '0'
 
-                                    json.cash = cashAmount
-                                    json.mpesa = mpesaAmount
-                                    json.credit = creditAmount
-                                    json.cheque = chequeAmount
+                                    if(chequeAmount === "")
+                                        chequeAmount = '0'
 
-                                    SalesModel.addPaymentSaleDetails(uniqueSaleId, json);
-                                    // json.due_date = Qt.formatDateTime(new Date(), "dd-MM-yyyy")
+                                    if(creditAmount === "")
+                                        creditAmount = '0'
+
+                                    var paidAmount = parseInt(cashAmount) + parseInt(mpesaAmount) + parseInt(chequeAmount) + parseInt(creditAmount)
+
+                                    if(paidAmount >= CheckoutModel.sellTotals)
+                                    {
+                                        uniqueSaleDate = SalesModel.getCurrentTimeString()
+                                        uniqueSaleId = SalesModel.getUniqueSaleId();
+
+                                        var _js = '{ "cash":0, "mpesa":0, "credit":0, "cheque":0 }'
+                                        var json = JSON.parse(_js)
+
+                                        json.cash = cashAmount
+                                        json.mpesa = mpesaAmount
+                                        json.credit = creditAmount
+                                        json.cheque = chequeAmount
+
+                                        SalesModel.addPaymentSaleDetails(uniqueSaleId, json);
+                                        // json.due_date = Qt.formatDateTime(new Date(), "dd-MM-yyyy")
+                                    }
+
+                                    else
+                                    {
+                                        console.log(" [ERROR] Paid amont is less than the required amount")
+                                    }
                                 }
                             }
                         }
@@ -227,6 +249,14 @@ Controls2.Drawer {
                     root.close();
 
                     console.log(" [INFO] Success Adding Sale Items : " , counter)
+
+                    cashAmount = "";
+                    mpesaAmount = "";
+                    chequeAmount = "";
+                    creditAmount = "";
+
+                    ProductSalesModel.showTodaysSales();
+                    salesView.currentIndex = 0;
                 }
             }
 
@@ -264,7 +294,7 @@ Controls2.Drawer {
 
         function onUpdateSalesModelChanged(_barcode, _qty)
         {
-            ProductSalesModel.addSalesData(_barcode, _qty);
+            // ProductSalesModel.addSalesData(_barcode, _qty);
         }
     }
 }

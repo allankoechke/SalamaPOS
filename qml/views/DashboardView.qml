@@ -171,7 +171,7 @@ Item {
         Rectangle
         {
             id: graph
-            color: "white"
+            color: QmlInterface.isDarkTheme? "#29292d":"white"
             radius: 5
 
             Layout.minimumWidth: (grid.width-50)*0.8
@@ -224,7 +224,7 @@ Item {
 
         Rectangle
         {
-            color: "white"
+            color: QmlInterface.isDarkTheme? "#29292d":"white"
             radius: 5
             Layout.fillWidth: true
             Layout.preferredHeight: 80

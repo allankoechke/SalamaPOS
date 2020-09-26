@@ -7,7 +7,7 @@ import "../components"
 Rectangle {
     id: root
     height: 45
-    color: ((_index+1)%2)===0? "#eeeeee":"white"
+    color: QmlInterface.isDarkTheme? (((_index+1)%2)===0? Qt.lighter("#29292d", 1.3):Qt.lighter("#29292d", 1.5)):(((_index+1)%2)===0? "#eeeeee":"white")
 
     property int _index: ind
     property alias itemName: itemName.text
@@ -27,7 +27,7 @@ Rectangle {
 
         AppText
         {
-            color: "black"
+            color: QmlInterface.isDarkTheme? "#999fa6":"black"
             text: (_index+1).toString()+"."
             horizontalAlignment: AppText.AlignHCenter
 
@@ -38,7 +38,7 @@ Rectangle {
         AppText
         {
             id: itemName
-            color: "black"
+            color: QmlInterface.isDarkTheme? "#999fa6":"black"
             horizontalAlignment: AppText.AlignLeft
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
@@ -49,7 +49,7 @@ Rectangle {
 
         AppText
         {
-            color: "black"
+            color: QmlInterface.isDarkTheme? "#999fa6":"black"
             id: unit
             horizontalAlignment: AppText.AlignHCenter
 
@@ -59,7 +59,7 @@ Rectangle {
 
         AppText
         {
-            color: "black"
+            color: QmlInterface.isDarkTheme? "#999fa6":"black"
             id: qty
             horizontalAlignment: AppText.AlignHCenter
 
@@ -69,7 +69,7 @@ Rectangle {
 
         AppText
         {
-            color: "black"
+            color: QmlInterface.isDarkTheme? "#999fa6":"black"
             id: sp
             horizontalAlignment: AppText.AlignHCenter
 
@@ -80,7 +80,7 @@ Rectangle {
         AppText
         {
             id: ttals
-            color: "black"
+            color: QmlInterface.isDarkTheme? "#999fa6":"black"
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
@@ -90,7 +90,7 @@ Rectangle {
         AppText
         {
             id: pr
-            color: "black"
+            color: QmlInterface.isDarkTheme? "#999fa6":"black"
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
@@ -118,7 +118,7 @@ Rectangle {
 
                 AppText
                 {
-                    color: "black"
+                    color: QmlInterface.isDarkTheme? "#999fa6":"black"
                     text: qsTr("Edit")
 
                     Layout.alignment: Qt.AlignVCenter

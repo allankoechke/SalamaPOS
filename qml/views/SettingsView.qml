@@ -22,7 +22,7 @@ Item {
 
         Rectangle
         {
-            color: "white"
+            color: QmlInterface.isDarkTheme? "#29292d":"white"
             width: 200
             radius: 5
 
@@ -76,7 +76,7 @@ Item {
 
         Rectangle
         {
-            color: "white"
+            color: QmlInterface.isDarkTheme? "#29292d":"white"
             radius: 5
 
             Layout.fillHeight: true

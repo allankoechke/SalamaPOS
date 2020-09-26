@@ -29,7 +29,7 @@ Controls2.Popup
 
     contentItem: Rectangle
     {
-        color: bgColor
+        color: QmlInterface.isDarkTheme? "#1e2027":bgColor
         anchors.fill: parent
 
 
@@ -56,7 +56,7 @@ Controls2.Popup
 
                 AppText
                 {
-                    color: "black"
+                    color: QmlInterface.isDarkTheme? "#999fa6":"black"
                     size: 17
                     text: qsTr("Edit User Accounts")
 

@@ -27,11 +27,11 @@ Item {
         y: (parent.height - height)/3
         anchors.horizontalCenter: parent.horizontalCenter
 
-        AppIcon
+        Image
         {
-            color: menuColor
-            size: parent.height*0.75
-            icon: "\uf78a"
+            source: "qrc:/assets/images/3.png"
+            height: parent.height*0.75
+            fillMode: Image.PreserveAspectFit
 
             anchors.centerIn: parent
         }

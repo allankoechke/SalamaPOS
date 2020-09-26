@@ -5,7 +5,7 @@ import QtQuick.Controls 2.4 as Controls2
 Item
 {
     Layout.fillWidth: true
-    Layout.preferredHeight: 30
+    Layout.preferredHeight: 40
 
     property alias label: textLabel.text
     property real prefWidth: 0
@@ -27,7 +27,7 @@ Item
             AppText
             {
                 id: textLabel
-                color: "#555555"
+                color: QmlInterface.isDarkTheme? "#f4f4f4":"#555555"
                 size: 15
 
                 anchors.verticalCenter: parent.verticalCenter
@@ -40,10 +40,10 @@ Item
             id: textInput
             Layout.fillWidth: true
             Layout.fillHeight: true
-            verticalAlignment: Controls2.TextField.AlignVCenter
+            verticalAlignment: Controls2.TextField.AlignBottom
             horizontalAlignment: Controls2.TextField.AlignLeft
 
-            color: "black" //"#535353"
+            color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
             selectByMouse: true
             font.pixelSize: 15
             font.family: montserratFontLoader.name

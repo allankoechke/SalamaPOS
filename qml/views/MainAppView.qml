@@ -7,7 +7,7 @@ import "../subviews"
 Rectangle {
     id: mainAppViewRoot
     anchors.fill: parent
-    color: "#f4f9fa"
+    color: bgColor // QmlInterface.isDarkTheme? "#1e2027":"#f4f9fa"//"#f4f9fa"
 
     property int navBarIndex: 7
     property string viewText: qsTr("Home")
@@ -88,7 +88,7 @@ Rectangle {
 
                         StockView {}
 
-                        SalesView {}
+                        SalesView { id: salesView }
 
                         MessagesView {}
 

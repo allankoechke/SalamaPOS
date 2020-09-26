@@ -13,6 +13,7 @@
 #include <QAbstractListModel>
 
 #include "saleitems.h"
+#include "../datetime.h"
 
 class saleItemsModel : public QAbstractListModel
 {
@@ -72,6 +73,8 @@ signals:
 
 private:
     QList<SaleItems *> m_saleItems;
+
+    DateTime * m_dateTime;
 
 };
 

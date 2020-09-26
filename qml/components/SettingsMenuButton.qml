@@ -5,7 +5,7 @@ import "../components"
 
 Rectangle {
     id: root
-    color: isCurrentSelected? "#266995":"#f1f3f5"
+    color: isCurrentSelected? "#266995": QmlInterface.isDarkTheme? "#29292d":"#f1f3f5"
 
     property bool isCurrentSelected: false
     property string buttonLabel: ""
@@ -30,7 +30,7 @@ Rectangle {
             {
                 anchors.centerIn: parent
 
-                color: isCurrentSelected? "white":"#102d3f"
+                color: isCurrentSelected? "white":QmlInterface.isDarkTheme? "grey":"#102d3f"
                 size: 15
                 icon: buttonIcon
             }
@@ -38,7 +38,7 @@ Rectangle {
 
         AppText
         {
-            color: isCurrentSelected? "white":"#102d3f"
+            color: isCurrentSelected? "white":QmlInterface.isDarkTheme? "grey":"#102d3f"
             text: buttonLabel
 
             Layout.fillWidth: true

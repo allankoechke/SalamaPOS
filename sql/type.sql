@@ -1,0 +1,15 @@
+INSERT INTO product_type(type_id, type_name) VALUES('35702','Vet products');
+INSERT INTO product_type(type_id, type_name) VALUES('35722','Pesticides');
+INSERT INTO product_type(type_id, type_name) VALUES('35773','Mineral suppliments');
+INSERT INTO product_type(type_id, type_name) VALUES('35804','Hygene products');
+INSERT INTO product_type(type_id, type_name) VALUES('35824','Dewormer');
+INSERT INTO product_type(type_id, type_name) VALUES('35965','Poultry products');
+INSERT INTO product_type(type_id, type_name) VALUES('36037','Injectables');
+INSERT INTO product_type(type_id, type_name) VALUES('36068','Seeds');
+INSERT INTO product_type(type_id, type_name) VALUES('36230','Feeds');
+INSERT INTO product_type(type_id, type_name) VALUES('36415','Herbicide');
+INSERT INTO product_type(type_id, type_name) VALUES('36435','Accaricides');
+INSERT INTO product_type(type_id, type_name) VALUES('36569','Fertilizers');
+INSERT INTO product_type(type_id, type_name) VALUES('36914','Vaccine');
+INSERT INTO product_type(type_id, type_name) VALUES('37482','Fungicides');
+INSERT INTO product_type(type_id, type_name) VALUES('37523','injectables');

@@ -7,7 +7,7 @@ import "../components"
 Rectangle {
     id: root
     height: 45
-    color: ((_index+1)%2)===0? "#eeeeee":"white"
+    color: QmlInterface.isDarkTheme? (((_index+1)%2)===0? Qt.lighter("#29292d", 1.3):Qt.lighter("#29292d", 1.5)):(((_index+1)%2)===0? "#eeeeee":"white")
 
     property int _index
     property string itemName
@@ -25,88 +25,225 @@ Rectangle {
         anchors.fill: parent
         spacing: 1
 
-        AppText
+        Item
         {
-            color: "black"
-            text: (_index+1).toString()+"."
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.preferredWidth: 50
+            Layout.fillHeight: true
+
+            AppText
+            {
+                color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
+                width: parent.width
+                text: (_index+1).toString()+"."
+                horizontalAlignment: AppText.AlignHCenter
+                elide: AppText.ElideRight
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+            }
         }
 
-        AppText
+        Rectangle
         {
-            color: "black"
-            text: itemName
-            horizontalAlignment: AppText.AlignLeft
+            color: "transparent"
+            width: 2
+            Layout.fillHeight: true
+            opacity: 0.1
+        }
 
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+        Item
+        {
             Layout.fillWidth: true
             Layout.minimumWidth: 150
+            Layout.fillHeight: true
+
+            AppText
+            {
+                color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
+                text: itemName
+                width: parent.width
+                elide: AppText.ElideRight
+                horizontalAlignment: AppText.AlignLeft
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+            }
         }
 
-        AppText
+        Rectangle
         {
-            color: "black"
-            text: barCode
-            horizontalAlignment: AppText.AlignLeft
+            color: "transparent"
+            width: 2
+            Layout.fillHeight: true
+            opacity: 0.1
+        }
 
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+
+        Item
+        {
             Layout.preferredWidth: 150
+            Layout.fillHeight: true
+
+            AppText
+            {
+                color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
+                text: barCode
+                width: parent.width
+                elide: AppText.ElideRight
+                horizontalAlignment: AppText.AlignLeft
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+            }
         }
 
-        AppText
+        Rectangle
         {
-            color: "black"
-            text: _unit
-            horizontalAlignment: AppText.AlignLeft
+            color: "transparent"
+            width: 2
+            Layout.fillHeight: true
+            opacity: 0.1
+        }
 
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+
+        Item
+        {
             Layout.preferredWidth: 100
+            Layout.fillHeight: true
+
+            AppText
+            {
+                color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
+                text: _unit
+                width: parent.width-10
+                elide: AppText.ElideRight
+                horizontalAlignment: AppText.AlignLeft
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: 10
+            }
         }
 
-        AppText
+        Rectangle
         {
-            color: "black"
-            text: bp.toString()
-            horizontalAlignment: AppText.AlignLeft
+            color: "transparent"
+            width: 2
+            Layout.fillHeight: true
+            opacity: 0.1
+        }
 
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+
+       Item
+        {
             Layout.preferredWidth: 150
+            Layout.fillHeight: true
+
+            AppText
+            {
+                color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
+                text: bp.toString()
+                width: parent.width
+                elide: AppText.ElideRight
+                horizontalAlignment: AppText.AlignHCenter
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+            }
         }
 
-        AppText
+        Rectangle
         {
-            color: "black"
-            text: sp.toString()
-            horizontalAlignment: AppText.AlignLeft
+            color: "transparent"
+            width: 2
+            Layout.fillHeight: true
+            opacity: 0.1
+        }
 
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+
+        Item
+        {
             Layout.preferredWidth: 150
+            Layout.fillHeight: true
+
+            AppText
+            {
+                color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
+                text: sp.toString()
+                width: parent.width
+                elide: AppText.ElideRight
+                horizontalAlignment: AppText.AlignHCenter
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+            }
         }
 
-        AppText
+        Rectangle
         {
-            color: "black"
-            text: qty.toString()
-            horizontalAlignment: AppText.AlignLeft
+            color: "transparent"
+            width: 2
+            Layout.fillHeight: true
+            opacity: 0.1
+        }
 
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+
+        Item
+        {
+            Layout.fillHeight: true
             Layout.preferredWidth: 100
+
+            AppText
+            {
+                color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
+                text: qty.toString()
+                width: parent.width
+                elide: AppText.ElideRight
+                horizontalAlignment: AppText.AlignHCenter
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+            }
         }
 
-        AppText
+        Rectangle
         {
-            color: "black"
-            text: company
-            horizontalAlignment: AppText.AlignLeft
+            color: "transparent"
+            width: 2
+            Layout.fillHeight: true
+            opacity: 0.1
+        }
 
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+
+        Item
+        {
+            Layout.fillHeight: true
             Layout.fillWidth: true
             Layout.minimumWidth: 150
             Layout.maximumWidth: 300
+            Layout.leftMargin: 10
+
+            AppText
+            {
+                color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
+                text: company
+                width: parent.width
+                elide: AppText.ElideRight
+                horizontalAlignment: AppText.AlignLeft
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+            }
         }
+
+        Rectangle
+        {
+            color: "transparent"
+            width: 2
+            Layout.fillHeight: true
+            opacity: 0.1
+        }
+
 
         Item{
             Layout.preferredWidth: 100

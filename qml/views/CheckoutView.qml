@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.4 as Controls2
+import QtQuick.Controls.Material 2.2
 
 import "../components"
 import "../subviews"
@@ -42,7 +43,7 @@ Item {
                     AppText{
                         id: _text
                         size: 15
-                        color: "#2e2e2e"
+                        color: QmlInterface.isDarkTheme? "grey":"#2e2e2e"
                         text: qsTr("Scan Barcode to add items or Use the search button")
 
                         anchors.left: parent.left
@@ -103,7 +104,7 @@ Item {
                 AppText{
                     Layout.fillHeight: true
                     size: 70*0.6
-                    color: "black"
+                    color: QmlInterface.isDarkTheme? "white":"black"
                     text: qsTr("Sales: Ksh. ") + (sellListView.model === null? "0":sellListView.model.count === 0? "0":parseInt(CheckoutModel.sellTotals).toString())
 
                     verticalAlignment: AppText.AlignVCenter
@@ -113,7 +114,7 @@ Item {
 
         Rectangle
         {
-            color: "black"; Layout.fillWidth: true; height: 2; opacity: 0.078; Layout.leftMargin: 50; Layout.rightMargin: 50;
+            color: QmlInterface.isDarkTheme? "white":"black"; Layout.fillWidth: true; height: 2; opacity: 0.078; Layout.leftMargin: 50; Layout.rightMargin: 50;
         }
 
         Rectangle
@@ -123,7 +124,8 @@ Item {
             Layout.leftMargin: 50
             Layout.rightMargin: 50
 
-            color: "white"
+            color: QmlInterface.isDarkTheme? "#29292d":"white"
+            Material.elevation: 6
             radius: 4
             border.width: 1
             border.color: "grey"
@@ -184,7 +186,6 @@ Item {
                         }
                     }
                 }
-
             }
         }
 

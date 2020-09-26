@@ -32,7 +32,7 @@ Item {
                 {
                     id: usr_name
                     text: loggedUser_fullname
-                    color: "grey"
+                    color: QmlInterface.isDarkTheme? "#999fa6":"grey"
                     size: 14
 
                     Layout.fillWidth: true
@@ -42,7 +42,7 @@ Item {
                 AppText
                 {
                     text: loggedUser_username
-                    color: "grey"
+                    color: QmlInterface.isDarkTheme? "#999fa6":"grey"
                     size: 10
 
                     Layout.fillWidth: true

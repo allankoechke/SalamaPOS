@@ -1,4 +1,4 @@
-QT += quick widgets charts sql
+QT += quick widgets charts sql quickcontrols2
 
 CONFIG += c++11
 
@@ -15,6 +15,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         cpp/databaseinterface.cpp \
+        cpp/datetime.cpp \
         cpp/main.cpp \
         cpp/models/checkoutitems.cpp \
         cpp/models/checkoutitemsmodel.cpp \
@@ -48,6 +49,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     cpp/databaseinterface.h \
+    cpp/datetime.h \
     cpp/models/checkoutitems.h \
     cpp/models/checkoutitemsmodel.h \
     cpp/models/completer.h \

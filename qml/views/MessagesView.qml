@@ -135,7 +135,7 @@ Item {
                 {
                     text: qsTr("Send message to Admin")
                     size: 18
-                    color: "#555555"
+                    color: QmlInterface.isDarkTheme? "#29292d":"#555555"
 
                     Layout.alignment: Qt.AlignLeft
                 }
@@ -145,7 +145,7 @@ Item {
                     Layout.fillWidth: true
                     Layout.minimumHeight: 300
 
-                    color: "white"
+                    color: QmlInterface.isDarkTheme? "#29292d":"white"
                     radius: 5
                     border.color: "grey"
                     border.width: 1

@@ -7,7 +7,7 @@ import "../components"
 Rectangle {
     id: root
     height: 45
-    color: ((_index+1)%2)===0? "#eeeeee":"white"
+    color: QmlInterface.isDarkTheme? (((_index+1)%2)===0? Qt.lighter("#29292d", 1.3):Qt.lighter("#29292d", 1.5)):(((_index+1)%2)===0? "#eeeeee":"white")
 
     property int _index
     property string itemName
@@ -25,7 +25,7 @@ Rectangle {
 
         AppText
         {
-            color: "black"
+            color: QmlInterface.isDarkTheme? "#999fa6":"black"
             text: (_index+1).toString()+"."
             horizontalAlignment: AppText.AlignHCenter
 
@@ -33,45 +33,69 @@ Rectangle {
             Layout.preferredWidth: 50
         }
 
-        AppText
-        {
-            color: "black"
-            text: " " + itemName
-            horizontalAlignment: AppText.AlignLeft
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignLeft
+        Item{
+            Layout.fillHeight: true
             Layout.fillWidth: true
             Layout.minimumWidth: 150
+            Layout.leftMargin: 5
+
+            AppText
+            {
+                color: QmlInterface.isDarkTheme? "#999fa6":"black"
+                text: " " + itemName
+                width: parent.width
+                elide: AppText.ElideRight
+                horizontalAlignment: AppText.AlignLeft
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+            }
         }
 
-        AppText
-        {
-            color: "black"
-            text: barCode
-            horizontalAlignment: AppText.AlignLeft
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+        Item{
+            Layout.fillHeight: true
             Layout.preferredWidth: 150
+            Layout.leftMargin: 5
+
+            AppText
+            {
+                color: QmlInterface.isDarkTheme? "#999fa6":"black"
+                text: barCode
+                width: parent.width
+                elide: AppText.ElideRight
+                horizontalAlignment: AppText.AlignLeft
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+            }
         }
 
-        AppText
-        {
-            color: "black"
-            text: _unit
-            horizontalAlignment: AppText.AlignLeft
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+        Item{
+            Layout.fillHeight: true
             Layout.preferredWidth: 100
+            Layout.leftMargin: 5
+
+            AppText
+            {
+                color: QmlInterface.isDarkTheme? "#999fa6":"black"
+                text: _unit
+                width: parent.width
+                elide: AppText.ElideRight
+                horizontalAlignment: AppText.AlignLeft
+
+                Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+            }
         }
 
         AppText
         {
-            color: "black"
+            color: QmlInterface.isDarkTheme? "#999fa6":"black"
             text: qty.toString()
-            horizontalAlignment: AppText.AlignLeft
+            horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.preferredWidth: 100
+            Layout.leftMargin: 5
         }
 
         Item{
@@ -93,7 +117,7 @@ Rectangle {
 
                 AppText
                 {
-                    color: "black"
+                    color: QmlInterface.isDarkTheme? "#999fa6":"black"
                     text: qsTr("Change")
 
                     Layout.alignment: Qt.AlignVCenter
@@ -107,16 +131,23 @@ Rectangle {
             }
         }
 
-        AppText
-        {
-            color: "black"
-            text: lastUpdated
-            horizontalAlignment: AppText.AlignHCenter
-
-            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+        Item{
             Layout.fillWidth: true
             Layout.minimumWidth: 150
             Layout.maximumWidth: 300
+            Layout.leftMargin: 5
+
+            AppText
+            {
+                color: QmlInterface.isDarkTheme? "#999fa6":"black"
+                text: lastUpdated
+                width: parent.width
+                elide: AppText.ElideRight
+                horizontalAlignment: AppText.AlignHCenter
+
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+            }
         }
     }
 }

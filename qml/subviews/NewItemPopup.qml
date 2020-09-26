@@ -8,7 +8,7 @@ Controls2.Popup
 {
     id: root
     width: 450
-    height: 500
+    height: 550
 
     x: (mainApp.width - width)/2
     y: (mainApp.height - height)/2
@@ -25,10 +25,11 @@ Controls2.Popup
     property alias itemSp: sp.text
     property alias itemQty: qty.text
     property alias itemCompany: company.text
+    property string typeId: ""
 
     contentItem: Rectangle
     {
-        color: bgColor
+        color: QmlInterface.isDarkTheme? "#1e2027":bgColor
         anchors.fill: parent
 
 
@@ -44,7 +45,7 @@ Controls2.Popup
 
                 Rectangle
                 {
-                    color: "black"
+                    color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
                     height: 3
                     width: parent.width
                     opacity: 0.08
@@ -55,7 +56,7 @@ Controls2.Popup
 
                 AppText
                 {
-                    color: "black"
+                    color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
                     size: 17
                     text: isNewItemMode? qsTr("New Item Window"):qsTr("Update Item")
 
@@ -116,6 +117,13 @@ Controls2.Popup
                         label: qsTr("Selling price")
                         hintText: qsTr("Enter sp in Ksh.")
                         validator: IntValidator {bottom: 1; top: 1000000}
+                    }
+
+                    AppCombo
+                    {
+                        id: category
+                        label: qsTr("Item Category")
+
                     }
 
                     AppTextInput
@@ -241,12 +249,12 @@ Controls2.Popup
     function addNewItemToDb(_barcode,_name,_unit,_bp,_sp,_qty,_company)
     {
         var tmspt = new Date().getTime();
-        StockItemModel.addNewItem(_barcode,_name, _unit, _bp, _sp, parseInt(_qty), _company, tmspt, '1658977' /*category*/);
+        StockItemModel.addNewItem(_barcode,_name, _unit, _bp, _sp, parseInt(_qty), _company, tmspt, category);
     }
 
     function updateItemInDb(_barcode,_name,_unit,_bp,_sp,_qty,_company)
     {
-        StockItemModel.updateItem(_barcode, _name, _unit, _bp, _sp, _company, '1658977'/*category*/, barCode, currentIndex);
+        StockItemModel.updateItem(_barcode, _name, _unit, _bp, _sp, _company, category, barCode, currentIndex);
     }
 
     Connections

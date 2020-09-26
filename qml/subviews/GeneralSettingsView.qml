@@ -32,7 +32,7 @@ Item {
 
                 label: AppText
                 {
-                    color: "#535353"
+                    color: QmlInterface.isDarkTheme? "white":"#535353"
                     size: 16
                     font.bold: true
                     text: qsTr("Theme")
@@ -49,7 +49,7 @@ Item {
 
                     AppText
                     {
-                        color: "#535353"
+                        color: QmlInterface.isDarkTheme? "white":"#535353"
                         size: 16
                         text: qsTr("Which theme do you prefer?  ")
                     }
@@ -58,8 +58,11 @@ Item {
                     {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
+                        Layout.minimumHeight: 40
 
                         model: ["Light Theme (Default)", "Dark Theme"]
+
+                        onCurrentIndexChanged: currentIndex===0? QmlInterface.isDarkTheme=false:QmlInterface.isDarkTheme=true
                     }
                 }
             }
@@ -71,7 +74,7 @@ Item {
 
                 label: AppText
                 {
-                    color: "#535353"
+                    color: QmlInterface.isDarkTheme? "white":"#535353"
                     size: 16
                     font.bold: true
                     text: qsTr("Sounds & Notifications")
@@ -88,7 +91,7 @@ Item {
 
                     AppText
                     {
-                        color: "#535353"
+                        color: QmlInterface.isDarkTheme? "white":"#535353"
                         size: 16
                         text: qsTr("How should notification sounds be played? ")
                     }
@@ -97,6 +100,7 @@ Item {
                     {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
+                        Layout.minimumHeight: 40
 
                         model: ["Play on important notifications (Default)", "Play on all notifications", "Don't play on any notification"]
                     }
@@ -110,7 +114,7 @@ Item {
 
                 label: AppText
                 {
-                    color: "#535353"
+                    color: QmlInterface.isDarkTheme? "white":"#535353"
                     size: 16
                     font.bold: true
                     text: qsTr("Organization")
@@ -171,7 +175,7 @@ Item {
             Item
             {
                 Layout.fillWidth: true
-                Layout.preferredHeight: 40
+                Layout.preferredHeight: 50
 
                 RowLayout
                 {
@@ -184,7 +188,7 @@ Item {
                     {
                         text: qsTr("Cancel")
 
-                        Layout.preferredHeight: 30
+                        Layout.preferredHeight: 45
                         Layout.preferredWidth: 100
                     }
 
@@ -192,7 +196,7 @@ Item {
                     {
                         text: qsTr("Apply Changes")
 
-                        Layout.preferredHeight: 30
+                        Layout.preferredHeight: 45
                         Layout.preferredWidth: 200
                     }
                 }

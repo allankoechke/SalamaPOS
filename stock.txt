@@ -1,0 +1,260 @@
+Syrenge	20cc	13	20	BD Discardit	Vet products
+Syrenge	60cc	45	60	Sumbow	Vet products
+Acteic Super	1kg	690	800	Twiga	Pesticides
+Actelic Super	100g	110	130	twiga	Pesticides
+Actelic Super	200g	190	220	Twiga	Pesticides
+Actelic Super	500g	390	450	Twiga	Pesticides
+Acteic Super	50g	80	100	Twiga	Pesticides
+Afya Bora Maziwa	1kg	160	180	Unga	Mineral suppliments
+Afya Bora Maziwa	2kg	280	320	Unga	Mineral suppliments
+Afya Bora Stocklick	2kg	95	150	Unga	Mineral suppliments
+Agita	20g	145	180	Novatis	Hygene products
+Alamycin Aerosol	200ml	320	350	Norbrook	Vet products
+Albafas 10%	120ml	110	140	Norbrook	Dewormer
+Albafas 10%	1 litre	580	650	Norbrook	Dewormer
+Albafas 10%	40ml	49	70	Norbrook	Dewormer
+Albafas 10%	500ml	330	370	Norbrook	Dewormer
+Albafas 2.5%	500ml	120	180	Norbrook	Dewormer
+Albendazole 10%	1 litre	650	700	Bimeda	Dewormer
+Albendazole 10%	120ml	140	160	Bimeda	Dewormer
+Albendazole 10%	250ml	250	300	Bimeda	Dewormer
+Albendazole 10%	40ml	50	70	Bimeda	Dewormer
+Albendazole 10%	500ml	325	420	Bimeda	Dewormer
+Albendazole Bolus	300mg	12	20	Bimeda	Dewormer
+Albendazole Bolus	600mg	18	30	Bimeda	Dewormer
+Albevet 10%	1 litre	550	650	Medisel	Dewormer
+Albevet 10%	500ml	330	380	Medisel	Dewormer
+Amilyte	20g	75	100	Ultravetis	Poultry products
+Ascarex	30g	100	120	Cosmos	Poultry products
+Ascaten P	1 tablet	12	20	Cosmos	Dewormer
+Baraki bock	25g	45	80	Highchem	Hygene products
+Bestphos maziwa	1kg	90	150	Bestphos Ltd	Mineral suppliments
+Bestphos maziwa	2 kg	170	250	Bestphos Ltd	Mineral suppliments
+Bestphos maziwa	5kg	380	450	Bestphos Ltd	Mineral suppliments
+Bimectin	50m	180	200		Injectables
+Bisol	25g	75	100	Vet care	Poultry products
+Biotrim vet	30g	87	110	Biodeal	Poultry products
+Boma rhodes	1kg	850	950	Simlaw seeds	Seeds
+Bupaquone	20ml	650	750		Injectables
+Bupaquone	1ml	22	30		Injectables
+Butasal100	1ml	18	25		Injectables
+Buvanol 	1ml	22.5	30	Bimeda	Injectables
+Buvanol 	20ml	480	600	Bimeda	Injectables
+Caciject	400ml	430	500	Norbrook	Injectables
+Calfoset	100ml	300	350	Dawa Ltd	Injectables
+Califonia wonder	10g	102	150	Simlaw seeds	Injectables
+Califonia wonder	25g	200	240	Simlaw seeds	Seeds
+Califonia wonder	50g	460	550	Simlaw seeds	Seeds
+Calj	10g	115	150	Simlaw seeds	Seeds
+Calj	25g	217	300	Simlaw seeds	Seeds
+Carrots 	10g	57	80	Simlaw seeds	Seeds
+Carrots 	25g	104	150	Simlaw seeds	Seeds
+Centrino	25g	85	100	Cosmos	Vet products
+Chick marsh	20kg	950	1000	Turbo feeds	Feeds
+Chick marsh	70kg	3500	3800	Turbo feeds	Feeds
+Chick marsh	10kg	650	700	Turbo feeds	Feeds
+Chick marsh	1kg	50	60	Turbo feeds	Feeds
+Chick start	1sachet	50	70	Vet care	Poultry products
+CKL Xtra lick	2kg	330	370	Coopers K Brand	Mineral suppliments
+CKL Xtra lick	5kg	762	850	Coopers K Brand	Mineral suppliments
+Collards	100g	260	330	Simlaw seeds	Seeds
+Collards	10g	49	70	Simlaw seeds	Seeds
+Collards	25g	88	120	Simlaw seeds	Seeds
+Collards	250g	533	650	Simlaw seeds	Seeds
+Collards	500g	1027	1200	Simlaw seeds	Seeds
+Collards	50g	138	170	Simlaw seeds	Seeds
+Copenhagen	100g	211	250	Simlaw seeds	Seeds
+Copenhagen	10g	36	70	Simlaw seeds	Seeds
+Copenhagen	25g	68	90	Simlaw seeds	Seeds
+Copenhagen	50g	125	150	Simlaw seeds	Seeds
+Curafluke	60ml	140	180	Bimeda	Dewormer
+D-Amine	1 litre	580	650	Osho Co. Ltd	Herbicide
+D-Amine	500ml	330	400	Osho Co. Ltd	Herbicide
+Dabotick	20ml	130	150	True vets	Accaricides
+Dabotick	40ML	255	280	True vets	Accaricides
+Dairy meal	10kg	250	300	Turbo feeds	Feeds
+Dairy meal	20kg	480	550	Turbo feeds	Feeds
+Dairy meal	70kg	1500	1700	Turbo feeds	Feeds
+DCP	250g	40	80	Medisel	Mineral suppliments
+DCP	500g	100	120	Medisel	Mineral suppliments
+DCP Ultraphos	250g	80	100	Ultravetis	Mineral suppliments
+DCP Ultraphos	500g	120	150	Ultravetis	Mineral suppliments
+Dehorning wire	1 metre	120	150		Vet products
+Delete	20ml	95	120	Highchem	Accaricides
+Dexajet	50ml	180	200		Injectables
+Dexamethasone	50ml	180	200	Eagles	Injectables
+Diamond plant foliar	1litre	90	120	Keapros	Fertilizers
+Diamond plant foliar	2litres	120	200	Keapros	Fertilizers
+Diamond plant foliar	500ml	50	80	Keapros	Fertilizers
+Diazate	28ml	75	90		Pesticides
+Diazol	28ml	95	120	Amiran	Pesticides
+Dicopur	500ml	310	370		Herbicide
+Diseptoprim pessaries	1 tablet	15	20	Cosmos	Vet products
+Duduthrin	500ml	600	650	Twiga	Pesticides
+Duduthrin	100ml	160	180	Twiga	Pesticides
+Duduthrin	50ml	110	130	Twiga	Pesticides
+Duduthrin	200ml	280	320	Twiga	Pesticides
+Duodip	100ml	545	600	Norbrook	Accaricides
+Duodip	50ml	315	350	Norbrook	Accaricides
+Duodip	20ml	125	150	Norbrook	Accaricides
+Duotech	100ml	300	350	Norbrook	Dewormer
+Duotech	500ml	1400	1600	Norbrook	Dewormer
+Duotech	60ml	165	200	Norbrook	Dewormer
+Ear tags	1 piece	35	50		Vet products
+Easy grow fruit and flowering	120g	65	80	Osho Co. Ltd	Fertilizers
+Easy grow fruit and flowering	250g	95	120	Osho Co. Ltd	Fertilizers
+Easy grow vegetative	120g	65	80	Osho Co. Ltd	Fertilizers
+Easy grow vegetative	250g	95	120	Osho Co. Ltd	Fertilizers
+Egocin chick formula	1 sachet	50	70	Cosmos	Poultry products
+Elmba rhodes	1kg	850	950	Simlaw seeds	Seeds
+Endocure 10%	40ml	80	100	Highchem	Dewormer
+Endospec !0%	1litre	460	600		Dewormer
+Endospec !0%	500ml	295	380		Dewormer
+Endozole 2.5%	1litre	450	500		Dewormer
+Epsom salt 	500g	100	120	Medisel	Vet products
+ESB3 30%	20g	220	250	Ultravetis	Poultry products
+Famas dairy	1kg	110	150	Light ventures ltd	Mineral suppliments
+Famas dairy	2kg	200	250	Light ventures ltd	Mineral suppliments
+Famas dry cow	1kg	120	180	Light ventures ltd	Mineral suppliments
+Famas joto	1kg	120	170	Light ventures ltd	Mineral suppliments
+fowl pox	100ml	500	550	Medion	Vaccine
+Force 1 plus	1litre	790	900	Highchem	Dewormer
+Force 1 plus	500ml	460	500	Highchem	Dewormer
+Force 1 super	125ml	200	220	Highchem	Dewormer
+Force 1 super	500ml	550	650	Highchem	Dewormer
+Force 1 plus	135ml	135	160	Highchem	Dewormer
+Force 1 super	1litre	930	950	Highchem	Dewormer
+Fosbac plus T	50g	380	450	Bupo animal health	Poultry products
+Fosbac plus T	25g	200	250	Bupo animal health	Poultry products
+Fowl typhoid vaccine	100 doses	400	500	Life technologies ltd	Vaccine
+Gardal	40ml	170	200	Highchem	Dewormer
+Gloria	10g	568	650	Simlaw seeds	Seeds
+Gloria	25g	1420	1550	Simlaw seeds	Seeds
+Growers marsh	1kg	40	50	Turbo feeds	Feeds
+Gumboro	100 doses	220	300	Indovax private ltd	Vaccine
+Gumboro	200 doses	350	400	Indovax private ltd	Vaccine
+Heaing oil	100ml	180	220	Coopers K Brand	Hygene products
+Herbikill	1litre	790	900	Osho Co. Ltd	Herbicide
+Herbikill	500ml	530	650	Osho Co. Ltd	Herbicide
+Hydrogen peroxide	200ml	45	60	Palman Chemicals	Hygene products
+Insemination pippete	1piece	30	40		Vet products
+Ivermet	50ml	180	200	Shanghai phamaceuticals	Injectables
+Jackpot	100ml	265	310	Coopers K Brand	Pesticides
+Jackpot	200ml	307	360	Coopers K Brand	Pesticides
+Jackpot	25ml	99	120	Coopers K Brand	Pesticides
+Jackpot	50ml	171	200	Coopers K Brand	Pesticides
+Kienyeji marsh	70kg	2050	2300	Turbo feeds	Feeds
+Kienyeji marsh	10kg	400	450	Turbo feeds	Feeds
+Kienyeji marsh	20kg	700	800	Turbo feeds	Feeds
+Kienyeji marsh	1kg	29	50	Turbo feeds	Feeds
+Lanirat	25g	117	150	Norvatis	Hygene products
+Levafas Xtra	40ml	90	120	Norbrook	Dewormer
+Light kaolin	100g	35	60	Medisel	Vet products
+Light kaolin	250g	60	100	Medisel	Vet products
+Liquid parrafin	100ml	80	100	Farmcare ltd	Poultry products
+Livotox	100ml	180	220		Poultry products
+Lugols iodine	120ml	85	110	Palman Chemicals	Hygene products
+Lugols iodine	80ml	60	80	Palman Chemicals	Hygene products
+Maclik dry cow	1kg	180	200	Coopers K Brand	Mineral suppliments
+Maclik mineral block	2kg	206	250	Coopers K Brand	Mineral suppliments
+Maclik plus	1kg	130	150	Coopers K Brand	Mineral suppliments
+Maclik plus	2kg	249	290	Coopers K Brand	Mineral suppliments
+Maclik plus	5kg	575	650	Coopers K Brand	Mineral suppliments
+maclik super	1kg	180	200	Coopers K Brand	Mineral suppliments
+maclik super	2kg	340	390	Coopers K Brand	Mineral suppliments
+maclik super	5kg	785	920	Coopers K Brand	Mineral suppliments
+maclik super	500g	99	120	Coopers K Brand	Mineral suppliments
+Magadi 	10kg	180	200		Mineral suppliments
+Magic dairy	1kg	140	160	Afrivet	Mineral suppliments
+Metrocycline eye/wound powder	25g	90	110	Hightech pharmaceuticas	Vet products
+Milking Salve	100g	60	80	Norbrook	Hygene products
+Milking Salve	250g	137	170	Norbrook	Hygene products
+Milking Salve champion	100g	70	80	Unga	Hygene products
+Milking Salve champion	200g	140	180	Unga	Hygene products
+Milking salve	100g	72	80	Coopers K Brand	Hygene products
+Milking salve	250g	154	170	Coopers K Brand	Hygene products
+Milthane super	100g	95	120		Fungicides
+Milthane super	200g	152	200		Fungicides
+Milthane super	500g	332	400		Fungicides
+Milthane super	50g	75	90		Fungicides
+Multiboost	100ml	180	200	Twiga	injectables
+Multiject IMM	1piece	75	90		Vet products
+Penikan P300	1piece	115	150	Kela	Vet products
+Multimed 	1piece	60	90		Injectables
+Multivitamin	100ml	180	200		Injectables
+NCD	100Doses	200	300	Venkateshwara 	Vaccine
+NCD	25doses	100	150	Life technologies ltd	Vaccine
+NCD	50 Doses	150	220	Life technologies ltd	Vaccine
+NCD+IB	200 doses	300	400		Vaccine
+Needle 18G	1piece	3.8	5	Apha manufacturers	Vet products
+Neocidol 600EW	28ml	75	100	Ultravetis	Hygene products
+Nilzan bolus	1piece	77	90	Coopers K Brand	Dewormer
+Nilzan plus	1litre	1300	1450	Coopers K Brand	Dewormer
+Nilzan plus	125ml	194	220	Coopers K Brand	Dewormer
+Nilzan plus	150ml	208	240	Coopers K Brand	Dewormer
+Nilzan plus	500ml	725	830	Coopers K Brand	Dewormer
+Norotraz	100ml	185	220	Norbrook	Accaricides
+Norotraz	40ml	95	120	Norbrook	Accaricides
+Norotryp	2.3g sachet	60	100		Vet products
+Opticlox syrenge	5g	110	130	Norbrook	Vet products
+Oshothane	100g	110	130	Osho Co. Ltd	Fungicides
+Oshothane	1kg	565	680	Osho Co. Ltd	Fungicides
+Oshothane	200g	170	220	Osho Co. Ltd	Fungicides
+Oshothane	500g	385	450	Osho Co. Ltd	Fungicides
+Oshothane	50g	80	100	Osho Co. Ltd	Fungicides
+Oxymet 	100ml	160	180	Metrovet	Injectables
+Oxymet 	250ml	330	370	Metrovet	Injectables
+Parvexon	1ml	23.5	30	Bimeda	Injectables
+Parvon	1ml	18	25	Bimeda	Injectables
+Penistrep 20/20	100ml	380	420	Medina chemicas	Injectables
+Penstrep 400	100ml	360	380		Injectables
+Poltricin chick formula	25g	50	80	Cosmos	Poultry products
+Promax 20 EC	25ml	125	150	Highchem	Hygene products
+Rabisin	1ml	70	100	Merial	Vaccine
+Rindomil gold	250g	690	750	Syngenta	Fungicides
+Rindomil gold	50g	140	160	Syngenta	Fungicides
+riogrande	10g	120	150	Simlaw seeds	Seeds
+riogrande	25g	230	300	Simlaw seeds	Seeds
+S-dime	1bolus	25	30	Cosmos	Vet products
+Sevin	100g	80	100	Highchem	Hygene products
+Sevin	200g	125	150	Highchem	Hygene products
+Sevin	50g	60	80	Highchem	Hygene products
+Spinarch	10g	35	50	Simlaw seeds	Seeds
+Spinarch	25g	62	90	Simlaw seeds	Seeds
+Spinarch	50g	115	150	Simlaw seeds	Seeds
+Steadone	100ml	280	320	Ultravetis	Accaricides
+Steadone	35ml	130	150	Ultravetis	Accaricides
+Stopbloat	120ml	130	170	Coopers K Brand	Vet products
+Supermec	50ml	310	370		Injectables
+Surgical blade	1piece	5	10		Vet products
+Surgical surtures (non absobable)	1piece	60	80	RT ED	Vet products
+Surgical surtures (absobable)	1piece	80	100	RT ED	Vet products
+Terrexine	10g	190	220	Univet	Hygene products
+Tetroxy	100ml	135	160	Twiga	Injectables
+Thermometer (clinical)	1piece	80	100		Vet products
+Thermometer (digital)	1piece	360	400		Vet products
+Triatix	100ml	249	280	Coopers K Brand	Accaricides
+Triatix	40ml	115	130	Coopers K Brand	Accaricides
+Triatix	20ml	82	100	Coopers K Brand	Accaricides
+Tricure gold	1litre	850	950	OAK medica	Dewormer
+Tricure gold	500ml	530	600	OAK medica	Dewormer
+Tricure gold	125ml	190	220	OAK medica	Dewormer
+Twigalick maziwa max	1kg	240	300	Twiga	Mineral suppliments
+Twigalick maziwa max	2kg	320	400	Twiga	Mineral suppliments
+twigalick maziwa zaidi	1kg	140	180	Twiga	Mineral suppliments
+Twigamec	50ml	175	200	Twiga	Injectables
+Twigamec	100ml	290	350	Twiga	Injectables
+Twigazle 10%	500ml	330	380	Twiga	Dewormer
+Tylodoxy 200	1 sachet	125	150	Alfa vets	Poultry products
+Ultramix maziwa	1kg	160	180	Ultravetis	Mineral suppliments
+Ultramix maziwa	2kg	300	340	Ultravetis	Mineral suppliments
+Valbazen 10%	40ml	220	240	Ultravetis	Dewormer
+Valbazen 2.5%	100ml	195	220	Ultravetis	Dewormer
+Vet glove	1piece	12	2o		Vet products
+Vital joto	1kg	140	170	Vital	Mineral suppliments
+Vital joto	2kg	280	320	Vital	Mineral suppliments
+Vital maziwa	1kg	190	220	Vital	Mineral suppliments
+Vital maziwa	2kg	360	400	Vital	Mineral suppliments
+Vital ndama	1kg	145	170	Vital	Mineral suppliments
+Weedal	1litre	390	450	Hanghzou agrochemicals	Herbicide
+Weedal	500ml	260	310	Hanghzou agrochemicals	Herbicide

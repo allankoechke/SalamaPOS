@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Window 2.3
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
+import QtQuick.Controls.Material 2.2
 
 import "../delegates"
 import "../components"
@@ -36,7 +37,7 @@ Window {
 
         Item{
             Layout.fillWidth: true
-            Layout.preferredHeight: 35
+            Layout.preferredHeight: 45
 
             RowLayout{
                 anchors.fill: parent
@@ -48,19 +49,19 @@ Window {
                     horizontalAlignment: AppText.AlignLeft
 
                     text: qsTr("Item Name ")
-                    color: "#2e2e2e"
+                    color: QmlInterface.isDarkTheme? "grey":"#2e2e2e"
                 }
 
                 TextField
                 {
                     id: textField
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 35
-                    verticalAlignment: TextInput.AlignVCenter
+                    Layout.preferredHeight: 45
+                    verticalAlignment: TextInput.AlignBottom
                     horizontalAlignment: TextInput.AlignLeft
                     Layout.leftMargin: 5
-                    color: "black"
-                    font.pixelSize: 17
+                    color: QmlInterface.isDarkTheme? "white":"black"
+                    font.pixelSize: 16
                     font.family: montserratFontLoader.name
                     selectByMouse: true
                     validator: RegExpValidator {regExp: RegExp("[a-zA-Z0-9]+")}
@@ -79,10 +80,11 @@ Window {
             id: completionsBox
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Material.elevation: 6
 
-            color: "white"
+            color: QmlInterface.isDarkTheme? "#29292d":"white"
             border.width: 1
-            border.color: "silver"
+            border.color: QmlInterface.isDarkTheme? "transparent":"silver"
             radius: 3
 
             ScrollView
@@ -130,6 +132,8 @@ Window {
             {
                 text: qsTr("Close dialog after adding item")
                 checked: isDialogClosedAfterEachAdd
+
+
 
                 onCheckStateChanged: isDialogClosedAfterEachAdd=checked
             }

@@ -41,11 +41,12 @@ Item {
                             anchors.centerIn: parent
                             spacing: 10
 
-                            AppIcon
+                            Image
                             {
-                                color: menuColor
-                                size: 30
-                                icon: "\uf78a"
+                                visible: false
+                                source: "qrc:/assets/images/6.png"
+                                height: 30
+                                fillMode: Image.PreserveAspectCrop
 
                                 Layout.alignment: Qt.AlignVCenter|Qt.AlignLeft
                             }
@@ -165,6 +166,7 @@ Item {
         Connections
         {
             target: AccountsModel
+
             function onLoggingInUsernameStatus(status)
             {
                 if(!status)
@@ -177,22 +179,25 @@ Item {
 
             function onLoggingInPasswordStatus(status)
             {
+                console.log("Status: ", status)
+
                 if(!status)
                 {
                     isError = true
                     errorString = qsTr("Invalid login details")
-                    console.log("Wrong Password")
+                    console.log(" [ERROR] Wrong Password")
                 }
 
                 else
                 {
-                    // startApp(true);
+                    console.log(" [INFO] Correct Password")
+                    startApp(true);
                     notificationBar.visible = true;
                     navBar.visible = true
                     navBarIndex = 0;
 
                     // Load the days sales
-                    ProductSalesModel.loadSalesData();
+                    ProductSalesModel.showTodaysSales();
                 }
             }
 

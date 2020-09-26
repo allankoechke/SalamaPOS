@@ -72,5 +72,15 @@
         <file>qml/subviews/AddItemDialog.qml</file>
         <file>json/sale_item.json</file>
         <file>json/status.json</file>
+        <file>json/admin_account.json</file>
+        <file>qml/components/AppPane.qml</file>
+        <file>qml/components/CommandButton.qml</file>
+        <file>qml/components/AppCombo.qml</file>
+        <file>assets/images/1.png</file>
+        <file>assets/images/2.png</file>
+        <file>assets/images/3.png</file>
+        <file>assets/images/4.png</file>
+        <file>assets/images/5.png</file>
+        <file>assets/images/6.png</file>
     </qresource>
 </RCC>

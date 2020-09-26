@@ -18,6 +18,8 @@ UserAccountsModel::UserAccountsModel(QObject *parent) : QAbstractListModel(paren
 
     QJsonDocument docStatus = QJsonDocument::fromJson(jsonStatus.toUtf8());
     m_status = docStatus.object();
+
+    m_dateTime = new DateTime();
 }
 
 int UserAccountsModel::rowCount(const QModelIndex &parent) const
@@ -314,6 +316,7 @@ QHash<int, QByteArray> UserAccountsModel::roleNames() const
 
 void UserAccountsModel::addNewUserAccount(const QVariant &userFirstname, const QVariant &userLastname, const QVariant &userUsername, const QVariant &userPassword, const QVariant &userPhoneNo, const QVariant &userDateAdded)
 {
+    Q_UNUSED(userDateAdded)
     if(getUserIndex(userUsername.toString()) != -1)
     {
         emit usernameExistsChanged(true);
@@ -322,14 +325,10 @@ void UserAccountsModel::addNewUserAccount(const QVariant &userFirstname, const Q
 
     else
     {
+        QString dateToday = m_dateTime->getTimestamp("now").at(0);
         QSqlDatabase m_db = QSqlDatabase::database();
 
-        QString txt = userDateAdded.toString();
-        QDateTime dt = QDateTime::fromMSecsSinceEpoch(txt.toLong(), Qt::OffsetFromUTC);
-        QString item =  dt.toString(Qt::ISODateWithMs);
-
         QString password = hashPassword(userPassword.toString());
-        // userDateAdded = QString(QDateTime::currentDateTime().toLocalTime().toMSecsSinceEpoch())
 
         if(m_db.isOpen())
         {
@@ -340,9 +339,7 @@ void UserAccountsModel::addNewUserAccount(const QVariant &userFirstname, const Q
             query.bindValue(":username", userUsername.toString());
             query.bindValue(":password", password);
             query.bindValue(":phone_no", userPhoneNo.toString());
-            query.bindValue(":date_added", item);
-
-            qDebug() << "Username: " << userUsername;
+            query.bindValue(":date_added", dateToday);
 
             QSqlQuery priviledges_query;
             priviledges_query.prepare("INSERT INTO \"priviledges\"(username) VALUES (:username)");
@@ -353,7 +350,7 @@ void UserAccountsModel::addNewUserAccount(const QVariant &userFirstname, const Q
                 m_db.commit();
                 qDebug() << ">> New User Added";
 
-                addNewUserAccount(new UserAccounts(userFirstname.toString(), userLastname.toString(), userUsername.toString(), userPhoneNo.toString(), password, item, true, false, true, false, true, false, false, false, false, getUserRoleAsAString(true, false, true, false, true, false, false, false)));
+                addNewUserAccount(new UserAccounts(userFirstname.toString(), userLastname.toString(), userUsername.toString(), userPhoneNo.toString(), password, dateToday, true, false, true, false, true, false, false, false, false, getUserRoleAsAString(true, false, true, false, true, false, false, false)));
 
                 emit userAddedChanged(true);
 
@@ -512,8 +509,6 @@ void UserAccountsModel::updateUserAccount(const QVariant &userFirstname, const Q
 void UserAccountsModel::updateUserAccount(const QVariant &userUsername, const bool &canAddUsers, const bool &canRemoveUsers, const bool &canAddItems, const bool &canRemoveItems, const bool &canAddStock, const bool &canRemoveStock, const bool &canUndoSales, const bool &canBackupDb)
 {
     int index_ = getUserIndex(userUsername.toString());
-
-    // qDebug() << " [Info] " << userUsername.toString() << " : " << canAddUsers << " : " << canRemoveUsers << " : " << canAddItems << " : " << canRemoveItems << " : " << canAddStock << " : " << canRemoveStock << " : " << canUndoSales << " : " << canBackupDb;
 
     if(index_ == -1)
         emit userPriviledgesChanged(false);
@@ -681,19 +676,20 @@ void UserAccountsModel::loginUser(const QVariant &uname, const QVariant &pswd)
 
     if(ind == -1)
     {
-        loggingInUsernameStatus(false);
+        emit loggingInUsernameStatus(false);
 
         qDebug() << ">> User not in the database";
     }
 
     else
     {
-        loggingInUsernameStatus(true);
+        emit loggingInUsernameStatus(true);
 
         QString savedP = data(this->index(ind), UserPasswordRole).toString();
 
         if(login(savedP, pswd.toString()))
         {
+            qDebug() << " [DEBUG] Password correct!";
             emit loggingInPasswordStatus(true);
 
             QJsonDocument doc(m_loggedInUser);

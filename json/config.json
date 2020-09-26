@@ -1,5 +1,6 @@
 {
     "name": "Salama P.O.S.",
+    "versionNumber": 1,
     "version": "20.09",
-    "org":"ke.co.salama"
+    "org":"com.lalanke.salama"
 }

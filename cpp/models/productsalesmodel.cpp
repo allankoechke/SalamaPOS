@@ -4,6 +4,8 @@ ProductSalesModel::ProductSalesModel(QObject *parent) : QAbstractListModel(paren
 {
     QJsonDocument doc = QJsonDocument::fromVariant("{ \"cash\": 0, \"mpesa\": 0, \"cheque\": 0, \"credit\": 0 }");
     m_json = doc.object();
+
+    m_dateTime = new DateTime();
 }
 
 int ProductSalesModel::rowCount(const QModelIndex &parent) const
@@ -244,7 +246,7 @@ void ProductSalesModel::loadSalesData()
                     int n_qty = sale_qty + data(this->index(_ind), ProductQtyRole).toInt();
                     setData(this->index(_ind), n_qty, ProductQtyRole);
 
-                    qDebug() << " [INFO] Item exist, updating ...";
+                    // qDebug() << " [INFO] Item exist, updating ...";
                 }
             }
         }
@@ -268,9 +270,9 @@ void ProductSalesModel::addSalesData(const QVariant &barcode, const int &qty, co
         int n_qty = qty + data(this->index(index), ProductQtyRole).toInt();
         setData(this->index(index), n_qty, ProductQtyRole);
 
-        qDebug() << " [INFO] Item <" << barcode <<"> exists, updating ...";
+        // qDebug() << " [INFO] Item <" << barcode <<"> exists, updating ...";
     } else {
-        qDebug() << " [INFO] Adding item <" << barcode <<"> to the Sales model ...";
+        // qDebug() << " [INFO] Adding item <" << barcode <<"> to the Sales model ...";
 
         QString sql = "SELECT sales.sales_id,barcode,sales_date,product_bp,product_sp,sale_qty,cash,mpesa,cheque,credit FROM sales INNER JOIN payment ON sales.sales_id = payment.sales_id";
         QSqlQuery query, itemQuery;
@@ -328,26 +330,36 @@ void ProductSalesModel::addSalesData(const QVariant &barcode, const int &qty)
 void ProductSalesModel::showTodaysSales()
 {
     // Show today's sales
+    QStringList todaysDateRange = m_dateTime->getTimestamp("today");
+    executeQuery(todaysDateRange);
 }
 
 void ProductSalesModel::showYesterdaysSales()
 {
     // Show yesterday's sales
+    QStringList yesterdaysDateRange = m_dateTime->getTimestamp("yesterday");
+    executeQuery(yesterdaysDateRange);
 }
 
 void ProductSalesModel::showThisWeeksSales()
 {
     // Get this week's sales
+    QStringList thisWeekDateRange = m_dateTime->getTimestamp("thisWeek");
+    executeQuery(thisWeekDateRange);
 }
 
 void ProductSalesModel::showThisMonthsSales()
 {
     // Get this month's sales
+    QStringList thisMonthsDateRange = m_dateTime->getTimestamp("thisMonth");
+    executeQuery(thisMonthsDateRange);
 }
 
 void ProductSalesModel::showThisYearsSales()
 {
     // Get sales done this year
+    QStringList thisYearsDateRange = m_dateTime->getTimestamp("thisYear");
+    executeQuery(thisYearsDateRange);
 }
 
 void ProductSalesModel::addSalesData(ProductSales *sales)
@@ -372,7 +384,7 @@ int ProductSalesModel::getSaleItemIndex(QString barcode)
     return -1;
 }
 
-bool ProductSalesModel::executeQuery(QSqlQuery query)
+bool ProductSalesModel::executeQuery(const QStringList &list)
 {
     qDebug() << " [INFO] Starting fetch of the day's sales data ...";
 
@@ -383,12 +395,12 @@ bool ProductSalesModel::executeQuery(QSqlQuery query)
 
     else
     {
-        QSqlQuery itemQuery;
+        QSqlQuery itemQuery, query;
+        clearModel();
+        QString _sql = "SELECT sales.sales_id,barcode,sales_date,product_bp,product_sp,sale_qty,cash,mpesa,cheque,credit FROM sales INNER JOIN payment ON sales.sales_id = payment.sales_id WHERE sales_date > '" + list.at(0) + "' AND sales_date < '" + list.at(1) +"'";
 
-        if(query.exec())
+        if(query.exec(_sql))
         {
-            qDebug() << " [INFO] Successfully loaded todays sales ..";
-
             while(query.next())
             {
                 QString sales_id = query.value(0).toString();
@@ -439,7 +451,7 @@ bool ProductSalesModel::executeQuery(QSqlQuery query)
                     int n_qty = sale_qty + data(this->index(_ind), ProductQtyRole).toInt();
                     setData(this->index(_ind), n_qty, ProductQtyRole);
 
-                    qDebug() << " [INFO] Item exist, updating ...";
+                    // qDebug() << " [INFO] Item exist, updating ...";
 
                 }
             }
@@ -447,10 +459,22 @@ bool ProductSalesModel::executeQuery(QSqlQuery query)
         }
 
         else
-            qDebug() << "[ERROR] Could'nt load todays sale data! > " << query.lastError().text();
+        {
+            qDebug() << query.executedQuery();
+            qDebug() << "[ERROR] Could'nt load sale data! > " << query.lastError().text();
+        }
     }
 
     qDebug() << " [INFO] Ending fetch of the day's sales data ...";
 
     return false;
+}
+
+void ProductSalesModel::clearModel()
+{
+    int index = m_productSales.size() - 1;
+
+    beginRemoveRows(QModelIndex(), 0, index);
+    m_productSales.clear();
+    endRemoveRows();
 }

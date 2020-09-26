@@ -8,7 +8,7 @@ Rectangle {
     Layout.preferredHeight: 80
 
     id: root
-    color: "#fafdff"
+    color: QmlInterface.isDarkTheme? "#161719":"#fafdff"
 
     Rectangle
     {
@@ -25,6 +25,7 @@ Rectangle {
         {
             text: viewText
             size: 20
+            color: QmlInterface.isDarkTheme? "white":"black"
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignLeft
             Layout.leftMargin: 50
@@ -37,7 +38,11 @@ Rectangle {
             Layout.rightMargin: 20
 
             onClicked: {
-                userMenuPopup.open();
+                if (userMenuPopup.isOpen)
+                    userMenuPopup.close()
+
+                else
+                    userMenuPopup.open();
             }
         }
     }

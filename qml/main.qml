@@ -1,5 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Window 2.14
+import QtQuick 2.4
+import QtQuick.Window 2.2
+import QtQuick.Controls.Material 2.2
 
 import "./views"
 
@@ -17,7 +18,17 @@ Window {
     property alias fontAwesomeFontLoader: fontAwesomeFontLoader
     property alias popupTimer: popupTimer
 
-    property string bgColor: "#f4f9fa"
+    Material.theme: QmlInterface.isDarkTheme? Material.Dark: Material.Light
+    // Material.background: "#f4f9fa"
+
+//    dark-bg: #1e2027
+//    dark-pane: #29292d
+//    dark-menu: #161719
+//    Background Colors
+//    dark-fore-color: #f4f4f4
+//    dark-ico: #999fa6
+
+    property string bgColor: QmlInterface.isDarkTheme? "#1e2027":"#f4f9fa"
     property string menuColor: "#12679a"
     property string tableHeaderColor: "#5f00ff"
     property bool isDialogClosedAfterEachAdd: false
