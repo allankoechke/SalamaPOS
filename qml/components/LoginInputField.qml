@@ -31,7 +31,7 @@ Item{
         TextField
         {
             id: txt
-            color: "black"
+            color: QmlInterface.isDarkTheme? "white":"black"
             font.pixelSize: 15
             echoMode: isPassword? TextInput.Password:TextInput.Normal
 

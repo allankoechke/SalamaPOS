@@ -123,7 +123,7 @@ Controls2.Popup
                     {
                         id: category
                         label: qsTr("Item Category")
-
+                        model: ["Vet products","Pesticides","Mineral suppliments","Hygene products","Dewormer","Poultry products","Injectables","Seeds","Feeds","Herbicide","Accaricides","Fertilizers","Vaccine","Fungicides","injectables"]
                     }
 
                     AppTextInput
@@ -283,6 +283,22 @@ Controls2.Popup
 
             else
                 console.log(" [ERROR] Error Adding item");
+        }
+
+        function onCategoryIdChanged(l_id)
+        {
+
+        }
+
+        function onCategoryNamesChanged(l_name)
+        {
+            // category.model = StockItemModel.getCategryList();
+            var x = StockItemModel.categoryNames
+
+            for(var i=0; i<x.length; i++)
+            {
+                //console.log(">> ", x[i])
+            }
         }
     }
 }

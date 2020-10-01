@@ -83,7 +83,7 @@ Item {
 
     AppText
     {
-        color: "black"
+        color: QmlInterface.isDarkTheme? "#999fa6":"#2e2e2e"
         text: qsTr("(c)2020")
         font.pixelSize: 13
 

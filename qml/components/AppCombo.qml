@@ -24,7 +24,7 @@ Item
             AppText
             {
                 id: textLabel
-                color: "#555555"
+                color: QmlInterface.isDarkTheme? "#f4f4f4":"#555555"
                 size: 15
 
                 anchors.verticalCenter: parent.verticalCenter

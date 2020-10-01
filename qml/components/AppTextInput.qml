@@ -13,6 +13,8 @@ Item
     property alias validator: textInput.validator
     property alias hintText: textInput.placeholderText
     property alias echoMode: textInput.echoMode
+    property alias labelSize: textLabel.size
+    property alias inputSize: textInput.font.pixelSize
 
     RowLayout
     {

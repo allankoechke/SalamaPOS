@@ -146,6 +146,22 @@ Rectangle {
         id: addItemDialog
     }
 
+    CreditsAndDebtsDrawer
+    {
+        id: creditNdebtpopup
+    }
+
+    NewCrediteePopup
+    {
+        id: newCrediteePopup
+    }
+
+    CreditRepaymentPopup
+    {
+        id: creditRepayDialog
+    }
+
+
     function startApp(state)
     {
         if(state)

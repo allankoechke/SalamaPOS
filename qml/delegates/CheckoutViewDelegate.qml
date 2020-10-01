@@ -95,7 +95,7 @@ Rectangle {
 
                 AppText
                 {
-                    color: "black"
+                    color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
                     text: qsTr("Change")
 
                     Layout.alignment: Qt.AlignVCenter

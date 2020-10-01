@@ -21,10 +21,12 @@ SOURCES += \
         cpp/models/checkoutitemsmodel.cpp \
         cpp/models/completer.cpp \
         cpp/models/completermodel.cpp \
+        cpp/models/crediteeaccountsmodel.cpp \
         cpp/models/productsales.cpp \
         cpp/models/productsalesmodel.cpp \
         cpp/models/saleitems.cpp \
         cpp/models/saleitemsmodel.cpp \
+        cpp/models/src/crediteeaccount.cpp \
         cpp/models/stockitems.cpp \
         cpp/models/stockitemsmodel.cpp \
         cpp/models/useraccounts.cpp \
@@ -54,10 +56,12 @@ HEADERS += \
     cpp/models/checkoutitemsmodel.h \
     cpp/models/completer.h \
     cpp/models/completermodel.h \
+    cpp/models/crediteeaccountsmodel.h \
     cpp/models/productsales.h \
     cpp/models/productsalesmodel.h \
     cpp/models/saleitems.h \
     cpp/models/saleitemsmodel.h \
+    cpp/models/src/crediteeaccount.h \
     cpp/models/stockitems.h \
     cpp/models/stockitemsmodel.h \
     cpp/models/useraccounts.h \

@@ -90,6 +90,71 @@ Item {
                 Rectangle
                 {
                     Layout.preferredHeight: 45
+                    Layout.margins: 1
+
+                    color: menuColor
+                    width: 45
+                    radius: height/2
+
+                    AppIcon
+                    {
+                        anchors.centerIn: parent
+
+                        color: "#f4f4f4"
+                        size: 25
+                        icon: "\uf02f"
+                    }
+                }
+
+                Rectangle
+                {
+                    Layout.preferredHeight: 45
+                    Layout.margins: 1
+
+                    color: menuColor
+                    width: 200
+                    radius: 5
+
+                    RowLayout
+                    {
+                        anchors.fill: parent
+                        spacing: 1
+
+                        AppIcon
+                        {
+                            Layout.fillHeight: true
+                            Layout.preferredWidth: height
+                            horizontalAlignment: AppIcon.AlignHCenter
+                            verticalAlignment: AppIcon.AlignVCenter
+
+                            size: 16
+                            color: "white"
+                            icon: "\uf81d"
+                        }
+
+                        AppText
+                        {
+                            Layout.fillHeight: true
+                            Layout.fillWidth: true
+                            horizontalAlignment: AppIcon.AlignLeft
+                            verticalAlignment: AppIcon.AlignVCenter
+
+                            color: "#f4f4f4"
+                            size: 15
+                            text: qsTr("Credits & Debts")
+                        }
+                    }
+
+                    MouseArea
+                    {
+                        anchors.fill: parent
+                        onClicked: creditNdebtpopup.open()
+                    }
+                }
+
+                Rectangle
+                {
+                    Layout.preferredHeight: 45
                     Layout.fillWidth: true
                     Layout.minimumWidth: 100
                     Layout.maximumWidth: 300

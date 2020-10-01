@@ -7,25 +7,22 @@ import "../components"
 Controls2.Popup
 {
     id: root
-    width: 500
-    height: 600
+    width: 450
+    height: 350
 
     x: (mainApp.width - width)/2
     y: (mainApp.height - height)/2
-
     modal: true
     closePolicy: Controls2.Popup.NoAutoClose
 
-    property bool isNewUserAccount: true
+    property bool isNewCrediteeMode: true
+    property int currentIndex: -1
+    property string orig_id: ""
 
-    property alias isError: err.visible
-    property alias errorText: err.text
-    property alias ufname: fname.text
-    property alias ulname: lname.text
-    property alias u_name: uname.text
-    property alias uphone: phoneNo.text
-    property alias pass: pswd.text
-    property alias cpass: cpswd.text
+    property alias fname: _fname.text
+    property alias lname: _lname.text
+    property alias mobile: _mobile.text
+    property alias idNo: idno.text
 
     contentItem: Rectangle
     {
@@ -45,7 +42,7 @@ Controls2.Popup
 
                 Rectangle
                 {
-                    color: "black"
+                    color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
                     height: 3
                     width: parent.width
                     opacity: 0.08
@@ -56,9 +53,9 @@ Controls2.Popup
 
                 AppText
                 {
-                    color: QmlInterface.isDarkTheme? "#999fa6":"#2e2e2e"
+                    color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
                     size: 17
-                    text: isNewUserAccount? qsTr("New User Account Window"):qsTr("Update My Account Details")
+                    text: isNewCrediteeMode? qsTr("New Creditee Window"):qsTr("Update Creditee")
 
                     anchors.centerIn: parent
                 }
@@ -76,67 +73,40 @@ Controls2.Popup
 
                     AppTextInput
                     {
-                        id: fname
+                        id: _fname
                         prefWidth: 150
                         label: qsTr("Firstname")
-                        hintText: qsTr("Enter firstname")
+                        hintText: qsTr("Creditee firstname")
                         validator: RegExpValidator {regExp: RegExp("[a-zA-Z]+")}
                     }
 
                     AppTextInput
                     {
-                        id: lname
+                        id: _lname
                         prefWidth: 150
-                        label: qsTr("Lastname")
-                        hintText: qsTr("Enter lastname")
+                        label: qsTr("Last Name")
+                        hintText: qsTr("Creditee lastname")
                         validator: RegExpValidator {regExp: RegExp("[a-zA-Z]+")}
                     }
 
                     AppTextInput
                     {
-                        id: uname
+                        id: _mobile
                         prefWidth: 150
-                        label: qsTr("Username")
-                        hintText: qsTr("Choose a username")
-                        RegExpValidator {regExp: RegExp("[a-zA-Z0-9]+")}
+                        label: qsTr("Mobile No.")
+                        hintText: qsTr("Creditee Mobile No.")
+                        validator: RegExpValidator {regExp: RegExp("[0-9]+")}
                     }
 
                     AppTextInput
                     {
-                        id: phoneNo
+                        id: idno
                         prefWidth: 150
-                        label: qsTr("Mobile Phone")
-                        hintText: qsTr("Enter phone number")
-                        validator: DoubleValidator{ bottom: 0 ; top: 100000000000}
+                        label: qsTr("National ID")
+                        hintText: qsTr("Creditee ID No.")
+                        validator: RegExpValidator {regExp: RegExp("[0-9]+")}
                     }
 
-                    AppTextInput
-                    {
-                        id: pswd
-                        prefWidth: 150
-                        label: qsTr("Password")
-                        hintText: qsTr("Pick a password")
-                        echoMode: TextInput.Password
-                    }
-
-                    AppTextInput
-                    {
-                        id: cpswd
-                        prefWidth: 150
-                        label: qsTr("Confirm password")
-                        hintText: qsTr("Re-enter password")
-                        echoMode: TextInput.Password
-                    }
-
-                    AppText
-                    {
-                        id: err
-                        Layout.fillWidth: true
-                        Layout.preferredHeight: 25
-                        horizontalAlignment: AppText.AlignHCenter
-                        verticalAlignment: AppText.AlignVCenter
-                        color: "red"
-                    }
 
                     Item
                     {
@@ -171,14 +141,20 @@ Controls2.Popup
                                 MouseArea
                                 {
                                     anchors.fill: parent
-                                    onClicked: root.close()
+                                    onClicked: {
+                                        root.mobile = ""
+                                        root.idNo = ""
+                                        root.fname = ""
+                                        root.lname = ""
+                                        root.close()
+                                    }
                                 }
                             }
 
                             Rectangle
                             {
                                 Layout.fillHeight: true
-                                Layout.preferredWidth: 150
+                                Layout.preferredWidth: 180
 
                                 color: menuColor
                                 radius: 3
@@ -200,7 +176,7 @@ Controls2.Popup
                                     {
                                         color: "white"
                                         size: 15
-                                        text: isNewUserAccount? qsTr("Add User"):qsTr("Update User")
+                                        text: isNewCrediteeMode? qsTr("Add Creditee"):qsTr("Update Creditee")
                                     }
                                 }
 
@@ -208,26 +184,19 @@ Controls2.Popup
                                 {
                                     anchors.fill: parent
                                     onClicked: {
-                                        if(ufname!=="" && ulname!=="" && u_name!=="" && uphone!=="" && pass !=="" && cpass!=="")
+
+                                        if(fname!=="" && lname !== "" && mobile!=="" && idNo!=="")
                                         {
-                                            if(pass === cpass)
-                                            {
-                                                var tmspt = new Date().getTime();
-                                                AccountsModel.addNewUserAccount(ufname, ulname,u_name,pass,uphone, tmspt);
-                                            }
+                                            if(isNewCrediteeMode)
+                                                CrediteeModel.addNewCreditee(fname, lname, mobile, idNo);
 
                                             else
-                                            {
-                                                isError = true;
-                                                errorText = qsTr("Passwords do not match")
-                                                console.log("Passwords do not match")
-                                            }
+                                                CrediteeModel.updateCreditee(fname, lname, mobile, idNo, orig_id);
+
                                         }
 
                                         else
                                         {
-                                            isError = true;
-                                            errorText = qsTr("Some required fields are short!")
                                         }
                                     }
                                 }
@@ -239,51 +208,49 @@ Controls2.Popup
         }
     }
 
-
     Connections
     {
-        target: AccountsModel
+        target: CrediteeModel
 
-        function onUserAddedChanged(status)
+        function onCrediteeAdded(status)
         {
             if(status)
             {
-                console.log(" [INFO] User Added Successfuly!");
+                fname = "";
+                lname = "";
+                idNo = "";
+                mobile = "";
+
                 root.close();
             }
 
             else
-                console.log(" [ERROR] Error Adding User");
+            {
+
+            }
         }
 
-        function onUserUpdatedChanged(status)
+        function onCrediteeUpdated(status)
         {
             if(status)
             {
-                console.log(" [INFO] User Details updated Successfuly!");
-                // resetFields();
+                fname = "";
+                lname = "";
+                idNo = "";
+                mobile = "";
+
                 root.close();
             }
 
             else
-                console.log(" [ERROR] Error Updating User");
+            {
+
+            }
         }
 
-        function onUsernameExistsChanged(status)
+        function onIdExists()
         {
-            console.log(">> [ERROR] Username taken")
-            isError = true;
-            errorText = qsTr("The username is already taken!")
+            console.log(" [ERROR] Unique ID Constrain fails")
         }
-    }
-
-    function resetFields()
-    {
-        ufname = ""
-        ulname = ""
-        uname = ""
-        uphone = ""
-        pass = ""
-        cpass = ""
     }
 }

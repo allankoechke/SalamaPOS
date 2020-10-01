@@ -55,11 +55,12 @@ CREATE TABLE IF NOT EXISTS priviledges (
 
         FOREIGN KEY(username) REFERENCES users(username) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
 CREATE TABLE IF NOT EXISTS creditee (
         id              serial PRIMARY KEY,
         firstname	TEXT NOT NULL,
         lastname	TEXT NOT NULL,
-        national_id	NUMERIC NOT NULL,
+        national_id	NUMERIC NOT NULL UNIQUE,
         phone_no	NUMERIC NOT NULL,
         amount_due	REAL DEFAULT 0,
         date_added      TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'Africa/Nairobi')
@@ -101,12 +102,31 @@ CREATE TABLE IF NOT EXISTS mpesa (
 
 CREATE TABLE IF NOT EXISTS credit (
         id              serial PRIMARY KEY,
-        creditee_id	INTEGER,
+        creditee_id	NUMERIC NOT NULL,
         due_date	TIMESTAMP NOT NULL,
         sales_id	VARCHAR (128) NOT NULL,
 
-        FOREIGN KEY (creditee_id) REFERENCES creditee (id) ON UPDATE CASCADE ON DELETE CASCADE,
+        FOREIGN KEY (creditee_id) REFERENCES creditee (national_id) ON UPDATE CASCADE ON DELETE CASCADE,
         FOREIGN KEY(sales_id) REFERENCES payment (sales_id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS credit_payments (
+        id                  serial PRIMARY KEY,
+        payment_timestamp   TIMESTAMP NOT NULL,
+        creditee_id         NUMERIC NOT NULL,
+        payment_amount      REAL NOT NULL,
+        payment_due         REAL NOT NULL,
+
+        FOREIGN KEY (creditee_id) REFERENCES creditee (national_id) ON UPDATE CASCADE ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS login_history (
+        id                  serial PRIMARY KEY,
+        login_time          TIMESTAMP NOT NULL,
+        username            VARCHAR (128) NOT NULL,
+        is_login            boolean NOT NULL DEFAULT TRUE,
+
+        FOREIGN KEY (username) REFERENCES users (username) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS notifications (

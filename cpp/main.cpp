@@ -10,6 +10,7 @@
 #include "models/completermodel.h"
 #include "models/saleitemsmodel.h"
 #include "models/productsalesmodel.h"
+#include "models/crediteeaccountsmodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -26,6 +27,7 @@ int main(int argc, char *argv[])
     CompleterModel m_completer;
     saleItemsModel m_saleItem;
     ProductSalesModel m_pSale;
+    CrediteeAccountsModel creditee;
 
     engine.rootContext()->setContextProperty("QmlInterface", &qmlInterface);
     engine.rootContext()->setContextProperty("StockItemModel", &m_stockModel);
@@ -34,6 +36,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("CompleterModel", &m_completer);
     engine.rootContext()->setContextProperty("SalesModel", &m_saleItem);
     engine.rootContext()->setContextProperty("ProductSalesModel", &m_pSale);
+    engine.rootContext()->setContextProperty("CrediteeModel", &creditee);
 
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

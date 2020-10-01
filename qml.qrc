@@ -82,5 +82,17 @@
         <file>assets/images/4.png</file>
         <file>assets/images/5.png</file>
         <file>assets/images/6.png</file>
+        <file>qml/components/AppPaper.qml</file>
+        <file>qml/components/DashboardShortcutButton.qml</file>
+        <file>qml/subviews/CreditsAndDebtsDrawer.qml</file>
+        <file>qml/subviews/CrediteeTableHeader.qml</file>
+        <file>qml/delegates/CrediteeTableDelegate.qml</file>
+        <file>qml/subviews/NewCrediteePopup.qml</file>
+        <file>qml/subviews/CrediteeTableView.qml</file>
+        <file>qml/subviews/CrediteeUserView.qml</file>
+        <file>qml/subviews/CrediteeItemView.qml</file>
+        <file>qml/subviews/CreditRepaymentPopup.qml</file>
+        <file>qml/subviews/CrediteePaymentsTableHeader.qml</file>
+        <file>qml/delegates/CrediteePaymentsTableDelegate.qml</file>
     </qresource>
 </RCC>

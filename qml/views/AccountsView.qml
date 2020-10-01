@@ -97,6 +97,7 @@ Item {
             radius: 2
             border.color: "grey"
             border.width: 1
+            color: QmlInterface.isDarkTheme? "#29292d":"white"
 
             Layout.fillWidth: true
             Layout.fillHeight: true

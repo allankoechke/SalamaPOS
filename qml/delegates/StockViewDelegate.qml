@@ -41,7 +41,7 @@ Rectangle {
 
             AppText
             {
-                color: QmlInterface.isDarkTheme? "#999fa6":"black"
+                color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
                 text: " " + itemName
                 width: parent.width
                 elide: AppText.ElideRight
@@ -59,7 +59,7 @@ Rectangle {
 
             AppText
             {
-                color: QmlInterface.isDarkTheme? "#999fa6":"black"
+                color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
                 text: barCode
                 width: parent.width
                 elide: AppText.ElideRight
@@ -77,7 +77,7 @@ Rectangle {
 
             AppText
             {
-                color: QmlInterface.isDarkTheme? "#999fa6":"black"
+                color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
                 text: _unit
                 width: parent.width
                 elide: AppText.ElideRight
@@ -89,7 +89,7 @@ Rectangle {
 
         AppText
         {
-            color: QmlInterface.isDarkTheme? "#999fa6":"black"
+            color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
             text: qty.toString()
             horizontalAlignment: AppText.AlignHCenter
 
@@ -117,7 +117,7 @@ Rectangle {
 
                 AppText
                 {
-                    color: QmlInterface.isDarkTheme? "#999fa6":"black"
+                    color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
                     text: qsTr("Change")
 
                     Layout.alignment: Qt.AlignVCenter
@@ -139,7 +139,7 @@ Rectangle {
 
             AppText
             {
-                color: QmlInterface.isDarkTheme? "#999fa6":"black"
+                color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
                 text: lastUpdated
                 width: parent.width
                 elide: AppText.ElideRight

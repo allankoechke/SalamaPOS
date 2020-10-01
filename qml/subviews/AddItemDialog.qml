@@ -60,7 +60,8 @@ Window {
                     verticalAlignment: TextInput.AlignBottom
                     horizontalAlignment: TextInput.AlignLeft
                     Layout.leftMargin: 5
-                    color: QmlInterface.isDarkTheme? "white":"black"
+
+                    color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
                     font.pixelSize: 16
                     font.family: montserratFontLoader.name
                     selectByMouse: true

@@ -375,6 +375,8 @@ void StockItemsModel::initializeStockFromDb()
 
     QSqlDatabase m_db = QSqlDatabase::database();
 
+    getItemCategories();
+
     if(m_db.isOpen())
     {
         QSqlQuery query;
@@ -471,9 +473,103 @@ QJsonObject StockItemsModel::getItemData(const QString &barcode)
     return m_itemDetails;
 }
 
+void StockItemsModel::getItemCategories()
+{
+    QSqlDatabase m_db = QSqlDatabase::database();
+
+    QList<QString> l_id, l_name;
+    m_categoryId.clear();
+    m_categoryNames.clear();
+
+    if(m_db.isOpen())
+    {
+        QString sql = "SELECT type_id,type_name FROM product_type;";
+        QSqlQuery query;
+        if(query.exec(sql))
+        {
+            while(query.next())
+            {
+                QString id = query.value(0).toString();
+                QString name = query.value(1).toString();
+
+                l_id.append(id);
+                l_name.append(name);
+            }
+
+            setCategoryId(l_id);
+            setCategoryNames(l_name);
+
+            emit categoryIdChanged(l_id);
+            emit categoryNamesChanged(l_name);
+
+        }
+
+        else
+        {
+            qDebug() << "Error adding item category :: [" <<query.executedQuery() << "]" << query.lastError().text();
+        }
+    }
+}
+
+void StockItemsModel::addItemCategory(const QString &category)
+{
+    QSqlDatabase m_db = QSqlDatabase::database();
+
+    QString id = QString::number(QDateTime::currentSecsSinceEpoch());
+
+    if(m_db.isOpen())
+    {
+        QString sql = "INSERT INTO product_type(type_id,type_name) VALUES ('" + id + "', '" + category + "');";
+        QSqlQuery query;
+        if(query.exec(sql))
+        {
+            qDebug() << "Item Category added!";
+        }
+
+        else
+        {
+            qDebug() << "Error adding item category :: " << query.lastError().text();
+        }
+    }
+}
+
+QList<QString> StockItemsModel::getCategryList()
+{
+    qDebug() << "Model Size: " << m_categoryNames.size();
+    return m_categoryNames;
+}
+
 void StockItemsModel::removeItem(int index)
 {
     beginRemoveRows(QModelIndex(), index, index);
     m_stockItems.removeAt(index);
     endRemoveRows();
+}
+
+QList<QString> StockItemsModel::categoryNames() const
+{
+    return m_categoryNames;
+}
+
+QList<QString> StockItemsModel::categoryId() const
+{
+    return m_categoryId;
+}
+
+void StockItemsModel::setCategoryNames(QList<QString> categoryNames)
+{
+    if (m_categoryNames == categoryNames)
+        return;
+
+    m_categoryNames = categoryNames;
+    emit categoryNamesChanged(m_categoryNames);
+}
+
+void StockItemsModel::setCategoryId(QList<QString> categoryId)
+{
+    if (m_categoryId == categoryId)
+        return;
+
+    m_categoryId = categoryId;
+    emit categoryIdChanged(m_categoryId);
 }

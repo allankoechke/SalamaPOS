@@ -38,6 +38,9 @@ public:
 
     QHash<int, QByteArray> roleNames() const;
 
+    Q_PROPERTY(QList<QString> categoryNames READ categoryNames WRITE setCategoryNames NOTIFY categoryNamesChanged)
+    Q_PROPERTY(QList<QString> categoryId READ categoryId WRITE setCategoryId NOTIFY categoryIdChanged)
+
     // Additional Invokable functions from QML
     Q_INVOKABLE void addNewItem(const QVariant &barcode, const QVariant &name, const QVariant &unit, const QVariant &bp, const QVariant &sp, const QVariant &qty, const QVariant &company, const QVariant &date, const QVariant &category);
 
@@ -53,12 +56,26 @@ public:
 
     Q_INVOKABLE QJsonObject getItemData(const QString &barcode);
 
+    Q_INVOKABLE void getItemCategories();
+
+    Q_INVOKABLE void addItemCategory(const QString &category);
+
+    Q_INVOKABLE QList<QString> getCategryList();
+
     // Internal functions
     bool addNewItem(StockItems * stockItem);
 
     int getItemIndex(const QVariant &bcode);
 
     void removeItem(int index);
+
+    QList<QString> categoryNames() const;
+
+    QList<QString> categoryId() const;
+
+    void setCategoryNames(QList<QString> categoryNames);
+
+    void setCategoryId(QList<QString> categoryId);
 
 signals:
     void itemUpdatedChanged(bool state);
@@ -75,6 +92,10 @@ signals:
 
     void itemStockWarningChanged(); // Notify if stock qty is less that qty needed to sell
 
+    void categoryNamesChanged(QList<QString> categoryNames);
+
+    void categoryIdChanged(QList<QString> categoryId);
+
 private slots:
 
 private:
@@ -84,6 +105,8 @@ private:
     QJsonObject m_itemDetails;
 
     DateTime * m_dateTime;
+
+    QList<QString> m_categoryId, m_categoryNames;
 };
 
 #endif // STOCKITEMSMODEL_H

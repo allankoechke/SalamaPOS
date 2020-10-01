@@ -38,7 +38,7 @@ Rectangle {
         AppText
         {
             id: itemName
-            color: QmlInterface.isDarkTheme? "#999fa6":"black"
+            color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
             horizontalAlignment: AppText.AlignLeft
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
@@ -49,8 +49,8 @@ Rectangle {
 
         AppText
         {
-            color: QmlInterface.isDarkTheme? "#999fa6":"black"
             id: unit
+            color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
@@ -59,8 +59,8 @@ Rectangle {
 
         AppText
         {
-            color: QmlInterface.isDarkTheme? "#999fa6":"black"
             id: qty
+            color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
@@ -69,8 +69,8 @@ Rectangle {
 
         AppText
         {
-            color: QmlInterface.isDarkTheme? "#999fa6":"black"
             id: sp
+            color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
@@ -80,7 +80,7 @@ Rectangle {
         AppText
         {
             id: ttals
-            color: QmlInterface.isDarkTheme? "#999fa6":"black"
+            color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
@@ -90,7 +90,7 @@ Rectangle {
         AppText
         {
             id: pr
-            color: QmlInterface.isDarkTheme? "#999fa6":"black"
+            color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
             horizontalAlignment: AppText.AlignHCenter
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
@@ -118,7 +118,7 @@ Rectangle {
 
                 AppText
                 {
-                    color: QmlInterface.isDarkTheme? "#999fa6":"black"
+                    color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
                     text: qsTr("Edit")
 
                     Layout.alignment: Qt.AlignVCenter

@@ -78,7 +78,7 @@ Item {
 
             Rectangle
             {
-                color: "white"
+                color: QmlInterface.isDarkTheme? "#29292d":"white"
                 radius: 5
 
                 border.width: 1
@@ -198,6 +198,9 @@ Item {
 
                     // Load the days sales
                     ProductSalesModel.showTodaysSales();
+
+                    // Load Creditee Accounts
+                    CrediteeModel.loadCrediteeAccounts();
                 }
             }
 

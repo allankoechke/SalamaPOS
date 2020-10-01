@@ -48,6 +48,9 @@ Window {
     Component.onCompleted: {
         popupTimer.start();
         timer1.start();
+
+        QmlInterface.fetchSavedSettings();
+        QmlInterface.getDashboardTableData();
     }
 
     Timer
@@ -130,6 +133,10 @@ Window {
             loggedUser_canDeleteStock =  json["canRemoveStock"]
             loggedUser_canUndoSales =  json["canUndoSales"]
             loggedUser_canBackupDb =  json["canBackupDb"]
+
+            QmlInterface.getMessagesStatisticsForDashboard(loggedUser_username);
+            QmlInterface.getRemindersStatisticsForDashboard();
+            QmlInterface.getSalesStatisticsForDashboard();
         }
     }
 }

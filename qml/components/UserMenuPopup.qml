@@ -6,7 +6,7 @@ import "../components"
 
 Popup {
     width: 250
-    height: 250
+    height: 200
     modal: !true
 
     x: mainApp.width - width -20
@@ -56,44 +56,6 @@ Popup {
             Item{
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-
-                Rectangle
-                {
-                    color: Qt.lighter(menuColor, 2)
-                    height: parent.height
-                    width: 1
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    anchors.leftMargin: 27
-                }
-
-                ColumnLayout
-                {
-                    anchors.fill: parent
-                    spacing: 2
-                    anchors.leftMargin: 30
-
-                    AppText
-                    {
-                        color: "#535353"
-                        text: "> " + loggedUser_fullname
-                        size: 13
-                    }
-
-                    AppText
-                    {
-                        color: "#535353"
-                        text: "> " + loggedUser_username
-                        size: 12
-                    }
-
-                    AppText
-                    {
-                        color: "#535353"
-                        text: "> " + Qt.formatDateTime(new Date(), "dd MMM, yyyy hh:mm AP")
-                        size: 8
-                    }
-                }
             }
 
             CommandButton
@@ -134,6 +96,11 @@ Popup {
                 text: qsTr("Sign Out")
                 forecolor: "white"
                 icon: "\uf2f5"
+            }
+
+            Item{
+                Layout.fillWidth: true
+                Layout.fillHeight: true
             }
         }
     }
