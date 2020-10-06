@@ -54,7 +54,7 @@ Rectangle {
         NavigationBar
         {
             id: navBar
-            visible: false
+            visible: navBarIndex!==8 && navBarIndex!==7
         }
 
         Item
@@ -70,7 +70,7 @@ Rectangle {
                 NotificationBar
                 {
                     id: notificationBar
-                    visible: false
+                    visible: navBarIndex!==8 && navBarIndex!==7
                 }
 
                 Item{
@@ -98,7 +98,7 @@ Rectangle {
 
                         SplashView {}
 
-                        LoginView {}
+                        LoginView { id: loginView }
                     }
                 }
             }

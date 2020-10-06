@@ -8,6 +8,7 @@ Item
     Layout.preferredHeight: 40
 
     property alias label: textLabel.text
+    property alias readOnly: textInput.readOnly
     property real prefWidth: 0
     property alias text: textInput.text
     property alias validator: textInput.validator

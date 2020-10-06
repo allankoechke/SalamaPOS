@@ -5,11 +5,15 @@ import QtQuick.Controls.Material 2.2
 import "../components"
 
 Item {
+    id: root
+
     property alias background: btn.color
     property alias text: txt.text
     property real depth: 10
     property alias icon: ico.icon
     property alias forecolor: txt.color
+
+    signal clicked()
 
     Rectangle
     {
@@ -48,5 +52,11 @@ Item {
                 verticalAlignment: AppText.AlignVCenter
             }
         }
+    }
+
+    MouseArea
+    {
+        anchors.fill: parent
+        onClicked: root.clicked()
     }
 }

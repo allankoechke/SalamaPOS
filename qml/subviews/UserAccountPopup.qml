@@ -18,6 +18,7 @@ Controls2.Popup
 
     property bool isNewUserAccount: true
 
+    property bool editable: true
     property alias isError: err.visible
     property alias errorText: err.text
     property alias ufname: fname.text
@@ -26,6 +27,17 @@ Controls2.Popup
     property alias uphone: phoneNo.text
     property alias pass: pswd.text
     property alias cpass: cpswd.text
+
+    onClosed: {
+        isError = false;
+        ufname = "";
+        ulname = "";
+        u_name = "";
+        uphone = "";
+        pass = "";
+        cpass = "";
+        editable = true;
+    }
 
     contentItem: Rectangle
     {
@@ -58,7 +70,7 @@ Controls2.Popup
                 {
                     color: QmlInterface.isDarkTheme? "#999fa6":"#2e2e2e"
                     size: 17
-                    text: isNewUserAccount? qsTr("New User Account Window"):qsTr("Update My Account Details")
+                    text: isNewUserAccount? qsTr("New User Account Window"):editable? qsTr("Update My Account Details"):qsTr("View My Account")
 
                     anchors.centerIn: parent
                 }
@@ -78,6 +90,7 @@ Controls2.Popup
                     {
                         id: fname
                         prefWidth: 150
+                        readOnly: !isNewUserAccount && !editable
                         label: qsTr("Firstname")
                         hintText: qsTr("Enter firstname")
                         validator: RegExpValidator {regExp: RegExp("[a-zA-Z]+")}
@@ -87,6 +100,7 @@ Controls2.Popup
                     {
                         id: lname
                         prefWidth: 150
+                        readOnly: !isNewUserAccount && !editable
                         label: qsTr("Lastname")
                         hintText: qsTr("Enter lastname")
                         validator: RegExpValidator {regExp: RegExp("[a-zA-Z]+")}
@@ -97,6 +111,7 @@ Controls2.Popup
                         id: uname
                         prefWidth: 150
                         label: qsTr("Username")
+                        readOnly: !isNewUserAccount && !editable
                         hintText: qsTr("Choose a username")
                         RegExpValidator {regExp: RegExp("[a-zA-Z0-9]+")}
                     }
@@ -105,6 +120,7 @@ Controls2.Popup
                     {
                         id: phoneNo
                         prefWidth: 150
+                        readOnly: !isNewUserAccount && !editable
                         label: qsTr("Mobile Phone")
                         hintText: qsTr("Enter phone number")
                         validator: DoubleValidator{ bottom: 0 ; top: 100000000000}
@@ -113,6 +129,7 @@ Controls2.Popup
                     AppTextInput
                     {
                         id: pswd
+                        visible: isNewUserAccount // && !editable
                         prefWidth: 150
                         label: qsTr("Password")
                         hintText: qsTr("Pick a password")
@@ -122,6 +139,7 @@ Controls2.Popup
                     AppTextInput
                     {
                         id: cpswd
+                        visible: isNewUserAccount
                         prefWidth: 150
                         label: qsTr("Confirm password")
                         hintText: qsTr("Re-enter password")
@@ -163,7 +181,7 @@ Controls2.Popup
                                 {
                                     color: "white"
                                     size: 15
-                                    text: qsTr("Cancel")
+                                    text: editable? qsTr("Cancel"):qsTr("Close")
 
                                     anchors.centerIn: parent
                                 }
@@ -182,6 +200,7 @@ Controls2.Popup
 
                                 color: menuColor
                                 radius: 3
+                                visible: editable
 
                                 RowLayout
                                 {
@@ -208,26 +227,43 @@ Controls2.Popup
                                 {
                                     anchors.fill: parent
                                     onClicked: {
-                                        if(ufname!=="" && ulname!=="" && u_name!=="" && uphone!=="" && pass !=="" && cpass!=="")
+                                        if (isNewUserAccount)
                                         {
-                                            if(pass === cpass)
+                                            if(ufname!=="" && ulname!=="" && u_name!=="" && uphone!=="" && pass !=="" && cpass!=="")
                                             {
-                                                var tmspt = new Date().getTime();
-                                                AccountsModel.addNewUserAccount(ufname, ulname,u_name,pass,uphone, tmspt);
+                                                if(pass === cpass)
+                                                {
+                                                    var tmspt = new Date().getTime();
+                                                    AccountsModel.addNewUserAccount(ufname, ulname,u_name,pass,uphone, tmspt);
+                                                }
+
+                                                else
+                                                {
+                                                    isError = true;
+                                                    errorText = qsTr("Passwords do not match")
+                                                    console.log("Passwords do not match")
+                                                }
                                             }
 
                                             else
                                             {
                                                 isError = true;
-                                                errorText = qsTr("Passwords do not match")
-                                                console.log("Passwords do not match")
+                                                errorText = qsTr("Some required fields are short!")
                                             }
                                         }
 
                                         else
                                         {
-                                            isError = true;
-                                            errorText = qsTr("Some required fields are short!")
+                                            if(ufname!=="" && ulname!=="" && u_name!=="" && uphone!=="")
+                                            {
+                                                AccountsModel.updateUserAccount(ufname, ulname,u_name,uphone, loggedUser_username);
+                                            }
+
+                                            else
+                                            {
+                                                isError = true;
+                                                errorText = qsTr("Some required fields are short!")
+                                            }
                                         }
                                     }
                                 }
@@ -238,7 +274,6 @@ Controls2.Popup
             }
         }
     }
-
 
     Connections
     {

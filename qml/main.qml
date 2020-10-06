@@ -19,8 +19,8 @@ Window {
     property alias popupTimer: popupTimer
 
     Material.theme: QmlInterface.isDarkTheme? Material.Dark: Material.Light
-    // Material.background: "#f4f9fa"
 
+//    Material.background: "#f4f9fa"
 //    dark-bg: #1e2027
 //    dark-pane: #29292d
 //    dark-menu: #161719
@@ -36,6 +36,7 @@ Window {
     // Logged in user
     property string loggedUser_fullname: ""
     property string loggedUser_username: ""
+    property string loggedUser_mobile: ""
     property bool loggedUser_canAddAccounts: false
     property bool loggedUser_canDeleteAccounts: false
     property bool loggedUser_canAddItems: false
@@ -125,6 +126,7 @@ Window {
         {
             loggedUser_fullname = json["firstname"] + " " + json["lastname"]
             loggedUser_username =  json["username"]
+            loggedUser_mobile =  json["phone_no"]
             loggedUser_canAddAccounts =  json["canAddUser"]
             loggedUser_canDeleteAccounts =  json["canRemoveUsers"]
             loggedUser_canAddItems =  json["canAddItems"]

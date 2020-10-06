@@ -72,3 +72,5 @@ HEADERS += \
     cpp/websocketsinterface.h
 
 DISTFILES +=
+
+ANDROID_ABIS = armeabi-v7a

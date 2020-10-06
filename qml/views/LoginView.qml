@@ -10,6 +10,12 @@ Item {
     property bool isError: false
     property string errorString: ""
 
+    function clearFields()
+    {
+        _uname.text = "";
+        _pswd.text = "";
+    }
+
     Item {
         id: _root
         width: 400
@@ -148,6 +154,22 @@ Item {
                                     errorString = qsTr("Required field is short")
                                 }
                             }
+                        }
+                    }
+
+                    AppText
+                    {
+                        text: qsTr("Don't have an account? Create One")
+                        size: 13
+                        color: QmlInterface.isDarkTheme? "grey":"#535353"
+
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.bottomMargin: 5
+
+                        MouseArea
+                        {
+                            anchors.fill: parent
+                            onClicked: userAccountPopup.open()
                         }
                     }
                 }
