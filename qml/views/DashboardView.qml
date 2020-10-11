@@ -606,21 +606,25 @@ Item {
 
                                 DashboardShortcutButton
                                 {
+                                    visible: loggedUser_canAddAccounts
                                     icon: "\uf234"
                                     label: qsTr("Add new user")
 
                                     onClicked: {
-
+                                        // if(loggedUser_canAddAccounts)
+                                        userAccountPopup.open()
                                     }
                                 }
 
                                 DashboardShortcutButton
                                 {
+                                    visible: loggedUser_canAddStock
                                     icon: "\uf5ff"
                                     label: qsTr("Add Item's Stock")
 
                                     onClicked: {
-
+                                        navBarIndex = 2; // Switch to item stock window
+                                        stackStockView.currentScreen = 1;
                                     }
                                 }
 
@@ -630,7 +634,7 @@ Item {
                                     label: qsTr("Send a message")
 
                                     onClicked: {
-
+                                        navBarIndex = 4;
                                     }
                                 }
 
@@ -640,7 +644,7 @@ Item {
                                     label: qsTr("Change color theme")
 
                                     onClicked: {
-
+                                        QmlInterface.isDarkTheme = !QmlInterface.isDarkTheme;
                                     }
                                 }
 
@@ -650,7 +654,7 @@ Item {
                                     label: qsTr("Sync to online database")
 
                                     onClicked: {
-
+                                        // TODO
                                     }
                                 }
                             }

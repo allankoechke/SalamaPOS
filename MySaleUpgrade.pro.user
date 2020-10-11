@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.13.1, 2020-10-06T18:29:23. -->
+<!-- Written by QtCreator 4.13.1, 2020-10-10T13:46:21. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -627,7 +627,6 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">0</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">MySaleUpgrade</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.AndroidRunConfiguration:/home/lalan-ke/Documents/QML/MySaleUpgrade/MySaleUpgrade.pro</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/lalan-ke/Documents/QML/MySaleUpgrade/MySaleUpgrade.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>

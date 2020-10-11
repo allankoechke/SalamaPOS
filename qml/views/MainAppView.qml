@@ -86,7 +86,7 @@ Rectangle {
 
                         CheckoutView {}
 
-                        StockView {}
+                        StockView { id: stackStockView }
 
                         SalesView { id: salesView }
 
