@@ -81,9 +81,9 @@ Rectangle {
                 text: _unit
                 width: parent.width
                 elide: AppText.ElideRight
-                horizontalAlignment: AppText.AlignLeft
+                horizontalAlignment: AppText.AlignHCenter
 
-                Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+                anchors.centerIn: parent
             }
         }
 

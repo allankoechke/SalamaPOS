@@ -85,7 +85,10 @@ Item {
                                 userAccountPopup.open()
 
                             else
+                            {
+                                AlarmsModel.addAlarmItem("error", "User has no rights to add users")
                                 console.log("[Error] User doesnt have rights to add users")
+                            }
                         }
                     }
                 }

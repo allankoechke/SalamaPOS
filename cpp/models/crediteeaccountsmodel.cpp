@@ -321,6 +321,8 @@ bool CrediteeAccountsModel::repayDebt(const QString &crediteeId, const int &debt
     {
         qDebug() << " [ERROR] Database not open!";
     }
+
+    return true;
 }
 
 void CrediteeAccountsModel::addNewCreditee(CrediteeAccount *creditee)
@@ -341,7 +343,7 @@ void CrediteeAccountsModel::removeCreditee(int index)
 
 int CrediteeAccountsModel::getIndex(QVariant id)
 {
-    for(int i=0; i<m_crediteeAccount.size()-1; i++)
+    for(int i=0; i<m_crediteeAccount.size(); i++)
     {
         QVariant _id = data(this->index(i), IdNoRole);
 

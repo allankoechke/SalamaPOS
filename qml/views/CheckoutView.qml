@@ -91,9 +91,6 @@ Item {
                     {
                         anchors.fill: parent
                         onClicked: {
-                            //CheckoutModel.addSellItem("AF123456897", "Milking Salve", "100gms", 67, 90, 1);
-                            //CheckoutModel.addSellItem("AS754737", "Mongoose", "1unit", 120, 150, 1);
-
                             addItemDialog.show();
                         }
                     }

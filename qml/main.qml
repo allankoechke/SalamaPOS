@@ -3,6 +3,7 @@ import QtQuick.Window 2.2
 import QtQuick.Controls.Material 2.2
 
 import "./views"
+import "./delegates"
 
 Window {
     id: mainApp
@@ -32,6 +33,7 @@ Window {
     property string menuColor: "#12679a"
     property string tableHeaderColor: "#5f00ff"
     property bool isDialogClosedAfterEachAdd: false
+    property alias alarmsListView: alarmsListView
 
     // Logged in user
     property string loggedUser_fullname: ""
@@ -82,6 +84,34 @@ Window {
     {
         id: mainAppView
     }
+
+    Item
+    {
+        width: 300
+        z: 100
+        visible: mainAppView.navBarIndex !== 7 && mainAppView !== 8
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        height: AlarmsModel.size * 53
+
+        ListView
+        {
+            id: alarmsListView
+            anchors.fill: parent
+            width: parent.width
+            height: parent.height
+            spacing: 5
+
+            model: AlarmsModel
+            delegate: AlarmsWidgetDelegate
+            {
+                alarmId: alarm_id
+                category: alarm_type
+                content: alarm_text
+            }
+        }
+    }
+
 
     FontLoader
     {

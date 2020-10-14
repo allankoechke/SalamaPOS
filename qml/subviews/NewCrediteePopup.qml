@@ -251,6 +251,7 @@ Controls2.Popup
         function onIdExists()
         {
             console.log(" [ERROR] Unique ID Constrain fails")
+            AlarmsModel.addAlarmItem("error", "User ID already exists")
         }
     }
 }

@@ -33,6 +33,9 @@ public:
 
     QHash<int, QByteArray> roleNames() const;
 
+    // Property
+    Q_PROPERTY(int size READ size WRITE setSize NOTIFY sizeChanged)
+
     // Q_INVOKABLES
     Q_INVOKABLE void addAlarmItem(const QString &type, const QString &content);
     Q_INVOKABLE void removeAlarmItem(const QVariant &id);
@@ -41,11 +44,19 @@ public:
     void addAlarmItem(Alarms * alarms);
     int getAlarmId(const QVariant &id);
 
+    int size() const;
+
+public slots:
+    void setSize(int size);
+
 signals:
+
+    void sizeChanged(int size);
 
 private:
     QList<Alarms *> m_alarmsList;
 
+    int m_size;
 };
 
 #endif // ALARMSMODEL_H

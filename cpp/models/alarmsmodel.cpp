@@ -123,6 +123,7 @@ void AlarmsModel::addAlarmItem(const QString &type, const QString &content)
 void AlarmsModel::removeAlarmItem(const QVariant &id)
 {
     int _id = getAlarmId(id);
+    // qDebug() << "Index: " << _id << " for " << id;
 
     if(_id != -1)
     {
@@ -130,8 +131,11 @@ void AlarmsModel::removeAlarmItem(const QVariant &id)
         m_alarmsList.removeAt(_id);
         endRemoveRows();
 
-        qDebug() << "Alarm Removed";
+        // qDebug() << "Alarm Removed";
     }
+
+
+    setSize(m_alarmsList.size());
 }
 
 void AlarmsModel::addAlarmItem(Alarms *alarms)
@@ -140,11 +144,13 @@ void AlarmsModel::addAlarmItem(Alarms *alarms)
     beginInsertRows(QModelIndex(), index, index);
     m_alarmsList.append(alarms);
     endInsertRows();
+
+    setSize(m_alarmsList.size());
 }
 
 int AlarmsModel::getAlarmId(const QVariant &id)
 {
-    for(int i=0; i<m_alarmsList.size()-1; i++)
+    for(int i=0; i<m_alarmsList.size(); i++)
     {
         QVariant _id = data(this->index(i), AlarmIdRole);
 
@@ -153,4 +159,18 @@ int AlarmsModel::getAlarmId(const QVariant &id)
     }
 
     return -1;
+}
+
+int AlarmsModel::size() const
+{
+    return m_size;
+}
+
+void AlarmsModel::setSize(int size)
+{
+    if (m_size == size)
+        return;
+
+    m_size = size;
+    emit sizeChanged(m_size);
 }

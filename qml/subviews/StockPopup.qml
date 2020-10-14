@@ -15,12 +15,12 @@ Controls2.Popup
     modal: true
     closePolicy: Controls2.Popup.NoAutoClose
 
-    /*onClosed: {
+    onClosed: {
         combo.currentIndex = 0;
         currentStock = 0;
         addStock.value = 1;
         reduceStock.value = 0;
-    }*/
+    }
 
     property int currentIndex: -1
 
@@ -83,7 +83,7 @@ Controls2.Popup
 
                 AppText
                 {
-                    color: "black"
+                    color: QmlInterface.isDarkTheme? "grey":"black"
                     size: 17
                     text: qsTr("Stock Dialog")
 
@@ -104,7 +104,7 @@ Controls2.Popup
                     AppText
                     {
                         size: 20
-                        color: "black"
+                        color: QmlInterface.isDarkTheme? "grey":"black"
                         text: qsTr("Stock Action")
 
                         Layout.preferredWidth: 200
@@ -140,7 +140,7 @@ Controls2.Popup
                     AppText
                     {
                         size: 20
-                        color: "black"
+                        color: QmlInterface.isDarkTheme? "grey":"black"
                         text: qsTr("Quantity in Stock")
 
                         Layout.preferredWidth: 200
@@ -151,7 +151,7 @@ Controls2.Popup
                     AppText
                     {
                         size: 20
-                        color: "black"
+                        color: QmlInterface.isDarkTheme? "grey":"black"
                         font.bold: true
                         text: currentStock.toString();
 
@@ -176,7 +176,7 @@ Controls2.Popup
                     AppText
                     {
                         size: 20
-                        color: "black"
+                        color: QmlInterface.isDarkTheme? "grey":"black"
                         text: qsTr("Quantity to Add")
 
                         Layout.preferredWidth: 200
@@ -207,7 +207,7 @@ Controls2.Popup
                     AppText
                     {
                         size: 20
-                        color: "black"
+                        color: QmlInterface.isDarkTheme? "grey":"black"
                         text: qsTr("Quantity to Remove")
 
                         Layout.preferredWidth: 200
@@ -296,7 +296,7 @@ Controls2.Popup
                             onClicked: {
                                 var date = new Date().getTime();
 
-                                console.log(">> Updating Stock: ", barcode, " : ", currentStock, " +/- ", valueQty, " : ", date, " : ", currentIndex)
+                                // console.log(">> Updating Stock: ", barcode, " : ", currentStock, " +/- ", valueQty, " : ", date, " : ", currentIndex)
 
                                 if(combo.currentIndex===0)
                                 {
@@ -308,7 +308,7 @@ Controls2.Popup
                                     StockItemModel.updateStock(barcode, currentStock-valueQty, date, currentIndex)
                                 }
 
-                                stockPopup.close()
+                                // stockPopup.close()
                             }
                         }
                     }
@@ -326,12 +326,14 @@ Controls2.Popup
             if(state)
             {
                 console.log("Stock update successful!");
+                AlarmsModel.addAlarmItem("info", "Stock update successful")
                 root.close();
             }
 
             else
             {
                 console.log("Stock update failed!");
+                AlarmsModel.addAlarmItem("error", "Stock update failed")
             }
         }
     }

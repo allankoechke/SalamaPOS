@@ -248,11 +248,15 @@ Controls2.Popup
             if(status)
             {
                 console.log(" [INFO] User deleted successfully!");
+                AlarmsModel.addAlarmItem("info", "User deleted successfully!")
                 root.close();
             }
 
             else
+            {
                 console.log(" [ERROR] Error Deleting User");
+                AlarmsModel.addAlarmItem("error", "Error deleting user")
+            }
         }
 
         function onUserPriviledgesChanged(status)
@@ -260,11 +264,15 @@ Controls2.Popup
             if(status)
             {
                 console.log(" [INFO] User priviledges updated Successfuly!");
+                AlarmsModel.addAlarmItem("info", "User privileges updated")
                 root.close();
             }
 
             else
+            {
                 console.log(" [ERROR] Error Updating User Priviledges");
+                AlarmsModel.addAlarmItem("error", "User priviledges update failed")
+            }
         }
     }
 }

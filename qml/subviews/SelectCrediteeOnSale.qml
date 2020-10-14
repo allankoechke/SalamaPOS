@@ -29,7 +29,7 @@ Controls2.Popup
     property int currentStock: 0
     //property string barcode: ""
     //property alias combo: combo
-    property int valueQty: combo.currentIndex===0? addStock.value:reduceStock.value
+    // property int valueQty: combo.currentIndex===0? addStock.value:reduceStock.value
 
     signal accepted()
 
@@ -76,7 +76,7 @@ Controls2.Popup
 
                 AppText
                 {
-                    color: "black"
+                    color: QmlInterface.isDarkTheme? "grey":"black"
                     size: 17
                     text: qsTr("Select Creditee")
 
@@ -102,12 +102,123 @@ Controls2.Popup
                         Layout.preferredHeight: 35
 
                         color: menuColor
+
+                        RowLayout
+                        {
+                            anchors.fill: parent
+                            spacing: 1
+
+
+                            AppText
+                            {
+                                size: 17
+                                color: "white"
+                                text: qsTr("No.")
+                                font.bold: true
+                                horizontalAlignment: AppText.AlignHCenter
+
+                                Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+                                Layout.preferredWidth: 50
+                            }
+
+                            VSeparator{}
+
+                            AppText
+                            {
+                                size: 17
+                                color: "white"
+                                text: qsTr("Name")
+                                font.bold: true
+                                horizontalAlignment: AppText.AlignHCenter
+
+                                Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+                                Layout.fillWidth: true
+                            }
+
+                            VSeparator{}
+
+                            AppText
+                            {
+                                size: 17
+                                color: "white"
+                                text: qsTr("ID No.")
+                                font.bold: true
+                                horizontalAlignment: AppText.AlignHCenter
+
+                                Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+                                Layout.preferredWidth: 120
+                            }
+                        }
                     }
 
                     Controls2.ScrollView
                     {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
+
+                        ListView
+                        {
+                            width: parent.width
+                            height: parent.height
+                            anchors.left: parent.left
+
+                            spacing: 0
+                            model: 10
+                            delegate: Component
+                            {
+                                Rectangle
+                                {
+                                    Layout.fillWidth: true
+                                    Layout.preferredHeight: 35
+
+                                    color: menuColor
+
+                                    RowLayout
+                                    {
+                                        anchors.fill: parent
+                                        spacing: 1
+
+
+                                        AppText
+                                        {
+                                            id: _id
+                                            size: 17
+                                            color: "white"
+                                            horizontalAlignment: AppText.AlignHCenter
+
+                                            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+                                            Layout.preferredWidth: 50
+                                        }
+
+                                        VSeparator{}
+
+                                        AppText
+                                        {
+                                            id: name
+                                            size: 15
+                                            color: "white"
+                                            horizontalAlignment: AppText.AlignHCenter
+
+                                            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+                                            Layout.fillWidth: true
+                                        }
+
+                                        VSeparator{}
+
+                                        AppText
+                                        {
+                                            id: idno
+                                            size: 15
+                                            color: "white"
+                                            horizontalAlignment: AppText.AlignHCenter
+
+                                            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+                                            Layout.preferredWidth: 120
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
 
                 }
@@ -204,12 +315,14 @@ Controls2.Popup
             if(state)
             {
                 console.log("Stock update successful!");
+                AlarmsModel.addAlarmItem("info", "Stock update successful")
                 root.close();
             }
 
             else
             {
                 console.log("Stock update failed!");
+                AlarmsModel.addAlarmItem("error", "Stock update failed")
             }
         }
     }

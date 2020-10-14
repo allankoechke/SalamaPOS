@@ -134,8 +134,6 @@ Window {
                 text: qsTr("Close dialog after adding item")
                 checked: isDialogClosedAfterEachAdd
 
-
-
                 onCheckStateChanged: isDialogClosedAfterEachAdd=checked
             }
 
@@ -193,6 +191,7 @@ Window {
         function onItemStockWarningChanged()
         {
             console.log(">> Stock is less to complete this add!")
+            AlarmsModel.addAlarmItem("error", "Stock is less to add to Checkout")
         }
 
         function onItemDataChanged(status, jsonObj)
@@ -211,7 +210,10 @@ Window {
             }
 
             else
+            {
                 console.log(">> Failed to Add Item to Checkout Model!")
+                AlarmsModel.addAlarmItem("error", "Failed to Add Item to Checkout Model")
+            }
         }
 
 

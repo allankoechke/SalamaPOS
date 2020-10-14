@@ -242,6 +242,7 @@ Controls2.Popup
                                                     isError = true;
                                                     errorText = qsTr("Passwords do not match")
                                                     console.log("Passwords do not match")
+                                                    AlarmsModel.addAlarmItem("error", "Passwords do not match!")
                                                 }
                                             }
 
@@ -249,6 +250,7 @@ Controls2.Popup
                                             {
                                                 isError = true;
                                                 errorText = qsTr("Some required fields are short!")
+                                                AlarmsModel.addAlarmItem("error", "Some required fields are short!")
                                             }
                                         }
 
@@ -263,6 +265,7 @@ Controls2.Popup
                                             {
                                                 isError = true;
                                                 errorText = qsTr("Some required fields are short!")
+                                                AlarmsModel.addAlarmItem("error", "Some required fields are short!")
                                             }
                                         }
                                     }
@@ -284,11 +287,15 @@ Controls2.Popup
             if(status)
             {
                 console.log(" [INFO] User Added Successfuly!");
+                AlarmsModel.addAlarmItem("info", "New user added successfully!")
                 root.close();
             }
 
             else
+            {
                 console.log(" [ERROR] Error Adding User");
+                AlarmsModel.addAlarmItem("error", "Error adding user")
+            }
         }
 
         function onUserUpdatedChanged(status)
@@ -296,17 +303,22 @@ Controls2.Popup
             if(status)
             {
                 console.log(" [INFO] User Details updated Successfuly!");
+                AlarmsModel.addAlarmItem("info", "User details updated!")
                 // resetFields();
                 root.close();
             }
 
             else
+            {
                 console.log(" [ERROR] Error Updating User");
+                AlarmsModel.addAlarmItem("error", "Error updating users")
+            }
         }
 
         function onUsernameExistsChanged(status)
         {
             console.log(">> [ERROR] Username taken")
+            AlarmsModel.addAlarmItem("warning", "The username is already taken")
             isError = true;
             errorText = qsTr("The username is already taken!")
         }

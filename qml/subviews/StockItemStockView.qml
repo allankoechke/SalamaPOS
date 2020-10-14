@@ -70,13 +70,14 @@ Rectangle {
                             }
 
                             else
+                            {
+                                AlarmsModel.addAlarmItem("error", "User has no priviledges to perform action")
                                 console.log(" [ERROR] User has no priviledges to perform action")
-
+                            }
                         }
                     }
                 }
             }
-
         }
     }
 }

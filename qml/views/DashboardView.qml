@@ -611,8 +611,10 @@ Item {
                                     label: qsTr("Add new user")
 
                                     onClicked: {
-                                        // if(loggedUser_canAddAccounts)
-                                        userAccountPopup.open()
+                                        if(loggedUser_canAddAccounts)
+                                            userAccountPopup.open()
+
+                                        AlarmsModel.addAlarmItem("error", "User has no rights to add users")
                                     }
                                 }
 

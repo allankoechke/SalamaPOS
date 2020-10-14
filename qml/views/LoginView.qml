@@ -152,6 +152,7 @@ Item {
                                 {
                                     isError = true;
                                     errorString = qsTr("Required field is short")
+                                    AlarmsModel.addAlarmItem("error", "Empty or short Fields!")
                                 }
                             }
                         }

@@ -266,11 +266,15 @@ Controls2.Popup
             if(status)
             {
                 console.log(" [INFO] Item Updated Successfuly!");
+                AlarmsModel.addAlarmItem("info", "Item updated successfully!")
                 root.close();
             }
 
             else
+            {
                 console.log(" [ERROR] Error Updating item");
+                AlarmsModel.addAlarmItem("error", "Error updating item")
+            }
         }
 
         function onItemAddingChanged(status)
@@ -278,11 +282,15 @@ Controls2.Popup
             if(status)
             {
                 console.log(" [INFO] Item Added Successfuly!");
+                AlarmsModel.addAlarmItem("info", "Item added successfully!")
                 root.close();
             }
 
             else
+            {
                 console.log(" [ERROR] Error Adding item");
+                AlarmsModel.addAlarmItem("error", "Error adding item")
+            }
         }
 
         function onCategoryIdChanged(l_id)

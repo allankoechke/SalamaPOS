@@ -179,12 +179,14 @@ Controls2.Popup
             if(state)
             {
                 console.log("Sale Qty Update successful!");
+                AlarmsModel.addAlarmItem("info", "Quantity added successfully")
                 root.close();
             }
 
             else
             {
                 console.log("Sale Qty failed!");
+                AlarmsModel.addAlarmItem("error", "Quantity add failed")
             }
         }
     }

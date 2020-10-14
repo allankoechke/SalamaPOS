@@ -248,6 +248,7 @@ Controls2.Drawer {
 
                         Rectangle
                         {
+                            visible: !onCreditBtn.visible
                             color: "#0091d9"
                             radius: 10
 
@@ -302,6 +303,7 @@ Controls2.Drawer {
                                     else
                                     {
                                         console.log(" [ERROR] Paid amont is less than the required amount")
+                                        AlarmsModel.addAlarmItem("error", "Amount paid is less than owed")
                                     }
                                 }
                             }
@@ -344,6 +346,7 @@ Controls2.Drawer {
             else
             {
                 console.log(" [ERROR] Error Adding Sale Items")
+                AlarmsModel.addAlarmItem("error", "Error adding sale item")
             }
         }
 
@@ -360,11 +363,15 @@ Controls2.Drawer {
 
                     SalesModel.addSaleItem(bcode, bqty, loggedUser_username, uniqueSaleId, uniqueSaleDate);
                 }
+
+
+                AlarmsModel.addAlarmItem("info", "Success adding sale items")
             }
 
             else
             {
                 console.log(" [ERROR] Error Adding Payment Details")
+                AlarmsModel.addAlarmItem("error", "Error adding payment details")
             }
         }
 
