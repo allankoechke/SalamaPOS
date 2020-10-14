@@ -341,7 +341,7 @@ void CrediteeAccountsModel::removeCreditee(int index)
 
 int CrediteeAccountsModel::getIndex(QVariant id)
 {
-    for(int i=0; i<m_crediteeAccount.size(); i++)
+    for(int i=0; i<m_crediteeAccount.size()-1; i++)
     {
         QVariant _id = data(this->index(i), IdNoRole);
 

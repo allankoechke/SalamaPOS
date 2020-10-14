@@ -43,6 +43,13 @@ public:
     Q_PROPERTY(QList<int> chequeYAxis READ chequeYAxis WRITE setChequeYAxis NOTIFY chequeYAxisChanged)
     Q_PROPERTY(int plotYmax READ plotYmax WRITE setPlotYmax NOTIFY plotYmaxChanged)
 
+    // Configuration properties
+    Q_PROPERTY(bool tablesCreated READ tablesCreated WRITE setTablesCreated NOTIFY tablesCreatedChanged)
+    Q_PROPERTY(bool productsAdded READ productsAdded WRITE setProductsAdded NOTIFY productsAddedChanged)
+    Q_PROPERTY(bool productTypeAdded READ productTypeAdded WRITE setProductTypeAdded NOTIFY productTypeAddedChanged)
+    Q_PROPERTY(bool productStockAdded READ productStockAdded WRITE setProductStockAdded NOTIFY productStockAddedChanged)
+
+
     Q_INVOKABLE QJsonObject getScreenSize();
     Q_INVOKABLE void fetchSavedSettings();
     Q_INVOKABLE void getSalesStatisticsForDashboard();
@@ -82,6 +89,14 @@ public:
 
     int plotYmax() const;
 
+    bool tablesCreated() const;
+
+    bool productsAdded() const;
+
+    bool productTypeAdded() const;
+
+    bool productStockAdded() const;
+
 public slots:
     void setIsDarkTheme(bool isDarkTheme);
 
@@ -114,6 +129,14 @@ public slots:
     void setChequeYAxis(QList<int> chequeYAxis);
 
     void setPlotYmax(int plotYmax);
+
+    void setTablesCreated(bool tablesCreated);
+
+    void setProductsAdded(bool productsAdded);
+
+    void setProductTypeAdded(bool productTypeAdded);
+
+    void setProductStockAdded(bool productStockAdded);
 
 signals:
     void databaseReadyChanged();
@@ -152,6 +175,14 @@ signals:
 
     void plotYmaxChanged(int plotYmax);
 
+    void tablesCreatedChanged(bool tablesCreated);
+
+    void productsAddedChanged(bool productsAdded);
+
+    void productTypeAddedChanged(bool productTypeAdded);
+
+    void productStockAddedChanged(bool productStockAdded);
+
 private slots:
 
 private:
@@ -166,6 +197,10 @@ private:
     QList<int> m_creditYAxis;
     QList<int> m_chequeYAxis;
     int m_plotYmax;
+    bool m_tablesCreated;
+    bool m_productsAdded;
+    bool m_productTypeAdded;
+    bool m_productStockAdded;
 };
 
 #endif // QMLINTERFACE_H

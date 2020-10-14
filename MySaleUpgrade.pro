@@ -17,6 +17,7 @@ SOURCES += \
         cpp/databaseinterface.cpp \
         cpp/datetime.cpp \
         cpp/main.cpp \
+        cpp/models/alarmsmodel.cpp \
         cpp/models/checkoutitems.cpp \
         cpp/models/checkoutitemsmodel.cpp \
         cpp/models/completer.cpp \
@@ -26,6 +27,7 @@ SOURCES += \
         cpp/models/productsalesmodel.cpp \
         cpp/models/saleitems.cpp \
         cpp/models/saleitemsmodel.cpp \
+        cpp/models/src/alarms.cpp \
         cpp/models/src/crediteeaccount.cpp \
         cpp/models/stockitems.cpp \
         cpp/models/stockitemsmodel.cpp \
@@ -52,6 +54,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     cpp/databaseinterface.h \
     cpp/datetime.h \
+    cpp/models/alarmsmodel.h \
     cpp/models/checkoutitems.h \
     cpp/models/checkoutitemsmodel.h \
     cpp/models/completer.h \
@@ -61,6 +64,7 @@ HEADERS += \
     cpp/models/productsalesmodel.h \
     cpp/models/saleitems.h \
     cpp/models/saleitemsmodel.h \
+    cpp/models/src/alarms.h \
     cpp/models/src/crediteeaccount.h \
     cpp/models/stockitems.h \
     cpp/models/stockitemsmodel.h \

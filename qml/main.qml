@@ -77,6 +77,7 @@ Window {
         onTriggered: mainAppView.startApp(true);
     }
 
+
     MainAppView
     {
         id: mainAppView

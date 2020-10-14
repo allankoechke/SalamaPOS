@@ -7,7 +7,7 @@ import "../components"
 Controls2.Drawer {
     id: root
 
-    width: 400
+    width: 800
     height: mainApp.height
     edge: Qt.RightEdge
     interactive: false
@@ -113,57 +113,137 @@ Controls2.Drawer {
                         width: _x.width-40
                         spacing: 20
 
-                        AppText
+                        Item
                         {
-                            color: "#555555"
-                            size: 40
-                            text: qsTr("Sales: Ksh. ") + CheckoutModel.sellTotals.toString()
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: 45
 
-                            Layout.alignment: Qt.AlignHCenter
+                            RowLayout
+                            {
+                                anchors.fill: parent
+                                spacing: 10
+
+                                AppText
+                                {
+                                    color: QmlInterface.isDarkTheme? "#f4f4f4":"#555555"
+                                    size: 35
+                                    text: qsTr("COST: Ksh. ") + CheckoutModel.sellTotals.toString()
+
+                                    Layout.alignment: Qt.AlignVCenter|Qt.AlignRight
+                                }
+
+                                Rectangle
+                                {
+                                    width: 1
+                                    Layout.fillHeight: true
+                                    color: "silver"
+                                }
+
+                                AppText
+                                {
+                                    color: QmlInterface.isDarkTheme? "#f4f4f4":"#555555"
+                                    size: 35
+                                    text: qsTr("PAID: Ksh. ") + (parseInt(cashAmount===""? 0:cashAmount)+parseInt(mpesaAmount===""? 0:mpesaAmount)+parseInt(chequeAmount===""? 0:chequeAmount)).toString()
+
+                                    Layout.alignment: Qt.AlignVCenter|Qt.AlignLeft
+                                }
+                            }
+                        }
+                        Item
+                        {
+                            Layout.fillWidth: true
+                            Layout.minimumWidth: _x.width-40
+                            Layout.preferredHeight: 230
+
+                            ColumnLayout
+                            {
+                                width: parent.width/2 - 10
+                                height: parent.height
+
+                                anchors.left: parent.left
+                                anchors.top: parent.top
+
+                                CheckoutPaymentItem
+                                {
+                                    // Cash payment
+                                    id: cash_p
+
+                                    Layout.preferredWidth: _x.width-20
+
+                                    icon: "\uf555"
+                                    label: qsTr("Cash Payment Amount")
+                                }
+
+                                CheckoutPaymentItem
+                                {
+                                    // M-Pesa Payment
+                                    id: mpesa_p
+
+                                    Layout.preferredWidth: _x.width-20
+
+                                    icon: "\uf3ce"
+                                    label: qsTr("M~Pesa Payment Amount")
+                                }
+                            }
+
+                            ColumnLayout
+                            {
+                                width: parent.width/2 - 10
+                                height: parent.height
+
+                                anchors.right: parent.right
+                                anchors.top: parent.top
+
+                                CheckoutPaymentItem
+                                {
+                                    // Cheque Payment
+                                    id: cheque_p
+
+                                    Layout.preferredWidth: _x.width-20
+
+                                    icon: "\uf53d"
+                                    label: qsTr("Cheque Payment Amount")
+                                }
+
+                                CheckoutPaymentItem
+                                {
+                                    // Credit Payment
+                                    id: credit_p
+
+                                    Layout.preferredWidth: _x.width-20
+
+                                    icon: "\uf09d"
+                                    label: qsTr("Credit Payment Amount")
+                                }
+                            }
                         }
 
-                        CheckoutPaymentItem
+                        Rectangle
                         {
-                            // Cash payment
-                            id: cash_p
+                            id: onCreditBtn
+                            color: "#0091d9"
+                            radius: 10
+                            visible: creditAmount!=="" || (parseInt(cashAmount===""? 0:cashAmount)+parseInt(mpesaAmount===""? 0:mpesaAmount)+parseInt(chequeAmount===""? 0:chequeAmount)) < CheckoutModel.sellTotals
 
-                            Layout.preferredWidth: _x.width-20
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: 60
+                            Layout.margins: 20
 
-                            icon: "\uf555"
-                            label: qsTr("Cash Payment")
-                        }
+                            AppText
+                            {
+                                color: "white"
+                                size: 20
+                                text: qsTr("Add Creditee & Finish Transaction")
 
-                        CheckoutPaymentItem
-                        {
-                            // M-Pesa Payment
-                            id: mpesa_p
+                                anchors.centerIn: parent
+                            }
 
-                            Layout.preferredWidth: _x.width-20
+                            MouseArea
+                            {
+                                anchors.fill: parent
+                                onClicked: selectCrediteeOnSaleS.open();
 
-                            icon: "\uf3ce"
-                            label: qsTr("M~Pesa Payment")
-                        }
-
-                        CheckoutPaymentItem
-                        {
-                            // Cheque Payment
-                            id: cheque_p
-
-                            Layout.preferredWidth: _x.width-20
-
-                            icon: "\uf53d"
-                            label: qsTr("Cheque Payment")
-                        }
-
-                        CheckoutPaymentItem
-                        {
-                            // Credit Payment
-                            id: credit_p
-
-                            Layout.preferredWidth: _x.width-20
-
-                            icon: "\uf09d"
-                            label: qsTr("Credit Payment")
+                            }
                         }
 
                         Rectangle
@@ -226,6 +306,7 @@ Controls2.Drawer {
                                 }
                             }
                         }
+
                     }
                 }
             }

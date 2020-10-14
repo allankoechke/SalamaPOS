@@ -2,16 +2,6 @@
 
 QmlInterface::QmlInterface(QObject *parent) : QObject(parent)
 {
-    m_databaseInterface = new DatabaseInterface(parent);
-    m_dateTime = new DateTime();
-
-    bool status = m_databaseInterface->initializeDatabase();
-
-    if(status)
-    {
-        emit databaseReadyChanged();
-    }
-
     // QVariantMap configurations=QJsonDocument::fromJson(file.readAll()).toVariant().toMap();
 
     qApp->setApplicationName("Salama P.O.S.");
@@ -24,6 +14,16 @@ QmlInterface::QmlInterface(QObject *parent) : QObject(parent)
     m_settings = new QSettings(qApp->organizationName(),qApp->applicationDisplayName());
 
     setIsDarkTheme(m_settings->value("Theme/isDarkTheme", false).toBool());
+
+    m_databaseInterface = new DatabaseInterface(parent);
+    m_dateTime = new DateTime();
+
+    bool status = m_databaseInterface->initializeDatabase();
+
+    if(status)
+    {
+        emit databaseReadyChanged();
+    }
 
     // Set default max
     setPlotYmax(10);
@@ -47,12 +47,12 @@ QJsonObject QmlInterface::getScreenSize()
 
 void QmlInterface::fetchSavedSettings()
 {
-    // bool isFirstTime = m_settings->value("General/isFirstTime", true).toBool();
-    //     bool dark_theme = m_settings->value("Theme/isDarkTheme", false).toBool();
+    setIsDarkTheme(m_settings->value("Theme/isDarkTheme", false).toBool());
 
-    //     qDebug() << "Theme ? " << dark_theme;
-
-    //     setIsDarkTheme(dark_theme);
+    setTablesCreated(m_settings->value("Config/isTablesCreated", false).toBool());
+    setProductsAdded(m_settings->value("Config/isProductsAdded", false).toBool());
+    setProductTypeAdded(m_settings->value("Config/isProductTypeAdded", false).toBool());
+    setProductStockAdded(m_settings->value("Config/isProductStockAdded", false).toBool());
 }
 
 void QmlInterface::getSalesStatisticsForDashboard()
@@ -378,6 +378,26 @@ int QmlInterface::plotYmax() const
     return m_plotYmax;
 }
 
+bool QmlInterface::tablesCreated() const
+{
+    return m_tablesCreated;
+}
+
+bool QmlInterface::productsAdded() const
+{
+    return m_productsAdded;
+}
+
+bool QmlInterface::productTypeAdded() const
+{
+    return m_productTypeAdded;
+}
+
+bool QmlInterface::productStockAdded() const
+{
+    return m_productStockAdded;
+}
+
 void QmlInterface::setIsDarkTheme(bool isDarkTheme)
 {
     if (m_isDarkTheme == isDarkTheme)
@@ -523,6 +543,42 @@ void QmlInterface::setPlotYmax(int plotYmax)
 
     m_plotYmax = plotYmax;
     emit plotYmaxChanged(m_plotYmax);
+}
+
+void QmlInterface::setTablesCreated(bool tablesCreated)
+{
+    if (m_tablesCreated == tablesCreated)
+        return;
+
+    m_tablesCreated = tablesCreated;
+    emit tablesCreatedChanged(m_tablesCreated);
+}
+
+void QmlInterface::setProductsAdded(bool productsAdded)
+{
+    if (m_productsAdded == productsAdded)
+        return;
+
+    m_productsAdded = productsAdded;
+    emit productsAddedChanged(m_productsAdded);
+}
+
+void QmlInterface::setProductTypeAdded(bool productTypeAdded)
+{
+    if (m_productTypeAdded == productTypeAdded)
+        return;
+
+    m_productTypeAdded = productTypeAdded;
+    emit productTypeAddedChanged(m_productTypeAdded);
+}
+
+void QmlInterface::setProductStockAdded(bool productStockAdded)
+{
+    if (m_productStockAdded == productStockAdded)
+        return;
+
+    m_productStockAdded = productStockAdded;
+    emit productStockAddedChanged(m_productStockAdded);
 }
 
 

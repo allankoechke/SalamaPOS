@@ -196,18 +196,20 @@ Item {
                     isError = true
                     errorString = qsTr("Invalid login details")
                     console.log("Username doesnt exist")
+                    AlarmsModel.addAlarmItem("error", "Invalid login credentials")
                 }
             }
 
             function onLoggingInPasswordStatus(status)
             {
-                console.log("Status: ", status)
+                // console.log("Status: ", status)
 
                 if(!status)
                 {
                     isError = true
                     errorString = qsTr("Invalid login details")
                     console.log(" [ERROR] Wrong Password")
+                    AlarmsModel.addAlarmItem("error", "Invalid password")
                 }
 
                 else
@@ -223,6 +225,8 @@ Item {
 
                     // Load Creditee Accounts
                     CrediteeModel.loadCrediteeAccounts();
+
+                    AlarmsModel.addAlarmItem("info", "Login successful!")
                 }
             }
 

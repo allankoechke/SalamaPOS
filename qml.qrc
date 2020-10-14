@@ -94,5 +94,7 @@
         <file>qml/subviews/CreditRepaymentPopup.qml</file>
         <file>qml/subviews/CrediteePaymentsTableHeader.qml</file>
         <file>qml/delegates/CrediteePaymentsTableDelegate.qml</file>
+        <file>qml/subviews/SelectCrediteeOnSale.qml</file>
+        <file>qml/delegates/AlarmsWidgetDelegate.qml</file>
     </qresource>
 </RCC>

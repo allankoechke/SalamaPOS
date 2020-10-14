@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.3
 
 import "../components"
 import "../subviews"
+import "../delegates"
 
 Rectangle {
     id: mainAppViewRoot
@@ -18,6 +19,7 @@ Rectangle {
     property alias checkoutQtyPopup: checkoutQtyPopup
     property alias userAccountPopup: userAccountPopup
     property alias accountsPopup: accountsPopup
+    property alias selectCrediteeOnSaleS: selectCrediteeOnSaleS
 
     onNavBarIndexChanged: {
         switch(navBarIndex)
@@ -105,6 +107,33 @@ Rectangle {
         }
     }
 
+    Item
+    {
+        width: 300
+        z: 1
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        height: alarmsModel.count() * 53
+
+        ListView
+        {
+            anchors.fill: parent
+            width: parent.width
+            height: parent.height
+
+            model: AlarmsModel
+            delegate: Component{
+
+                AlarmsWidgetDelegate
+                {
+                    alarmId: alarm_id
+                    category: alarm_type
+                    content: alarm_text
+                }
+            }
+        }
+    }
+
     CheckoutPopup
     {
         id: checkoutPopup
@@ -161,6 +190,10 @@ Rectangle {
         id: creditRepayDialog
     }
 
+    SelectCrediteeOnSale
+    {
+        id: selectCrediteeOnSaleS
+    }
 
     function startApp(state)
     {

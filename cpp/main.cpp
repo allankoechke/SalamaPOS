@@ -11,6 +11,7 @@
 #include "models/saleitemsmodel.h"
 #include "models/productsalesmodel.h"
 #include "models/crediteeaccountsmodel.h"
+#include "models/alarmsmodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -28,6 +29,7 @@ int main(int argc, char *argv[])
     saleItemsModel m_saleItem;
     ProductSalesModel m_pSale;
     CrediteeAccountsModel creditee;
+    AlarmsModel m_alarmModel;
 
     engine.rootContext()->setContextProperty("QmlInterface", &qmlInterface);
     engine.rootContext()->setContextProperty("StockItemModel", &m_stockModel);
@@ -37,6 +39,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("SalesModel", &m_saleItem);
     engine.rootContext()->setContextProperty("ProductSalesModel", &m_pSale);
     engine.rootContext()->setContextProperty("CrediteeModel", &creditee);
+    engine.rootContext()->setContextProperty("AlarmsModel", &m_alarmModel);
 
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
