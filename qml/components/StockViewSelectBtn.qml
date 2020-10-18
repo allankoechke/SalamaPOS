@@ -6,7 +6,7 @@ import "../components"
 Rectangle {
     id: root
 
-    Layout.preferredHeight: 45
+    Layout.preferredHeight: 25
     Layout.preferredWidth: isCurrentlySelected? _icon.width+_txt.width+40:_icon.width+_txt.width+30
 
     property bool isCurrentlySelected: false
@@ -15,7 +15,7 @@ Rectangle {
 
     signal clicked
 
-    color: isCurrentlySelected? "#595a6e":"#d3e5ff"
+    color: isCurrentlySelected? "#d3e5ff":"transparent" // isCurrentlySelected? "#595a6e":"#d3e5ff"
     radius: 5
 
     Rectangle
@@ -40,7 +40,7 @@ Rectangle {
         {
             id: _icon
             size: 18
-            color: isCurrentlySelected? "white":"#595a6e"
+            color: isCurrentlySelected? "#2e2e2e":"#595a6e"
             icon: buttonIcon
 
             Layout.alignment: Qt.AlignVCenter
@@ -50,7 +50,7 @@ Rectangle {
         {
             id: _txt
             font.pixelSize: 18
-            color: isCurrentlySelected? "white":"#595a6e"
+            color: isCurrentlySelected? "#2e2e2e":"#595a6e"
             text: buttonLabel
 
             Layout.alignment: Qt.AlignVCenter

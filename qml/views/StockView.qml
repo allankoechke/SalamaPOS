@@ -76,14 +76,16 @@ Item {
 
                 Rectangle
                 {
-                    visible: currentScreen===0 //&& loggedUser_canAddItems
+                    visible: currentScreen===0
+                    enabled: loggedUser_canAddItems
                     Layout.preferredHeight: 45
-                    Layout.preferredWidth: 120
+                    Layout.preferredWidth: 150
                     Layout.alignment: Qt.AlignVCenter
                     Layout.rightMargin: 20
 
                     color: menuColor
                     radius: 3
+                    opacity: enabled? 1:0.2
 
                     RowLayout
                     {
@@ -140,8 +142,10 @@ Item {
                     Layout.fillHeight: true
                     Layout.preferredWidth: 150
 
+                    enabled: loggedUser_canAddStock
                     color: menuColor
                     radius: 3
+                    opacity: enabled? 1:0.2
 
                     RowLayout
                     {
@@ -176,6 +180,7 @@ Item {
                     border.width: 1
                     border.color: "grey"
                     radius: 3
+                    visible: false
 
                     RowLayout
                     {

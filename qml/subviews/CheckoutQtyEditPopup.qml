@@ -41,7 +41,7 @@ Controls2.Popup
 
                 Rectangle
                 {
-                    color: "black"
+                    color: QmlInterface.isDarkTheme? "white":"black"
                     height: 3
                     width: parent.width
                     opacity: 0.08
@@ -52,7 +52,7 @@ Controls2.Popup
 
                 AppText
                 {
-                    color: "black"
+                    color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
                     size: 17
                     text: qsTr("Add/Reduce Sale Quantity")
 
@@ -73,7 +73,7 @@ Controls2.Popup
                     AppText
                     {
                         size: 20
-                        color: "black"
+                        color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
                         text: qsTr("New Quantity")
 
                         Layout.preferredWidth: 200

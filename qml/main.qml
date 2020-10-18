@@ -1,6 +1,7 @@
 import QtQuick 2.4
 import QtQuick.Window 2.2
 import QtQuick.Controls.Material 2.2
+import QtQuick.Controls 2.4 as Controls2
 
 import "./views"
 import "./delegates"
@@ -19,15 +20,17 @@ Window {
     property alias fontAwesomeFontLoader: fontAwesomeFontLoader
     property alias popupTimer: popupTimer
 
+    property bool isCrediteeSelected: false
+
     Material.theme: QmlInterface.isDarkTheme? Material.Dark: Material.Light
 
-//    Material.background: "#f4f9fa"
-//    dark-bg: #1e2027
-//    dark-pane: #29292d
-//    dark-menu: #161719
-//    Background Colors
-//    dark-fore-color: #f4f4f4
-//    dark-ico: #999fa6
+    //    Material.background: "#f4f9fa"
+    //    dark-bg: #1e2027
+    //    dark-pane: #29292d
+    //    dark-menu: #161719
+    //    Background Colors
+    //    dark-fore-color: #f4f4f4
+    //    dark-ico: #999fa6
 
     property string bgColor: QmlInterface.isDarkTheme? "#1e2027":"#f4f9fa"
     property string menuColor: "#12679a"
@@ -47,6 +50,7 @@ Window {
     property bool loggedUser_canDeleteStock: false
     property bool loggedUser_canUndoSales: false
     property bool loggedUser_canBackupDb: false
+    property bool isAdmin: false
 
     Component.onCompleted: {
         popupTimer.start();
@@ -87,12 +91,12 @@ Window {
 
     Item
     {
+        z: 0
         width: 300
-        z: 100
+        x: mainApp.width - (width+10)
+        y: mainApp.height - (height + 10)
+        height: AlarmsModel.size===0? 0:AlarmsModel.size * 53
         visible: mainAppView.navBarIndex !== 7 && mainAppView !== 8
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        height: AlarmsModel.size * 53
 
         ListView
         {
@@ -111,7 +115,6 @@ Window {
             }
         }
     }
-
 
     FontLoader
     {
@@ -170,6 +173,8 @@ Window {
             QmlInterface.getMessagesStatisticsForDashboard(loggedUser_username);
             QmlInterface.getRemindersStatisticsForDashboard();
             QmlInterface.getSalesStatisticsForDashboard();
+
+            isAdmin = loggedUser_canAddAccounts && loggedUser_canDeleteAccounts && loggedUser_canAddItems && loggedUser_canDeleteItems && loggedUser_canAddStock && loggedUser_canDeleteStock && loggedUser_canUndoSales && loggedUser_canBackupDb
         }
     }
 }

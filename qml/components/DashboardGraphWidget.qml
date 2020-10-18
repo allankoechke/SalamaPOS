@@ -31,42 +31,6 @@ Item {
             BarSet { label: "Credit"; values: [] }
         }
 
-        /*
-        ValueAxis
-        {
-            id: yAxis
-            tickCount: 31
-            min: 0
-            max: 200
-            labelsColor: QmlInterface.isDarkTheme? "#f4f4f4":"#535353"
-
-        }
-
-        ValueAxis
-        {
-            id: xAxis
-            labelsColor: QmlInterface.isDarkTheme? "#f4f4f4":"#535353"
-        }
-
-        SplineSeries {
-            id: cashSales
-            name: "cashSplineSeries"
-            pointLabelsColor: QmlInterface.isDarkTheme? "#f4f4f4":"#535353"
-            color: QmlInterface.isDarkTheme? "#f4f4f4":"#535353"
-
-        }
-        SplineSeries {
-            id: mpesaSales
-            name: "mpesaSplineSeries"
-
-        }
-        SplineSeries {
-            id: creditSales
-            name: "creditSplineSeries"
-
-
-        }*/
-
     }
 
     Connections
@@ -77,7 +41,7 @@ Item {
         {
             for(var j=0; j<myBarSeries.count; j++)
             {
-                console.log("> ", myBarSeries.at(j).label)
+                // console.log("> ", myBarSeries.at(j).label)
                 if(myBarSeries.at(j).label === "Cash")
                 {
                     myBarSeries.remove(myBarSeries.at(j));

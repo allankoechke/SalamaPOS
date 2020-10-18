@@ -19,7 +19,7 @@ Rectangle {
     property alias checkoutQtyPopup: checkoutQtyPopup
     property alias userAccountPopup: userAccountPopup
     property alias accountsPopup: accountsPopup
-    property alias selectCrediteeOnSaleS: selectCrediteeOnSaleS
+    property alias selectCrediteeOnSale: selectCrediteeOnSale
 
     onNavBarIndexChanged: {
         switch(navBarIndex)
@@ -165,7 +165,7 @@ Rectangle {
 
     SelectCrediteeOnSale
     {
-        id: selectCrediteeOnSaleS
+        id: selectCrediteeOnSale
     }
 
     function startApp(state)

@@ -49,7 +49,7 @@ Window {
                     horizontalAlignment: AppText.AlignLeft
 
                     text: qsTr("Item Name ")
-                    color: QmlInterface.isDarkTheme? "grey":"#2e2e2e"
+                    color: QmlInterface.isDarkTheme? "#F5F5F5":"#2e2e2e"
                 }
 
                 TextField
@@ -61,7 +61,9 @@ Window {
                     horizontalAlignment: TextInput.AlignLeft
                     Layout.leftMargin: 5
 
-                    color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
+                    Material.theme: QmlInterface.isDarkTheme? Material.Dark:Material.Light
+                    Material.foreground: QmlInterface.isDarkTheme? "#f5f5f5":"black"
+                    Material.accent: Material.Pink
                     font.pixelSize: 16
                     font.family: montserratFontLoader.name
                     selectByMouse: true
@@ -134,6 +136,10 @@ Window {
                 text: qsTr("Close dialog after adding item")
                 checked: isDialogClosedAfterEachAdd
 
+                // Clear this baggage once i find the bug
+                Material.theme: QmlInterface.isDarkTheme? Material.Dark:Material.Light
+                Material.foreground: QmlInterface.isDarkTheme? "#f5f5f5":"black"
+                Material.accent: Material.Pink
                 onCheckStateChanged: isDialogClosedAfterEachAdd=checked
             }
 

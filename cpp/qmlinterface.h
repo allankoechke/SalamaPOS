@@ -56,6 +56,9 @@ public:
     Q_INVOKABLE void getMessagesStatisticsForDashboard(const QString &uname);
     Q_INVOKABLE void getRemindersStatisticsForDashboard();
     Q_INVOKABLE void getDashboardTableData();
+    // Q_INVOKABLE QVariantList getCreditees();
+
+    void setTabularData();
 
     bool isDarkTheme() const;
 

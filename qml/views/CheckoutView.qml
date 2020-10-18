@@ -199,10 +199,8 @@ Item {
                 anchors.fill: parent
                 spacing: 20
 
-                HorizontalSpacer
-                {
+                HorizontalSpacer {}
 
-                }
                 TextIconButton
                 {
                     label: qsTr("CANCEL")
@@ -222,6 +220,8 @@ Item {
 
                     onButtonClicked: checkoutPopup.open();
                 }
+
+                HorizontalSpacer {}
             }
         }
     }

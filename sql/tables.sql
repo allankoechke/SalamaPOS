@@ -1,10 +1,14 @@
 SET timezone = 'Africa/Nairobi';
 
+--comment
+
 CREATE TABLE IF NOT EXISTS product_type (
         id          serial PRIMARY KEY,
         type_id     VARCHAR(64) NOT NULL UNIQUE,
         type_name   VARCHAR ( 128 ) NOT NULL
 );
+
+--comment
 
 CREATE TABLE IF NOT EXISTS product (
         id              serial PRIMARY KEY,
@@ -20,6 +24,8 @@ CREATE TABLE IF NOT EXISTS product (
         FOREIGN KEY (type_id) REFERENCES product_type (type_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+--comment
+
 CREATE TABLE IF NOT EXISTS stock (
         id              serial PRIMARY KEY,
         barcode         VARCHAR ( 50 ),
@@ -28,6 +34,8 @@ CREATE TABLE IF NOT EXISTS stock (
 
         FOREIGN KEY(barcode) REFERENCES product (barcode) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+--comment
 
 CREATE TABLE IF NOT EXISTS users (
         id                      serial PRIMARY KEY,
@@ -40,6 +48,22 @@ CREATE TABLE IF NOT EXISTS users (
         to_change_password	boolean DEFAULT FALSE,
         to_delete_account       boolean DEFAULT FALSE
 );
+
+--comment
+
+CREATE TABLE IF NOT EXISTS stock_history (
+        id                  serial PRIMARY KEY,
+        barcode             VARCHAR ( 50 ),
+        stock_qty_before    INTEGER NOT NULL DEFAULT 0,
+        stock_qty_added     INTEGER NOT NULL DEFAULT 0,
+        date_updated        TIMESTAMP WITH TIME ZONE NOT NULL,
+        who_updated         VARCHAR (128) NOT NULL,
+        is_adding           boolean DEFAULT TRUE,
+
+        FOREIGN KEY(who_updated) REFERENCES users(username) ON UPDATE CASCADE ON DELETE SET NULL
+);
+
+--comment
 
 CREATE TABLE IF NOT EXISTS priviledges (
         id                      serial PRIMARY KEY,
@@ -56,6 +80,8 @@ CREATE TABLE IF NOT EXISTS priviledges (
         FOREIGN KEY(username) REFERENCES users(username) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+--comment
+
 CREATE TABLE IF NOT EXISTS creditee (
         id              serial PRIMARY KEY,
         firstname	TEXT NOT NULL,
@@ -66,6 +92,8 @@ CREATE TABLE IF NOT EXISTS creditee (
         date_added      TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'Africa/Nairobi')
 );
 
+--comment
+
 CREATE TABLE IF NOT EXISTS payment (
         id              serial PRIMARY KEY,
         cash            REAL,
@@ -75,6 +103,8 @@ CREATE TABLE IF NOT EXISTS payment (
         sales_id	VARCHAR (128) NOT NULL UNIQUE,
         deleted         boolean DEFAULT FALSE
 );
+
+--comment
 
 CREATE TABLE IF NOT EXISTS sales (
         id              serial PRIMARY KEY,
@@ -92,6 +122,8 @@ CREATE TABLE IF NOT EXISTS sales (
         FOREIGN KEY(barcode) REFERENCES product (barcode) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
+--comment
+
 CREATE TABLE IF NOT EXISTS mpesa (
         id              serial PRIMARY KEY,
         mpesa_id	VARCHAR (128) NOT NULL UNIQUE,
@@ -99,6 +131,8 @@ CREATE TABLE IF NOT EXISTS mpesa (
 
         FOREIGN KEY(sales_id) REFERENCES payment (sales_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+--comment
 
 CREATE TABLE IF NOT EXISTS credit (
         id              serial PRIMARY KEY,
@@ -110,6 +144,8 @@ CREATE TABLE IF NOT EXISTS credit (
         FOREIGN KEY(sales_id) REFERENCES payment (sales_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+--comment
+
 CREATE TABLE IF NOT EXISTS credit_payments (
         id                  serial PRIMARY KEY,
         payment_timestamp   TIMESTAMP NOT NULL,
@@ -120,6 +156,8 @@ CREATE TABLE IF NOT EXISTS credit_payments (
         FOREIGN KEY (creditee_id) REFERENCES creditee (national_id) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
+--comment
+
 CREATE TABLE IF NOT EXISTS login_history (
         id                  serial PRIMARY KEY,
         login_time          TIMESTAMP NOT NULL,
@@ -129,6 +167,8 @@ CREATE TABLE IF NOT EXISTS login_history (
         FOREIGN KEY (username) REFERENCES users (username) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+--comment
+
 CREATE TABLE IF NOT EXISTS notifications (
         id          serial PRIMARY KEY,
         level       INTEGER NOT NULL DEFAULT 0,
@@ -137,6 +177,8 @@ CREATE TABLE IF NOT EXISTS notifications (
         solved      boolean DEFAULT FALSE,
         notify_date TIMESTAMP NOT NULL
 );
+
+--comment
 
 CREATE TABLE IF NOT EXISTS messages (
         id          serial PRIMARY KEY,

@@ -1,9 +1,7 @@
-#include "qmlinterface.h"
+﻿#include "qmlinterface.h"
 
 QmlInterface::QmlInterface(QObject *parent) : QObject(parent)
 {
-    // QVariantMap configurations=QJsonDocument::fromJson(file.readAll()).toVariant().toMap();
-
     qApp->setApplicationName("Salama P.O.S.");
     qApp->setApplicationVersion("1.0.1");
     qApp->setApplicationDisplayName("Salama P.O.S.");
@@ -23,6 +21,7 @@ QmlInterface::QmlInterface(QObject *parent) : QObject(parent)
     if(status)
     {
         emit databaseReadyChanged();
+        setTabularData();
     }
 
     // Set default max
@@ -295,6 +294,55 @@ void QmlInterface::getDashboardTableData()
             setPlotYmax(credit.at(credit.size() - 1) + 10);
 
         emit dataReadyForPlotting();
+    }
+
+    getSalesStatisticsForDashboard();
+}
+
+void QmlInterface::setTabularData()
+{
+    QFile file(":/sql/type.sql");
+    file.open(QIODevice::ReadOnly);
+    QString sql = file.readAll();
+    file.close();
+
+    QSqlDatabase db = QSqlDatabase::database();
+    QSqlQuery query;
+
+    bool isDbSetUp = m_settings->value("Config/isDbSetUp", false).toBool();
+
+    if(db.isOpen() && !isDbSetUp)
+    {
+        if(query.exec(sql))
+        {
+            file.setFileName(":/sql/item.sql");
+            file.open(QIODevice::ReadOnly);
+            sql = file.readAll();
+            file.close();
+
+            if(query.exec(sql))
+            {
+                file.setFileName(":/sql/stock.sql");
+                file.open(QIODevice::ReadOnly);
+                sql = file.readAll();
+                file.close();
+
+                if(query.exec(sql))
+                {
+                    qDebug() << "[INFO] All DB is set up!";
+                    m_settings->setValue("Config/isDbSetUp", true); // Save the new state
+                }
+
+                else
+                    qDebug() << "[ERROR] Stock Data Exec: " << query.lastError().text();
+            }
+
+            else
+                qDebug() << "[ERROR] Item Data Exec: " << query.lastError().text();
+        }
+
+        else
+            qDebug() << "[ERROR] Type Data Exec: " << query.lastError().text();
     }
 }
 

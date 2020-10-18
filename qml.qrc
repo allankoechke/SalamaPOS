@@ -96,5 +96,9 @@
         <file>qml/delegates/CrediteePaymentsTableDelegate.qml</file>
         <file>qml/subviews/SelectCrediteeOnSale.qml</file>
         <file>qml/delegates/AlarmsWidgetDelegate.qml</file>
+        <file>qml/delegates/CrediteeOnSaleDelegate.qml</file>
+        <file>sql/item.sql</file>
+        <file>sql/stock.sql</file>
+        <file>sql/type.sql</file>
     </qresource>
 </RCC>

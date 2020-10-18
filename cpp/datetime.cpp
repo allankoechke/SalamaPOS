@@ -103,3 +103,13 @@ QStringList DateTime::getTimestamp(const QString &when)
 
     return QStringList();
 }
+
+QString DateTime::getDayFromToday(const int &i)
+{
+    QDate today = QDate::currentDate();
+    today = today.addDays(i);
+
+    QString dt = today.toString("yyyy-MM-dd ") + "00:00:00+03";
+
+    return dt;
+}

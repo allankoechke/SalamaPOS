@@ -149,7 +149,8 @@ Controls2.Popup
                                 color: "#b8352c"
                                 radius: 3
                                 visible: loggedUser_username !== currentUser
-
+                                enabled: loggedUser_canDeleteAccounts || isAdmin
+                                opacity: enabled? 1:0.2
 
                                 AppText
                                 {

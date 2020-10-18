@@ -50,24 +50,19 @@ public:
 
     // Q_INVOKABLES
     Q_INVOKABLE void addSaleItem(const QVariant &barcode, const int &qty, const QVariant &uname, const QVariant &saleid, const QVariant &dt);
-
     Q_INVOKABLE void addMpesaSale(const QVariant &mpesaId, const QVariant &salesId);
-
     Q_INVOKABLE void addCreditSale(const QVariant &crediteeId, const QVariant &dueDate, const QVariant &salesId);
-
     Q_INVOKABLE void addPaymentSaleDetails(const QVariant &saleId, const QJsonObject &json);
-
     Q_INVOKABLE QString getUniqueSaleId();
-
     Q_INVOKABLE QString getCurrentTimeString();
+    Q_INVOKABLE QString getDayFromToday(const int &i);
+    Q_INVOKABLE QString generateMpesaId();
 
 signals:
     void saleItemAddedChanged(bool status);
-
-    void paymentItemAdded(bool status);
-
+    void paymentItemAdded(bool status);    
+    void addCrediteePaymentChanged(bool status);
     void updateStockChanged(QString bcode, int qty);
-
     void updateSalesModelChanged(QString bcode, int qty);
 
 

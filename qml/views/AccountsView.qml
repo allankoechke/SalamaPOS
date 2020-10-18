@@ -46,7 +46,6 @@ Item {
 
                 HorizontalSpacer {}
 
-
                 Rectangle
                 {
                     Layout.preferredWidth: 200
@@ -55,6 +54,8 @@ Item {
 
                     color: menuColor
                     radius: 4
+                    enabled: loggedUser_canAddAccounts
+                    opacity: enabled? 1:0.2
 
                     RowLayout
                     {
@@ -159,17 +160,26 @@ Item {
                                 priviledges: user_roles
 
                                 onEditedChanged: {
-                                    accountsPopup.open();
-                                    accountsPopup.currentIndex = index
-                                    accountsPopup.currentUser = uname
-                                    accountsPopup.canAddUsers = canCreateUser
-                                    accountsPopup.canRemoveUsers = canDeleteUser
-                                    accountsPopup.canAddItems = canCreateItems
-                                    accountsPopup.canRemoveItems = canDeleteItems
-                                    accountsPopup.canAddStock = canAddStock
-                                    accountsPopup.canDeleteStock = canDeleteStock
-                                    accountsPopup.canUndoSales = canDeleteSales
-                                    accountsPopup.canBackupDb = canBackupDb
+                                    if((loggedUser_canAddAccounts && loggedUser_canDeleteAccounts) || isAdmin)
+                                    {
+
+                                        accountsPopup.open();
+                                        accountsPopup.currentIndex = index
+                                        accountsPopup.currentUser = uname
+                                        accountsPopup.canAddUsers = canCreateUser
+                                        accountsPopup.canRemoveUsers = canDeleteUser
+                                        accountsPopup.canAddItems = canCreateItems
+                                        accountsPopup.canRemoveItems = canDeleteItems
+                                        accountsPopup.canAddStock = canAddStock
+                                        accountsPopup.canDeleteStock = canDeleteStock
+                                        accountsPopup.canUndoSales = canDeleteSales
+                                        accountsPopup.canBackupDb = canBackupDb
+                                    }
+
+                                    else
+                                    {
+                                        AlarmsModel.addAlarmItem("warning","This can be done by admins only!")
+                                    }
                                 }
                             }
                         }

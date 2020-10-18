@@ -35,42 +35,28 @@ bool DatabaseInterface::initializeDatabase()
         file.open(QIODevice::ReadOnly);
         sql = file.readAll();
 
-        if(query.exec(sql))
+        auto sql_segments = sql.split("--comment");
+
+        int index = 1;
+
+        foreach (const QString &sql_str, sql_segments)
         {
-            m_db.commit();
-            qInfo() << " [INFO] Database has been instantiated ... "; //[" << query.executedQuery() << " ]";
-
-            if(query.exec("SELECT * FROM product_type"))
+            if(query.exec(sql_str))
             {
-                int count = 0;
-
-                while(query.next())
-                {
-                    count++;
-                }
-
-                if(count == 0)
-                {
-                    QString sql;
-                    sql = "INSERT INTO product_type(type_id, type_name) VALUES ('1658977', 'General')";
-
-                    if(query.exec(sql))
-                    {
-                        qDebug() << ">> New ctaegory Added";
-                        return true;
-                    }
-
-                    else
-                    {
-                        qDebug() << "Error Adding item: " << query.lastError().text();
-                        return false;
-                    }
-                }
-
-                // else
-                //qInfo() << ">> Categories: " << count;
+                // m_db.commit();
             }
+
+            else
+            {
+                qDebug() << "Error executing : " << query.lastError().text();
+            }
+
+            qDebug() << "Executing : " << index << "/" << sql_segments.size();
+            index ++;
         }
+
+        if(m_db.isOpen())
+            return true;
 
         else
         {

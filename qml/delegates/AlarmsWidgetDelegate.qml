@@ -38,8 +38,8 @@ Rectangle {
             verticalAlignment: AppIcon.AlignVCenter
             horizontalAlignment: AppIcon.AlignHCenter
 
-            color: "white"
-            icon: category==="\uf071"? "red":category==="info"? "\uf05a":"\uf06a"
+            color: category==="warning"? "#2e2e2e":"white"
+            icon: category==="error"? "\uf071":category==="info"? "\uf05a":"\uf06a"
             size: 30
         }
 
@@ -60,7 +60,7 @@ Rectangle {
             {
                 id: txt
                 width: parent.width-20
-                color: "white"
+                color: category==="warning"? "#2e2e2e":"white"
                 wrapMode: AppText.WordWrap
                 elide: AppText.ElideRight
 
@@ -84,7 +84,7 @@ Rectangle {
 
             AppIcon
             {
-                color: "white"
+                color: category==="warning"? "#2e2e2e":"white"
                 size: 15
                 icon: "\uf00d"
 

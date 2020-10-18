@@ -52,7 +52,7 @@ Item
             id: textField
             font.pixelSize: 25
             font.family: montserratFontLoader.name
-            color: "black"
+            color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
             text: value.toString()
             readOnly: true
 

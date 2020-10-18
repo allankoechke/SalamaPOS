@@ -9,6 +9,7 @@ Controls2.Drawer {
 
     width: 800
     height: mainApp.height
+    // z: 1
     edge: Qt.RightEdge
     interactive: false
     closePolicy: Controls2.Drawer.NoAutoClose
@@ -20,16 +21,37 @@ Controls2.Drawer {
 
     property string uniqueSaleId: ""
     property string uniqueSaleDate: ""
+    property string crediteeIdNo: ""
     property int counter: 0
 
     signal submitCheckout()
 
+    onClosed: crediteeIdNo = ""
+
+    function getBalance()
+    {
+        var cash__ = parseInt(cashAmount===""? 0:cashAmount)
+        var mpesa__ = parseInt(mpesaAmount===""? 0:mpesaAmount)
+        var cheque__ = parseInt(chequeAmount===""? 0:chequeAmount)
+        var credit__ = parseInt(creditAmount===""? 0:creditAmount)
+
+        if((cash__ + mpesa__ + cheque__ + credit__) > CheckoutModel.sellTotals)
+            return (cash__ + mpesa__ + cheque__ + credit__) - CheckoutModel.sellTotals;
+
+        else
+            return 0;
+    }
+
     onOpened: {
+        crediteeIdNo = ""
         cashAmount: 0
         mpesaAmount: 0
         chequeAmount: 0
         creditAmount: 0
         counter = 0
+
+        isCrediteeSelected = false;
+        crediteeIdNo = ""
     }
 
     contentItem: Rectangle
@@ -218,39 +240,79 @@ Controls2.Drawer {
                             }
                         }
 
+                        AppText
+                        {
+                            color: QmlInterface.isDarkTheme? "#f4f4f4":"#555555"
+                            size: 35
+                            text: qsTr("Balance Ksh: ") + (getBalance()).toString()
+
+                            Layout.alignment: Qt.AlignVCenter|Qt.AlignRight
+                        }
+
                         Rectangle
                         {
                             id: onCreditBtn
-                            color: "#0091d9"
-                            radius: 10
-                            visible: creditAmount!=="" || (parseInt(cashAmount===""? 0:cashAmount)+parseInt(mpesaAmount===""? 0:mpesaAmount)+parseInt(chequeAmount===""? 0:chequeAmount)) < CheckoutModel.sellTotals
+                            color: Qt.lighter(menuColor, 1.5)
+                            radius: height/2
+                            visible: parseInt(creditAmount===""? 0:creditAmount)!==0 || (parseInt(cashAmount===""? 0:cashAmount)+parseInt(mpesaAmount===""? 0:mpesaAmount)+parseInt(chequeAmount===""? 0:chequeAmount)) < CheckoutModel.sellTotals
 
                             Layout.fillWidth: true
-                            Layout.preferredHeight: 60
+                            Layout.preferredHeight: 40
                             Layout.margins: 20
 
-                            AppText
+                            RowLayout
                             {
-                                color: "white"
-                                size: 20
-                                text: qsTr("Add Creditee & Finish Transaction")
+                                anchors.fill: parent
+                                spacing: 10
 
-                                anchors.centerIn: parent
+                                Rectangle
+                                {
+                                    color: Qt.lighter(menuColor, 1.3)
+                                    radius: height/2
+
+                                    Layout.fillHeight: true
+                                    Layout.preferredWidth: height
+
+                                    AppIcon
+                                    {
+                                        anchors.centerIn: parent
+
+                                        color: "white"
+                                        size: 18
+                                        icon: isCrediteeSelected? "\uf058":"\uf25a"
+                                    }
+                                }
+
+                                AppText
+                                {
+                                    color: "white"
+                                    size: 20
+                                    opacity: enabled? 1:0.2
+                                    enabled: parseInt(creditAmount===""? 0:creditAmount)>0
+                                    text: isCrediteeSelected? qsTr("Creditee Selected"):qsTr("Select Creditee")
+
+                                    Layout.fillWidth: true
+                                    Layout.fillHeight: true
+                                    verticalAlignment: AppText.AlignVCenter
+                                    horizontalAlignment: AppText.AlignLeft
+                                }
                             }
 
                             MouseArea
                             {
                                 anchors.fill: parent
-                                onClicked: selectCrediteeOnSaleS.open();
+                                onClicked: selectCrediteeOnSale.open();
 
                             }
                         }
 
                         Rectangle
                         {
-                            visible: !onCreditBtn.visible
+                            visible: true
                             color: "#0091d9"
+                            opacity: enabled? 1:0.2
                             radius: 10
+                            enabled: (parseInt(creditAmount===""? 0:creditAmount)>0 && isCrediteeSelected && (parseInt(cashAmount===""? 0:cashAmount)+parseInt(mpesaAmount===""? 0:mpesaAmount)+parseInt(chequeAmount===""? 0:chequeAmount)+parseInt(creditAmount===""? 0:creditAmount)) >= CheckoutModel.sellTotals) || ((parseInt(cashAmount===""? 0:cashAmount)+parseInt(mpesaAmount===""? 0:mpesaAmount)+parseInt(chequeAmount===""? 0:chequeAmount)) >= CheckoutModel.sellTotals)
 
                             Layout.fillWidth: true
                             Layout.preferredHeight: 60
@@ -282,6 +344,7 @@ Controls2.Drawer {
                                         creditAmount = '0'
 
                                     var paidAmount = parseInt(cashAmount) + parseInt(mpesaAmount) + parseInt(chequeAmount) + parseInt(creditAmount)
+                                    var toSell = false
 
                                     if(paidAmount >= CheckoutModel.sellTotals)
                                     {
@@ -295,6 +358,7 @@ Controls2.Drawer {
                                         json.mpesa = mpesaAmount
                                         json.credit = creditAmount
                                         json.cheque = chequeAmount
+
 
                                         SalesModel.addPaymentSaleDetails(uniqueSaleId, json);
                                         // json.due_date = Qt.formatDateTime(new Date(), "dd-MM-yyyy")
@@ -319,6 +383,19 @@ Controls2.Drawer {
     {
         target: SalesModel
 
+        function onAddCrediteePaymentChanged(status)
+        {
+            if(status)
+            {
+                console.log(">> Success Adding Credit Details")
+            }
+
+            else
+            {
+                console.log(">> Error Adding Credit Details")
+            }
+        }
+
         function onSaleItemAddedChanged(status)
         {
             if(status)
@@ -327,12 +404,22 @@ Controls2.Drawer {
 
                 if(counter >= CheckoutModel.checkoutModelSize)
                 {
-                    CheckoutModel.startANewSell();
+                    if(parseInt(mpesaAmount) > 0)
+                    {
+                        var dt_ = SalesModel.generateMpesaId();
+                        // console.log("Mpesa ID: ", dt_)
+                        SalesModel.addMpesaSale(dt_, uniqueSaleId);
+                    }
 
-                    root.close();
+                    if(parseInt(creditAmount) > 0)
+                    {
+                        SalesModel.addCreditSale(crediteeIdNo, SalesModel.getDayFromToday(7), uniqueSaleId);
+                    }
 
                     console.log(" [INFO] Success Adding Sale Items : " , counter)
 
+                    CheckoutModel.startANewSell();
+                    root.close();
                     cashAmount = "";
                     mpesaAmount = "";
                     chequeAmount = "";
@@ -340,6 +427,11 @@ Controls2.Drawer {
 
                     ProductSalesModel.showTodaysSales();
                     salesView.currentIndex = 0;
+
+                    isCrediteeSelected = false;
+                    crediteeIdNo = ""
+
+                    QmlInterface.getDashboardTableData();
                 }
             }
 
@@ -383,6 +475,18 @@ Controls2.Drawer {
         function onUpdateSalesModelChanged(_barcode, _qty)
         {
             // ProductSalesModel.addSalesData(_barcode, _qty);
+        }
+    }
+
+    Connections
+    {
+        target: selectCrediteeOnSale
+
+        function onAccepted()
+        {
+            // console.log("Accepted at : ", selectCrediteeOnSale.selectedCreditee)
+            crediteeIdNo = selectCrediteeOnSale.selectedCreditee
+            isCrediteeSelected = true;
         }
     }
 }

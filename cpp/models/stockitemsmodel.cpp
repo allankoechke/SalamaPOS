@@ -288,11 +288,8 @@ void StockItemsModel::updateItem(const QVariant &barcode, const QVariant &name, 
 
 void StockItemsModel::updateStock(const QVariant &barcode, const QVariant &qty, const QVariant &date, const QVariant &index)
 {
-    Q_UNUSED(date)
     QSqlDatabase m_db = QSqlDatabase::database();
-
-    QString dateToday = m_dateTime->getTimestamp("now").at(0);
-    // qDebug() << "Stock Update at : " << dateToday;
+    QString dateToday = date.toString();
 
     if(m_db.isOpen())
     {
@@ -318,6 +315,33 @@ void StockItemsModel::updateStock(const QVariant &barcode, const QVariant &qty, 
             qDebug() << "Error executing SQL: " << m_db.lastError().text();
 
             emit itemStockChanged(false);
+        }
+    }
+}
+
+void StockItemsModel::updateStockHistory(const QString &barcode, const int &stock_qty_before, const int &stock_qty_added, const QString &date_updated, const QString &who_updated, const bool &is_adding)
+{
+    QSqlDatabase db = QSqlDatabase::database();
+
+    if(db.isOpen())
+    {
+        QSqlQuery query;
+        QString a,b;
+        a = QString::number(stock_qty_before);
+        b = QString::number(stock_qty_added);
+
+        QString sql = "INSERT INTO stock_history(barcode, stock_qty_before, stock_qty_added, date_updated, who_updated, is_adding) VALUES (" +barcode+ ", "+a+", "+b+", '"+date_updated+"', '"+who_updated+"', '"+(is_adding? "True":"False")+"');";
+
+        qDebug() << sql;
+
+        if(query.exec(sql))
+        {
+            qDebug() << "Stock data added!";
+        }
+
+        else
+        {
+            qDebug() << "Error adding stock record: " << query.lastError().text();
         }
     }
 }
@@ -537,6 +561,11 @@ QList<QString> StockItemsModel::getCategryList()
 {
     qDebug() << "Model Size: " << m_categoryNames.size();
     return m_categoryNames;
+}
+
+QString StockItemsModel::getCurrentTime()
+{
+    return m_dateTime->getTimestamp("now").at(0);
 }
 
 void StockItemsModel::removeItem(int index)

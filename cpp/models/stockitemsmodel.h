@@ -48,6 +48,8 @@ public:
 
     Q_INVOKABLE void updateStock(const QVariant &barcode, const QVariant &qty, const QVariant &date, const QVariant &index);
 
+    Q_INVOKABLE void updateStockHistory(const QString &barcode, const int &stock_qty_before, const int &stock_qty_added, const QString &date_updated, const QString &who_updated, const bool &is_adding);
+
     Q_INVOKABLE void updateStockOnSale(const QVariant &bcode, const int &qty);
 
     Q_INVOKABLE void initializeStockFromDb();
@@ -61,6 +63,10 @@ public:
     Q_INVOKABLE void addItemCategory(const QString &category);
 
     Q_INVOKABLE QList<QString> getCategryList();
+
+    // Q_INVOKABLE int getCategoryIndexFromId(const QString &ind);
+
+    Q_INVOKABLE QString getCurrentTime();
 
     // Internal functions
     bool addNewItem(StockItems * stockItem);

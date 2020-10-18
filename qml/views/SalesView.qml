@@ -60,6 +60,7 @@ Item {
                     currentIndex: 0
 
                     editable: false
+                    enabled: isAdmin
                     model: ["Today", "Yesterday", "This Week", "This Month", "This Year", "All Time", "Custom"]
 
                     Layout.rightMargin: 10
@@ -163,6 +164,7 @@ Item {
                     border.width: 1
                     border.color: "grey"
                     radius: 3
+                    visible: false
 
                     RowLayout
                     {

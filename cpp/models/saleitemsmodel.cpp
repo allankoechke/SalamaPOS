@@ -239,8 +239,9 @@ QHash<int, QByteArray> saleItemsModel::roleNames() const
 
 void saleItemsModel::addSaleItem(const QVariant &barcode, const int &qty, const QVariant &uname, const QVariant &saleid, const QVariant &dt)
 {
-    QString dateToday = m_dateTime->getTimestamp("now").at(0);
+    Q_UNUSED(dt)
 
+    QString dateToday = m_dateTime->getTimestamp("now").at(0);
     QSqlDatabase m_db = QSqlDatabase::database();
 
     if(m_db.isOpen())
@@ -308,6 +309,8 @@ void saleItemsModel::addSaleItem(const QVariant &barcode, const int &qty, const 
 
 void saleItemsModel::addMpesaSale(const QVariant &mpesaId, const QVariant &salesId)
 {
+    qInfo() << "[INFO] Starting Adding Mpesa Sale";
+
     QSqlDatabase m_db = QSqlDatabase::database();
 
     QSqlQuery writeMpesa;
@@ -324,26 +327,35 @@ void saleItemsModel::addMpesaSale(const QVariant &mpesaId, const QVariant &sales
     {
         qDebug() << "Error writing to Credit: " << writeMpesa.lastError().text();
     }
+
+    qInfo() << "[INFO] Ending Adding Mpesa Sale";
 }
 
 void saleItemsModel::addCreditSale(const QVariant &crediteeId, const QVariant &dueDate, const QVariant &salesId)
 {
+    qInfo() << "[INFO] Starting Adding Credit Sale";
+
     QSqlDatabase m_db = QSqlDatabase::database();
+    // qDebug() << "Creditee ID: " << crediteeId << " : " << crediteeId.toString().toInt();
     QSqlQuery writeCredit;
     writeCredit.prepare("INSERT INTO credit(creditee_id,due_date,sales_id) VALUES(:creditee,:date,:id)");
-    writeCredit.bindValue(":creditee", crediteeId.toString().toInt());
+    writeCredit.bindValue(":creditee", crediteeId.toString());
     writeCredit.bindValue(":date", dueDate.toString());
     writeCredit.bindValue(":id", salesId.toString());
 
     if(writeCredit.exec())
     {
         qDebug() << ">> Success writing to credit!";
+        emit addCrediteePaymentChanged(true);
     }
 
     else
     {
         qDebug() << "Error writing to Credit: " << writeCredit.lastError().text();
     }
+
+    qInfo() << "[INFO] Ending Adding Credit Sale";
+    emit addCrediteePaymentChanged(false);
 }
 
 void saleItemsModel::addPaymentSaleDetails(const QVariant &saleId, const QJsonObject &json)
@@ -386,4 +398,14 @@ QString saleItemsModel::getCurrentTimeString()
     //QDateTime dt = QDateTime::currentDateTime();
     //qDebug() << "Date: " << dt.toLocalTime().toString() << "\tDate: " << dt.toLocalTime().toMSecsSinceEpoch();
     return QString::number(QDateTime::currentMSecsSinceEpoch());
+}
+
+QString saleItemsModel::getDayFromToday(const int &i)
+{
+    return m_dateTime->getDayFromToday(i);
+}
+
+QString saleItemsModel::generateMpesaId()
+{
+    return "MP"+QString::number(QDateTime::currentDateTime().toMSecsSinceEpoch());
 }

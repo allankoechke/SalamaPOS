@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.4 as Controls2
 
 import "../components"
+import "../delegates"
 
 Controls2.Popup
 {
@@ -22,30 +23,9 @@ Controls2.Popup
         reduceStock.value = 0;
     }*/
 
-    property int currentIndex: -1
-
-    property bool hasPermissions: true
-    property bool isNewItemMode: true
-    property int currentStock: 0
-    //property string barcode: ""
-    //property alias combo: combo
-    // property int valueQty: combo.currentIndex===0? addStock.value:reduceStock.value
+    property var selectedCreditee: ""
 
     signal accepted()
-
-    onOpened: {
-        if(loggedUser_canAddItems)
-        {
-
-        }
-
-        else
-        {
-        }
-
-
-
-    }
 
     contentItem: Rectangle
     {
@@ -158,64 +138,25 @@ Controls2.Popup
 
                         ListView
                         {
+                            id: lv_crediteelist
                             width: parent.width
                             height: parent.height
                             anchors.left: parent.left
 
                             spacing: 0
-                            model: 10
-                            delegate: Component
+                            currentIndex: -1
+                            model: CrediteeModel
+                            delegate: CrediteeOnSaleDelegate
                             {
-                                Rectangle
-                                {
-                                    Layout.fillWidth: true
-                                    Layout.preferredHeight: 35
+                                width: lv_crediteelist.width
+                                _index: (index + 1).toString()+"."
+                                name: c_fname + " " + c_lname
+                                id_no: c_idNo
+                                isSelected: _index === (lv_crediteelist.currentIndex + 1).toString()+"."
 
-                                    color: menuColor
-
-                                    RowLayout
-                                    {
-                                        anchors.fill: parent
-                                        spacing: 1
-
-
-                                        AppText
-                                        {
-                                            id: _id
-                                            size: 17
-                                            color: "white"
-                                            horizontalAlignment: AppText.AlignHCenter
-
-                                            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-                                            Layout.preferredWidth: 50
-                                        }
-
-                                        VSeparator{}
-
-                                        AppText
-                                        {
-                                            id: name
-                                            size: 15
-                                            color: "white"
-                                            horizontalAlignment: AppText.AlignHCenter
-
-                                            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-                                            Layout.fillWidth: true
-                                        }
-
-                                        VSeparator{}
-
-                                        AppText
-                                        {
-                                            id: idno
-                                            size: 15
-                                            color: "white"
-                                            horizontalAlignment: AppText.AlignHCenter
-
-                                            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
-                                            Layout.preferredWidth: 120
-                                        }
-                                    }
+                                onSelected: {
+                                    lv_crediteelist.currentIndex = index
+                                    selectedCreditee = id_no
                                 }
                             }
                         }
@@ -295,34 +236,12 @@ Controls2.Popup
                         {
                             anchors.fill: parent
                             onClicked: {
-
-
+                                root.accepted()
                                 root.close()
                             }
                         }
                     }
                 }
-            }
-        }
-    }
-
-    Connections
-    {
-        target: StockItemModel
-
-        function onItemStockChanged(state)
-        {
-            if(state)
-            {
-                console.log("Stock update successful!");
-                AlarmsModel.addAlarmItem("info", "Stock update successful")
-                root.close();
-            }
-
-            else
-            {
-                console.log("Stock update failed!");
-                AlarmsModel.addAlarmItem("error", "Stock update failed")
             }
         }
     }

@@ -12,6 +12,8 @@ public:
 
     Q_INVOKABLE QStringList getTimestamp(const QString &when);
 
+    Q_INVOKABLE QString getDayFromToday(const int &i);
+
 signals:
 
 };

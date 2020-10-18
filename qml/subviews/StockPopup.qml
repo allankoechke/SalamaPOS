@@ -294,21 +294,20 @@ Controls2.Popup
                         {
                             anchors.fill: parent
                             onClicked: {
-                                var date = new Date().getTime();
-
-                                // console.log(">> Updating Stock: ", barcode, " : ", currentStock, " +/- ", valueQty, " : ", date, " : ", currentIndex)
+                                var dte = StockItemModel.getCurrentTime();
 
                                 if(combo.currentIndex===0)
                                 {
-                                    StockItemModel.updateStock(barcode, valueQty+currentStock, date, currentIndex)
+                                    StockItemModel.updateStock(barcode, valueQty+currentStock, dte, currentIndex)
+                                    StockItemModel.updateStockHistory(barcode, currentStock, valueQty, dte, loggedUser_username, true)
+
                                 }
 
                                 else
                                 {
-                                    StockItemModel.updateStock(barcode, currentStock-valueQty, date, currentIndex)
+                                    StockItemModel.updateStock(barcode, currentStock-valueQty, dte, currentIndex)
+                                    StockItemModel.updateStockHistory(barcode, currentStock, valueQty, dte, loggedUser_username, false)
                                 }
-
-                                // stockPopup.close()
                             }
                         }
                     }

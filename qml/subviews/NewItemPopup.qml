@@ -81,6 +81,7 @@ Controls2.Popup
                         label: qsTr("Item Barcode")
                         hintText: qsTr("Scan/enter barcode")
                         validator: RegExpValidator {regExp: RegExp("[a-zA-Z0-9]+")}
+                        readOnly: true
                     }
 
                     AppTextInput
@@ -89,7 +90,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Item Name")
                         hintText: qsTr("Enter item name")
-                        validator: RegExpValidator {regExp: RegExp("[a-zA-Z0-9]+[\s]+")}
+                        validator: RegExpValidator {regExp: RegExp("^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$")} // "[a-zA-Z0-9]+[\s]+")}
                     }
 
                     AppTextInput
@@ -98,7 +99,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Unit")
                         hintText: qsTr("Item unit, ie, 1kg, 1g")
-                        validator: RegExpValidator {regExp: RegExp("[a-zA-Z0-9\s]+")}
+                        validator: RegExpValidator {regExp: RegExp("^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$")}
                     }
 
                     AppTextInput
@@ -124,6 +125,7 @@ Controls2.Popup
                         id: category
                         label: qsTr("Item Category")
                         model: ["Vet products","Pesticides","Mineral suppliments","Hygene products","Dewormer","Poultry products","Injectables","Seeds","Feeds","Herbicide","Accaricides","Fertilizers","Vaccine","Fungicides","injectables"]
+                        // currentIndex: isNewItemMode? 0:
                     }
 
                     AppTextInput
@@ -142,7 +144,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Item's Company")
                         hintText: qsTr("Manufacturing company")
-                        validator: RegExpValidator {regExp: RegExp("[a-zA-Z0-9]+")}
+                        validator: RegExpValidator {regExp: RegExp("^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$")}
                     }
 
                     Item
