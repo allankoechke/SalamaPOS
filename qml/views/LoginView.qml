@@ -143,6 +143,7 @@ Item {
                                 var uname = _uname.text
                                 var pswd = _pswd.text
 
+                                // console.log("Accounts: ", AccountsModel.rowCount())
                                 if(uname !== "" && pswd !== "")
                                 {
                                     AccountsModel.loginUser(uname, pswd);
@@ -162,6 +163,7 @@ Item {
                     {
                         text: qsTr("Don't have an account? Create One")
                         size: 13
+                        visible: AccountsModel.rowCount() < 3
                         color: QmlInterface.isDarkTheme? "grey":"#535353"
 
                         Layout.alignment: Qt.AlignHCenter

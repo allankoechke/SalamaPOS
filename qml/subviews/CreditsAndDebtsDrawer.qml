@@ -89,10 +89,7 @@ Controls2.Drawer {
                         onBackClicked: stack.currentIndex = 0;
                     }
 
-                    CrediteeItemView
-                    {
-
-                    }
+                    CrediteeItemView {}
                 }
             }
         }

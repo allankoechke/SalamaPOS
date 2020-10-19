@@ -413,7 +413,7 @@ Controls2.Drawer {
 
                     if(parseInt(creditAmount) > 0)
                     {
-                        SalesModel.addCreditSale(crediteeIdNo, SalesModel.getDayFromToday(7), uniqueSaleId);
+                        SalesModel.addCreditSale(crediteeIdNo, SalesModel.getDayFromToday(7), uniqueSaleId, parseInt(creditAmount));
                     }
 
                     console.log(" [INFO] Success Adding Sale Items : " , counter)
@@ -432,6 +432,7 @@ Controls2.Drawer {
                     crediteeIdNo = ""
 
                     QmlInterface.getDashboardTableData();
+                    CrediteeModel.loadCrediteeAccounts();
                 }
             }
 

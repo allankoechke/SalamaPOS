@@ -213,6 +213,14 @@ void CrediteeAccountsModel::loadCrediteeAccounts()
 {
     QSqlDatabase db = QSqlDatabase::database();
 
+    if(m_crediteeAccount.size() != 0)
+    {
+        for(int i=m_crediteeAccount.size()-1; i>=0; i--)
+        {
+            removeCreditee(i);
+        }
+    }
+
     if(db.isOpen())
     {
         QString dateToday = dateTime->getTimestamp("now").at(0);

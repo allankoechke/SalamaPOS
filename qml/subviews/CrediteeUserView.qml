@@ -160,7 +160,6 @@ Item
                             color: "#f4f4f4"
                             text: qsTr("Update Creditee")
 
-
                             Layout.alignment: Qt.AlignVCenter
                         }
                     }

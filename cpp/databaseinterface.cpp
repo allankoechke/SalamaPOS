@@ -24,7 +24,15 @@ bool DatabaseInterface::initializeDatabase()
     m_db.setUserName(db_uname);
     m_db.setPassword(db_pswd);
     m_db.setDatabaseName(db_name);
-    Q_ASSERT(m_db.open());
+    // Q_ASSERT(m_db.open());
+    m_db.open();
+
+    if(!m_db.isOpen())
+    {
+        qDebug() << "Couldn't open Db: " << m_db.lastError().text();
+    }
+
+    Q_ASSERT(m_db.isOpen());
 
     try {
         m_db.transaction();
@@ -37,7 +45,7 @@ bool DatabaseInterface::initializeDatabase()
 
         auto sql_segments = sql.split("--comment");
 
-        int index = 1;
+        // int index = 1;
 
         foreach (const QString &sql_str, sql_segments)
         {
@@ -51,8 +59,8 @@ bool DatabaseInterface::initializeDatabase()
                 qDebug() << "Error executing : " << query.lastError().text();
             }
 
-            qDebug() << "Executing : " << index << "/" << sql_segments.size();
-            index ++;
+            // qDebug() << "Executing : " << index << "/" << sql_segments.size();
+            // index ++;
         }
 
         if(m_db.isOpen())

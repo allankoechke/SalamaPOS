@@ -331,27 +331,62 @@ void saleItemsModel::addMpesaSale(const QVariant &mpesaId, const QVariant &sales
     qInfo() << "[INFO] Ending Adding Mpesa Sale";
 }
 
-void saleItemsModel::addCreditSale(const QVariant &crediteeId, const QVariant &dueDate, const QVariant &salesId)
+void saleItemsModel::addCreditSale(const QVariant &crediteeId, const QVariant &dueDate, const QVariant &salesId, const int &amount)
 {
     qInfo() << "[INFO] Starting Adding Credit Sale";
 
     QSqlDatabase m_db = QSqlDatabase::database();
     // qDebug() << "Creditee ID: " << crediteeId << " : " << crediteeId.toString().toInt();
-    QSqlQuery writeCredit;
-    writeCredit.prepare("INSERT INTO credit(creditee_id,due_date,sales_id) VALUES(:creditee,:date,:id)");
-    writeCredit.bindValue(":creditee", crediteeId.toString());
-    writeCredit.bindValue(":date", dueDate.toString());
-    writeCredit.bindValue(":id", salesId.toString());
+    QSqlQuery writeCredit, getCreditBal, setCreditBal;
 
-    if(writeCredit.exec())
+    QString credBal = "SELECT amount_due FROM creditee WHERE national_id = "+crediteeId.toString()+";";
+
+    if(getCreditBal.exec(credBal))
     {
-        qDebug() << ">> Success writing to credit!";
-        emit addCrediteePaymentChanged(true);
+        int bal = 0;
+
+        while(getCreditBal.next())
+        {
+            bal = getCreditBal.value(0).toInt();
+            break;
+        }
+
+        int newBal = bal + amount;
+        setCreditBal.prepare("UPDATE creditee SET amount_due = :due WHERE national_id=:nat");
+        setCreditBal.bindValue(":due", newBal);
+        setCreditBal.bindValue(":nat", crediteeId.toString());
+
+        // qDebug() << "Balance : " << bal << " --> " << newBal;
+
+        if(setCreditBal.exec())
+        {
+            writeCredit.prepare("INSERT INTO credit(creditee_id,due_date,sales_id) VALUES(:creditee,:date,:id)");
+            writeCredit.bindValue(":creditee", crediteeId.toString());
+            writeCredit.bindValue(":date", dueDate.toString());
+            writeCredit.bindValue(":id", salesId.toString());
+
+            if(writeCredit.exec())
+            {
+                // qDebug() << ">> Success writing to credit!";
+                emit addCrediteePaymentChanged(true);
+                qDebug() << "Creditee Balance Updated!";
+            }
+
+            else
+            {
+                qDebug() << "Error writing to Credit: " << writeCredit.lastError().text();
+            }
+        }
+
+        else
+        {
+            qDebug() << "Failed to update Creditee Balance: " << setCreditBal.lastError().text();
+        }
     }
 
     else
     {
-        qDebug() << "Error writing to Credit: " << writeCredit.lastError().text();
+        qDebug() << "Error fetching Creditee Balance: " << getCreditBal.lastError().text();
     }
 
     qInfo() << "[INFO] Ending Adding Credit Sale";
