@@ -9,7 +9,7 @@ QmlInterface::QmlInterface(QObject *parent) : QObject(parent)
     qApp->setWindowIcon(QIcon(":/assets/images/6.png"));
     qApp->setOrganizationDomain("lalanke.com");
 
-    m_settings = new QSettings(qApp->organizationName(),qApp->applicationDisplayName());
+    m_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope, qApp->organizationName(),qApp->applicationDisplayName());
 
     setIsDarkTheme(m_settings->value("Theme/isDarkTheme", false).toBool());
 

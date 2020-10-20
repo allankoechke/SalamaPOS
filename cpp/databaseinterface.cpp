@@ -14,28 +14,56 @@ DatabaseInterface::DatabaseInterface(QObject *parent) : QObject(parent)
     db_pswd = jsonObj.value(QString("password")).toString();
     db_name = jsonObj.value(QString("database")).toString();
 
+    QSqlDatabase db = QSqlDatabase::database("setDb");
+    db = db.addDatabase("QPSQL");
+    db.setHostName("localhost");
+    db.setUserName(db_uname);
+    db.setPassword(db_pswd);
+    db.setDatabaseName("postgres");
+    db.open();
+
+    if(!db.isOpen())
+    {
+        qDebug() << "Couldn't open Db: " << db.lastError().text();
+    }
+
+    Q_ASSERT(db.isOpen());
+
+    QSqlQuery query;
+    QString sql, createDb = "CREATE DATABASE salama WITH OWNER = postgres ENCODING = 'UTF8' CONNECTION LIMIT = -1;";
+
+    if(query.exec(createDb))
+    {
+        qDebug() << "Database Created!";
+    } else {
+        qDebug() << "Error Creating Db: " << query.lastError().text();
+    }
+
+    db.close();
+    db.removeDatabase("setDb");
+    qDebug() << "Database Created!";
 }
 
 
 bool DatabaseInterface::initializeDatabase()
 {
-    QSqlDatabase m_db = QSqlDatabase::addDatabase("QPSQL");
-    m_db.setHostName("localhost");
-    m_db.setUserName(db_uname);
-    m_db.setPassword(db_pswd);
-    m_db.setDatabaseName(db_name);
-    // Q_ASSERT(m_db.open());
-    m_db.open();
-
-    if(!m_db.isOpen())
-    {
-        qDebug() << "Couldn't open Db: " << m_db.lastError().text();
-    }
-
-    Q_ASSERT(m_db.isOpen());
+    QSqlDatabase m_db;
 
     try {
-        m_db.transaction();
+        m_db = QSqlDatabase::database("default");
+        m_db = m_db.addDatabase("QPSQL");
+        m_db.setHostName("localhost");
+        m_db.setUserName(db_uname);
+        m_db.setPassword(db_pswd);
+        m_db.setDatabaseName("salama");
+
+        if(!m_db.open())
+        {
+            qDebug() << "Error Connecting Db: " << m_db.lastError().text();
+        }
+
+        Q_ASSERT(m_db.open());
+
         QSqlQuery query;
         QString sql;
 
@@ -45,13 +73,14 @@ bool DatabaseInterface::initializeDatabase()
 
         auto sql_segments = sql.split("--comment");
 
-        // int index = 1;
+        m_db.transaction();
+        // int index = 0;
 
         foreach (const QString &sql_str, sql_segments)
         {
+            // index ++;
             if(query.exec(sql_str))
             {
-                // m_db.commit();
             }
 
             else
@@ -59,8 +88,7 @@ bool DatabaseInterface::initializeDatabase()
                 qDebug() << "Error executing : " << query.lastError().text();
             }
 
-            // qDebug() << "Executing : " << index << "/" << sql_segments.size();
-            // index ++;
+            // qDebug() << "Data " << index << " / " << sql_segments.size();
         }
 
         if(m_db.isOpen())
@@ -69,10 +97,7 @@ bool DatabaseInterface::initializeDatabase()
         else
         {
             qDebug() << "Error Creating Db: " << query.lastError().text();
-            return false;
         }
-
-
 
     } catch (std::exception &e) {
         qDebug() << ">> Error executing SQL: " << e.what();
