@@ -12,6 +12,7 @@ QmlInterface::QmlInterface(QObject *parent) : QObject(parent)
     m_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope, qApp->organizationName(),qApp->applicationDisplayName());
 
     setIsDarkTheme(m_settings->value("Theme/isDarkTheme", false).toBool());
+    setVersionInt(m_settings->value("General/version", 1).toInt());
 
     m_databaseInterface = new DatabaseInterface(parent);
     m_dateTime = new DateTime();
@@ -446,6 +447,11 @@ bool QmlInterface::productStockAdded() const
     return m_productStockAdded;
 }
 
+int QmlInterface::versionInt() const
+{
+    return m_versionInt;
+}
+
 void QmlInterface::setIsDarkTheme(bool isDarkTheme)
 {
     if (m_isDarkTheme == isDarkTheme)
@@ -627,6 +633,15 @@ void QmlInterface::setProductStockAdded(bool productStockAdded)
 
     m_productStockAdded = productStockAdded;
     emit productStockAddedChanged(m_productStockAdded);
+}
+
+void QmlInterface::setVersionInt(int versionInt)
+{
+    if (m_versionInt == versionInt)
+        return;
+
+    m_versionInt = versionInt;
+    emit versionIntChanged(m_versionInt);
 }
 
 

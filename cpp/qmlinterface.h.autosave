@@ -99,7 +99,9 @@ public:
     bool productTypeAdded() const;
 
     bool productStockAdded() const;
-
+    
+    int versionInt() const;
+    
 public slots:
     void setIsDarkTheme(bool isDarkTheme);
 
@@ -140,7 +142,9 @@ public slots:
     void setProductTypeAdded(bool productTypeAdded);
 
     void setProductStockAdded(bool productStockAdded);
-
+    
+    void setVersionInt(int versionInt);
+    
 signals:
     void databaseReadyChanged();
 
@@ -185,7 +189,9 @@ signals:
     void productTypeAddedChanged(bool productTypeAdded);
 
     void productStockAddedChanged(bool productStockAdded);
-
+    
+    void versionIntChanged(int versionInt);
+    
 private slots:
 
 private:
@@ -204,6 +210,7 @@ private:
     bool m_productsAdded;
     bool m_productTypeAdded;
     bool m_productStockAdded;
+    int m_versionInt;
 };
 
 #endif // QMLINTERFACE_H

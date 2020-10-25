@@ -38,6 +38,8 @@ Rectangle {
             Layout.fillHeight: true
             Layout.margins: 1
             clip: true
+            Controls2.ScrollBar.horizontal.policy: Controls2.ScrollBar.AlwaysOff
+            Controls2.ScrollBar.vertical.policy: Controls2.ScrollBar.AlwaysOn
 
             ListView
             {

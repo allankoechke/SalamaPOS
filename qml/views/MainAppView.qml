@@ -20,6 +20,7 @@ Rectangle {
     property alias userAccountPopup: userAccountPopup
     property alias accountsPopup: accountsPopup
     property alias selectCrediteeOnSale: selectCrediteeOnSale
+    property alias salesSummaryDialog: salesSummaryDialog
 
     onNavBarIndexChanged: {
         switch(navBarIndex)
@@ -166,6 +167,11 @@ Rectangle {
     SelectCrediteeOnSale
     {
         id: selectCrediteeOnSale
+    }
+
+    SalesSummaryDialog
+    {
+        id: salesSummaryDialog
     }
 
     function startApp(state)

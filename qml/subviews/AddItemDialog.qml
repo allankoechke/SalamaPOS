@@ -15,7 +15,7 @@ Window {
     property alias searchText: textField.text
     property alias currentIndex: completions.currentIndex
 
-    flags:  Qt.Dialog | Qt.WindowCloseButtonHint
+    flags:  Qt.Dialog // | Qt.WindowCloseButtonHint
     modality: Qt.ApplicationModal
     color: bgColor
     width: 500
@@ -145,7 +145,8 @@ Window {
 
             Rectangle
             {
-                anchors.right: parent.right
+                anchors.right: close_btn.left
+                anchors.rightMargin: 10
                 anchors.verticalCenter: parent.verticalCenter
 
                 color: menuColor
@@ -184,6 +185,39 @@ Window {
                     onClicked: {
                         StockItemModel.getItemData(CompleterModel.getKey(currentIndex))
 
+                    }
+                }
+            }
+
+            Rectangle
+            {
+                id: close_btn
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+
+                color: "#FF605C"
+                radius: 5
+                height: 35
+                width: 80
+                border.width: 1
+                border.color: "silver"
+
+
+                AppText
+                {
+                    anchors.centerIn: parent
+
+                    text: qsTr("CLOSE")
+                    color: "white"
+                }
+
+
+                MouseArea
+                {
+                    anchors.fill: parent
+                    onClicked: {
+                        searchText = "";
+                        myWindow.close();
                     }
                 }
             }

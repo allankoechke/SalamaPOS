@@ -200,7 +200,7 @@ Item {
                             MouseArea
                             {
                                 anchors.fill: parent
-                                onClicked: {}
+                                onClicked: salesSummaryDialog.show();
                             }
                         }
                     }
