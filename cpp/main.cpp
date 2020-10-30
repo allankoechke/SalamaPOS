@@ -2,6 +2,7 @@
 #include <QQmlContext>
 #include <QQuickStyle>
 #include <QQmlApplicationEngine>
+#include <QFont>
 
 #include "qmlinterface.h"
 #include "models/stockitemsmodel.h"
@@ -18,6 +19,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QQuickStyle::setStyle(QStringLiteral("Material"));
     QApplication app(argc, argv);
+    app.setFont(QFont(":/assets/fonts/montserrat/Montserrat-Regular.ttf"));
     QQmlApplicationEngine engine;
 
     // Singletons

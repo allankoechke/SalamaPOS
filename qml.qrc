@@ -102,5 +102,6 @@
         <file>sql/type.sql</file>
         <file>qml/subviews/SalesSummaryDialog.qml</file>
         <file>qml/components/SaleSummaryCostWidget.qml</file>
+        <file>qml/components/MessageBox.qml</file>
     </qresource>
 </RCC>

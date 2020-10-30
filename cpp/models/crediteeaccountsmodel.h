@@ -52,12 +52,10 @@ public:
 
 signals:
     void crediteeAdded(bool status);
-
     void crediteeUpdated(bool status);
-
     void idExists();
-
     void paymentReceived(QString date, int paid, int due);
+    void giveBalanceChanged(int bal);
 
 private:
     QList<CrediteeAccount *> m_crediteeAccount;

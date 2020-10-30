@@ -1,9 +1,12 @@
 ﻿#include "qmlinterface.h"
+#include <QDir>
+#include <QFileInfo>
+#include <QDesktopServices>
 
 QmlInterface::QmlInterface(QObject *parent) : QObject(parent)
 {
     qApp->setApplicationName("Salama P.O.S.");
-    qApp->setApplicationVersion("1.0.1");
+    qApp->setApplicationVersion("20.10.26");
     qApp->setApplicationDisplayName("Salama P.O.S.");
     qApp->setOrganizationName("lalanke");
     qApp->setWindowIcon(QIcon(":/assets/images/6.png"));
@@ -17,6 +20,11 @@ QmlInterface::QmlInterface(QObject *parent) : QObject(parent)
     m_databaseInterface = new DatabaseInterface(parent);
     m_dateTime = new DateTime();
 
+    webInt = new WebApiInterface();
+
+    connect(this, &QmlInterface::started, webInt, &WebApiInterface::onCheckForUpdates);
+    connect(webInt, &WebApiInterface::newVersionAvailable, this, &QmlInterface::onNewVersionAvailable);
+
     bool status = m_databaseInterface->initializeDatabase();
 
     if(status)
@@ -27,6 +35,12 @@ QmlInterface::QmlInterface(QObject *parent) : QObject(parent)
 
     // Set default max
     setPlotYmax(10);
+    setVersionInt(2);
+
+    m_path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+
+    QDir d;
+    d.mkpath(m_path+"/downloads");
 }
 
 QJsonObject QmlInterface::getScreenSize()
@@ -59,6 +73,7 @@ void QmlInterface::getSalesStatisticsForDashboard()
 {
     // Get the sales quantities and cost for the day!
     QSqlDatabase db = QSqlDatabase::database();
+    qDebug() << " >> Fetching Sales Statistics";
 
     if(db.isOpen())
     {
@@ -81,6 +96,9 @@ void QmlInterface::getSalesStatisticsForDashboard()
 
             setSalesCost(totals);
             setSalesNumbers(counter);
+
+            // qDebug() << "Executed Query: " << query.executedQuery();
+            // qDebug() << "Sales Numbers are: " << counter << " and costs Ksh. " << totals;
         }
 
         else
@@ -88,6 +106,9 @@ void QmlInterface::getSalesStatisticsForDashboard()
             qDebug() << "Error fetchin data from the database: [" << query.executedQuery() << "] -> " << query.lastError().text();
         }
     }
+
+
+    qDebug() << " >> Ending fetching Sales Statistics";
 }
 
 void QmlInterface::getMessagesStatisticsForDashboard(const QString &uname)
@@ -298,6 +319,175 @@ void QmlInterface::getDashboardTableData()
     }
 
     getSalesStatisticsForDashboard();
+}
+
+void QmlInterface::onNewVersionAvailable(const QJsonObject &json)
+{
+
+    m_UpdateJSON = json;
+
+    r_path = m_path+"/downloads/"+m_UpdateJSON.value("filename").toString();
+
+    if(QFileInfo(r_path).exists())
+    {
+        emit downloadFinished(r_path);
+        qDebug() << ">> File already downloaded, ready to install";
+    }
+
+    else
+    {
+        emit newVersionAvailableChanged(json.value("versionString").toString());
+        qDebug() << ">> Update ready, start download";
+    }
+}
+
+void QmlInterface::downloadUpdate()
+{
+    /// Start update download for a newer version
+    /// If update started,
+
+    qDebug() << ">> Downloading Update";
+
+    QNetworkAccessManager * network = new QNetworkAccessManager(this);
+    QUrl url(m_UpdateJSON.value("link").toString());
+    QNetworkRequest request(url);
+
+    // QJsonDocument doc(m_UpdateJSON);
+    qDebug() << m_UpdateJSON.value("link").toString();
+    QString pth = m_path+"/downloads/"+m_UpdateJSON.value("filename").toString();
+
+    emit downloadStarted();
+
+    connect(network, &QNetworkAccessManager::finished, this, [=](QNetworkReply *reply) {
+        auto app = reply->readAll(); //.data();
+
+        QFile file(pth);
+        if(file.open(QIODevice::WriteOnly))
+        {
+            file.write(app);
+            file.close();
+            qDebug() << "Update download finished!";
+
+            emit downloadFinished(m_UpdateJSON.value("filename").toString());
+        }
+
+        else
+        {
+            qDebug() << "Couldn't open file! " << file.errorString();
+        }
+
+
+        reply->deleteLater();
+    });
+
+    QNetworkReply *reply = network->get(request);
+
+    connect(reply, &QNetworkReply::downloadProgress, this, [=](qint64 val, qint64 max){
+        emit updateProgressChanged(int((val/float(max))*100));
+    });
+
+}
+
+void QmlInterface::check4Update()
+{
+    emit started(versionInt());
+}
+
+void QmlInterface::installUpdate()
+{
+    qDebug() << "Update file location: " << r_path;
+
+    QDesktopServices::openUrl(QUrl(m_path + "/downloads/"));
+    std::string str = r_path.toStdString();
+    const char* cmd = str.c_str();
+    system(cmd);
+}
+
+void QmlInterface::getSalesSummary(const int &ind)
+{
+    QSqlDatabase db = QSqlDatabase::database();
+
+    if(db.isOpen())
+    {
+        QString start, end;
+
+        if(ind == 0)
+        {
+            auto x = m_dateTime->getTimestamp("today");
+            start = x.at(0);
+            end = x.at(1);
+        }
+
+        else if(ind == 1)
+        {
+            auto x = m_dateTime->getTimestamp("yesterday");
+            start = x.at(0);
+            end = x.at(1);
+        }
+
+        else if(ind == 2)
+        {
+            auto x = m_dateTime->getTimestamp("thisWeek");
+            start = x.at(0);
+            end = x.at(1);
+        }
+
+        else if(ind == 3)
+        {
+            auto x = m_dateTime->getTimestamp("thisMonth");
+            start = x.at(0);
+            end = x.at(1);
+        }
+
+        else if(ind == 4)
+        {
+            auto x = m_dateTime->getTimestamp("thisYear");
+            start = x.at(0);
+            end = x.at(1);
+        }
+
+        else
+        {
+            auto x = m_dateTime->getTimestamp("today");
+            start = x.at(0);
+            end = x.at(1);
+        }
+
+        QSqlQuery query, query1;
+        QString sql = "SELECT sum(cash), sum(mpesa), sum(cheque), sum(credit) FROM payment WHERE sales_id IN (SELECT DISTINCT sales_id FROM sales WHERE sales_date > '"+start+"' AND sales_date < '"+end+"');";
+        QString sql1 = "SELECT sum(payment_amount) FROM credit_payments WHERE payment_timestamp > '"+start+"' AND payment_timestamp < '"+end+"';";
+
+        if(query.exec(sql) && query1.exec(sql1))
+        {
+            int cash =0, mpesa=0,cheque=0, credit=0, paid=0, totals=0;
+
+            while(query.next())
+            {
+                cash = query.value(0).toInt();
+                mpesa = query.value(1).toInt();
+                cheque = query.value(2).toInt();
+                credit = query.value(3).toInt();
+
+                break;
+            }
+
+            while(query1.next())
+            {
+                paid = query1.value(0).toInt();
+
+                break;
+            }
+
+            totals = cash + mpesa + cheque + paid;
+
+            emit salesSummaryCost(cash,mpesa,cheque,credit,paid,totals);
+        }
+
+        else
+        {
+            qDebug() << "Error Fetching Sales Summary : " << query.lastError().text() << " --- " << query1.lastError().text();
+        }
+    }
 }
 
 void QmlInterface::setTabularData()
@@ -643,5 +833,4 @@ void QmlInterface::setVersionInt(int versionInt)
     m_versionInt = versionInt;
     emit versionIntChanged(m_versionInt);
 }
-
 

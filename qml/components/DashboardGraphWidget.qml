@@ -12,7 +12,7 @@ Item {
     property var cash_x: [0,0,0,0,0,0,10]
 
     ChartView {
-        title: "Monthly Sales Summary"
+        title: "Weekly Sales Summary"
         anchors.fill: parent
         antialiasing: true
         titleColor: QmlInterface.isDarkTheme? "#f4f4f4":"#535353"

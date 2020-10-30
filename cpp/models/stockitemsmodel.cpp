@@ -509,7 +509,8 @@ void StockItemsModel::getItemCategories()
     {
         QString sql = "SELECT type_id,type_name FROM product_type;";
         QSqlQuery query;
-        if(query.exec(sql))
+
+        if(query.exec("SELECT type_id,type_name FROM product_type;"))
         {
             while(query.next())
             {
@@ -530,7 +531,7 @@ void StockItemsModel::getItemCategories()
 
         else
         {
-            qDebug() << "Error adding item category :: [" <<query.executedQuery() << "]" << query.lastError().text();
+            qDebug() << "Error fetching item category :: [" <<query.executedQuery() << "]" << query.lastError().text();
         }
     }
 }
@@ -552,7 +553,7 @@ void StockItemsModel::addItemCategory(const QString &category)
 
         else
         {
-            qDebug() << "Error adding item category :: " << query.lastError().text();
+            qDebug() << "Error adding item category :[" << query.executedQuery() << "]: " << query.lastError().text();
         }
     }
 }

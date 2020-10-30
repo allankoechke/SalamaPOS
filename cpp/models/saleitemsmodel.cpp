@@ -397,19 +397,25 @@ void saleItemsModel::addPaymentSaleDetails(const QVariant &saleId, const QJsonOb
 {
     QSqlDatabase m_db = QSqlDatabase::database();
 
+    qDebug() << ">> Adding Payment Data:: > " << QJsonDocument(json);
+
     QSqlQuery writePayment;
     writePayment.prepare("INSERT INTO payment(cash,mpesa,cheque,credit,sales_id) VALUES(:cash,:mpesa,:cheque,:credit,:id)");
-    writePayment.bindValue(":cash", json.value("cash").toString());
+    writePayment.bindValue(":cash", json.value("cash").toDouble());
     writePayment.bindValue(":mpesa", json.value("mpesa").toString());
-    writePayment.bindValue(":cheque",json.value("cheque").toString());
+    writePayment.bindValue(":cheque", json.value("cheque").toString());
     writePayment.bindValue(":credit", json.value("credit").toString());
     writePayment.bindValue(":id", saleId.toString());
+
+    // qDebug() << ">> " << json.value("cash").toDouble() << ", " << json.value("mpesa").toString() << ", " << json.value("cheque").toString() << ", " << json.value("credit").toString();
 
     if(writePayment.exec())
     {
         qDebug() << ">> Sucess Adding to sale payments  ";
 
         emit paymentItemAdded(true);
+
+        m_db.commit();
     }
 
     else

@@ -33,43 +33,31 @@ public:
 
     // QAbstractListModel overrides
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
-
     QVariant data(const QModelIndex &index, int role) const;
-
     bool setData(const QModelIndex &index, const QVariant &value, int role);
-
     Qt::ItemFlags flags(const QModelIndex &index) const;
-
     QHash<int, QByteArray> roleNames() const;
 
     // Q_INVOKABLES
     Q_INVOKABLE void loadSalesData();
-
     Q_INVOKABLE void addSalesData(const QVariant &barcode, const int &qty, const QJsonObject &cost);
-
     Q_INVOKABLE void addSalesData(const QVariant &barcode, const int &qty);
-
     Q_INVOKABLE void showTodaysSales();
-
     Q_INVOKABLE void showYesterdaysSales();
-
     Q_INVOKABLE void showThisWeeksSales();
-
     Q_INVOKABLE void showThisMonthsSales();
-
     Q_INVOKABLE void showThisYearsSales();
+    Q_INVOKABLE void getSalesSummary(const int &ind);
 
 
     // Internals
-    void addSalesData(ProductSales *sales);
-
-    int getSaleItemIndex(QString barcode);
-
     bool executeQuery(const QStringList &list);
-
+    void addSalesData(ProductSales *sales);
+    int getSaleItemIndex(QString barcode);
     void clearModel();
 
 signals:
+    void salesSummaryCost(int cash, int mpesa, int cheque, int credit, int paid, int totals);
 
 private:
     QList<ProductSales *> m_productSales;

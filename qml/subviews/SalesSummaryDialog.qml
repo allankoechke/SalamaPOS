@@ -12,20 +12,34 @@ Window {
 
     property alias x: myWindow.x
     property alias y: myWindow.y
-    // property alias searchText: textField.text
-    // property alias currentIndex: completions.currentIndex
+    property alias salesCash: salescash.cost
+    property alias salesMpesa: salesmpesa.cost
+    property alias salesCheque: salescheque.cost
+    property alias salesCredit: salescredit.cost
+    property alias debtPaid: debtpaid.cost
+    property alias tlessDebt: tlessdebt.cost
 
-    flags:  Qt.Dialog // | Qt.WindowCloseButtonHint
+    flags:  Qt.Dialog
     modality: Qt.ApplicationModal
     color: bgColor
     width: 500
     height: 470
 
-    onClosing: {
+    /*onClosing: {
         close.accepted = false
-        // CompleterModel.addCompleterItems("")
-        // textField.text = ""
         close.accepted = true
+    }*/
+
+    Component.onCompleted: {
+        cb.currentIndex = 0;
+        // ProductSalesModel.getSalesSummary(cb.currentIndex)
+        // console.log("Current index: ", cb.currentIndex)
+        // QmlInterface.getSalesSummary(cb.currentIndex)
+    }
+
+    function call_getSalesSummary()
+    {
+        QmlInterface.getSalesSummary(cb.currentIndex)
     }
 
 
@@ -66,23 +80,7 @@ Window {
                     Layout.rightMargin: 10
 
                     onCurrentIndexChanged: {
-                        /* if(currentIndex === 0)
-                            ProductSalesModel.showTodaysSales();
-
-                        else if(currentIndex === 1)
-                            ProductSalesModel.showYesterdaysSales();
-
-                        else if(currentIndex === 2)
-                            ProductSalesModel.showThisWeeksSales();
-
-                        else if(currentIndex === 3)
-                            ProductSalesModel.showThisMonthsSales();
-
-                        else if(currentIndex === 4)
-                            ProductSalesModel.showThisYearsSales();
-
-                        else
-                            ProductSalesModel.loadSalesData();*/
+                        ProductSalesModel.getSalesSummary(currentIndex)
                     }
                 }
             }
@@ -109,37 +107,37 @@ Window {
 
                         SaleSummaryCostWidget
                         {
+                            id: salescash
                             icon: "\uf3d1"
                             text: qsTr("Sales Cash:")
-                            cost: qsTr("Ksh. 37264")
                         }
 
                         SaleSummaryCostWidget
                         {
+                            id: salesmpesa
                             icon: "\uf3ce"
                             text: qsTr("Sales M-Pesa:")
-                            cost: qsTr("Ksh. 37264")
                         }
 
                         SaleSummaryCostWidget
                         {
+                            id: salescredit
                             icon: "\uf09d"
                             text: qsTr("Sales Credit:")
-                            cost: qsTr("Ksh. 37264")
                         }
 
                         SaleSummaryCostWidget
                         {
+                            id: salescheque
                             icon: "\uf53d"
                             text: qsTr("Sales Cheque:")
-                            cost: qsTr("Ksh. 37264")
                         }
 
                         SaleSummaryCostWidget
                         {
+                            id: debtpaid
                             icon: "\uf4c4"
                             text: qsTr("Debt Re-Paid:")
-                            cost: qsTr("Ksh. 37264")
                         }
 
                         Rectangle
@@ -152,9 +150,9 @@ Window {
 
                         SaleSummaryCostWidget
                         {
+                            id: tlessdebt
                             icon: "\uf52c"
                             text: qsTr("Totals less Debt:")
-                            cost: qsTr("Ksh. 37264")
                         }
                     }
                 }
@@ -353,7 +351,6 @@ Window {
                             {
                                 anchors.fill: parent
                                 onClicked: {
-                                    // searchText = "";
                                     myWindow.close();
                                 }
                             }
@@ -366,40 +363,18 @@ Window {
 
     }
 
-    /*
     Connections
     {
-        target: StockItemModel
+        target: QmlInterface
 
-        function onItemStockWarningChanged()
+        function onSalesSummaryCost(_cash,_mpesa,_cheque,_credit,_paid,_totals)
         {
-            console.log(">> Stock is less to complete this add!")
-            AlarmsModel.addAlarmItem("error", "Stock is less to add to Checkout")
+            salesCash = qsTr("Ksh. ") + _cash.toString()
+            salesMpesa = qsTr("Ksh. ") + _mpesa.toString()
+            salesCheque = qsTr("Ksh. ") + _cheque.toString()
+            salesCredit = qsTr("Ksh. ") + _credit.toString()
+            debtPaid = qsTr("Ksh. ") + _paid.toString()
+            tlessDebt = qsTr("Ksh. ") + _totals.toString()
         }
-
-        function onItemDataChanged(status, jsonObj)
-        {
-            if(status)
-            {
-                console.log(">> Item Added to Checkout Model!")
-                CheckoutModel.addSellItem(jsonObj["sellBarcode"], jsonObj["sellItemName"], jsonObj["sellItemUnit"], jsonObj["buyingPrice"], jsonObj["sellingPrice"], 1);
-
-                searchText = "";
-                currentIndex = -1;
-                CompleterModel.addCompleterItems("");
-
-                if(isDialogClosedAfterEachAdd)
-                    myWindow.close()
-            }
-
-            else
-            {
-                console.log(">> Failed to Add Item to Checkout Model!")
-                AlarmsModel.addAlarmItem("error", "Failed to Add Item to Checkout Model")
-            }
-        }
-
-
     }
-    */
 }

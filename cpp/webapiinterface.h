@@ -6,6 +6,8 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 class WebApiInterface : public QObject
 {
@@ -14,13 +16,14 @@ public:
     explicit WebApiInterface(QObject *parent = nullptr);
 
 public slots:
-    void onCheckForUpdates();
+    void onCheckForUpdates(const int &cVersion);
 
     void onDownloadUpdate();
 
     void onInstallUpdate();
 
 signals:
+    void newVersionAvailable(const QJsonObject &json);
 
 private:
     QNetworkAccessManager m_networkManager;

@@ -292,7 +292,9 @@ void CrediteeAccountsModel::getPaymentHistory(const QString &idNo)
 
 bool CrediteeAccountsModel::repayDebt(const QString &crediteeId, const int &debt, const int &debtPaid)
 {
+    // QSqlDatabase::database().transaction();
     QSqlDatabase db = QSqlDatabase::database();
+    db.transaction();
 
     int due = (debt-debtPaid <= 0)? 0:debt-debtPaid;
     int paid = debtPaid > debt ? debt:debtPaid;
@@ -300,28 +302,35 @@ bool CrediteeAccountsModel::repayDebt(const QString &crediteeId, const int &debt
 
     if(db.isOpen())
     {
-        QString sql = "UPDATE creditee "; //"SET amount_due = " + " WHERE national_id = '"+crediteeId+"';";
-        QString sql2 = "INSERT INTO credit_payments(payment_timestamp,creditee_id,payment_amount,payment_due) VALUES ('"+dateToday+"','"+crediteeId+"','"+paid+"','"+due+"') ;";
+        QString sql = "UPDATE creditee SET amount_due = " +QString::number(due)+ " WHERE national_id = '"+crediteeId+"';";
+        QString sql2 = "INSERT INTO credit_payments(payment_timestamp,creditee_id,payment_amount,payment_due) VALUES ('"+dateToday+"','"+crediteeId+"','"+QString::number(paid)+"','"+QString::number(due)+"');";
 
-        QSqlQuery query;
+        QSqlQuery query, query1;
 
-        if(query.exec(sql))
+        if(query.exec(sql) && query1.exec(sql2))
         {
+            db.commit();
 
-            while (query.next()) {
-                QString date = query.value(0).toString();
-                int paid = query.value(1).toInt();
-                int due = query.value(2).toInt();
+            int i = getIndex(crediteeId);
+            if(i != -1)
+                setData(QModelIndex(this->index(i)), due, DebtAmountRole);
 
-                emit paymentReceived(date, paid, due);
-            }
+            else
+                loadCrediteeAccounts();
 
-            qDebug() << " [INFO] Creditee user Accounts loaded";
+            emit giveBalanceChanged(debtPaid - debt);
+
+            qDebug() << " [INFO] Creditee debt repayment successful";
+            return true;
         }
 
         else
         {
-            qDebug() << " [ERROR] Could't execute SQL (" << query.executedQuery() << ") : " << query.lastError().text();
+            if(query.lastError().text() != "")
+                qDebug() << " [ERROR] Could't execute SQL (" << query.executedQuery() << ") : " << query.lastError().text();
+
+            else
+                qDebug() << " [ERROR] Could't execute SQL (" << query1.executedQuery() << ") : " << query1.lastError().text();
         }
     }
 
@@ -330,7 +339,8 @@ bool CrediteeAccountsModel::repayDebt(const QString &crediteeId, const int &debt
         qDebug() << " [ERROR] Database not open!";
     }
 
-    return true;
+    db.rollback();
+    return false;
 }
 
 void CrediteeAccountsModel::addNewCreditee(CrediteeAccount *creditee)

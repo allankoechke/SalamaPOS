@@ -362,6 +362,12 @@ void ProductSalesModel::showThisYearsSales()
     executeQuery(thisYearsDateRange);
 }
 
+void ProductSalesModel::getSalesSummary(const int &ind)
+{
+
+
+}
+
 void ProductSalesModel::addSalesData(ProductSales *sales)
 {
     const int index = m_productSales.size();

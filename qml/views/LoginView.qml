@@ -228,6 +228,7 @@ Item {
 
                     // Load Creditee Accounts
                     CrediteeModel.loadCrediteeAccounts();
+                    QmlInterface.check4Update();
 
                     AlarmsModel.addAlarmItem("info", "Login successful!")
                 }

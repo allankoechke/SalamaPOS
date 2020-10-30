@@ -200,7 +200,10 @@ Item {
                             MouseArea
                             {
                                 anchors.fill: parent
-                                onClicked: salesSummaryDialog.show();
+                                onClicked: {
+                                    salesSummaryDialog.show();
+                                    salesSummaryDialog.call_getSalesSummary()
+                                }
                             }
                         }
                     }

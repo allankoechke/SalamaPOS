@@ -312,6 +312,11 @@ Controls2.Drawer {
                             color: "#0091d9"
                             opacity: enabled? 1:0.2
                             radius: 10
+
+                            // TODO
+                            // Its misbeahving
+                            // To not allow checkout if paid on credit and totals exceed the sales totals
+
                             enabled: (parseInt(creditAmount===""? 0:creditAmount)>0 && isCrediteeSelected && (parseInt(cashAmount===""? 0:cashAmount)+parseInt(mpesaAmount===""? 0:mpesaAmount)+parseInt(chequeAmount===""? 0:chequeAmount)+parseInt(creditAmount===""? 0:creditAmount)) >= CheckoutModel.sellTotals) || ((parseInt(cashAmount===""? 0:cashAmount)+parseInt(mpesaAmount===""? 0:mpesaAmount)+parseInt(chequeAmount===""? 0:chequeAmount)) >= CheckoutModel.sellTotals)
 
                             Layout.fillWidth: true
@@ -353,11 +358,19 @@ Controls2.Drawer {
 
                                         var _js = '{ "cash":0, "mpesa":0, "credit":0, "cheque":0 }'
                                         var json = JSON.parse(_js)
+                                        // TODO
+                                        // Check if totals sum upto the total cost
+                                        // Else deduct from MPESa or give an error
 
-                                        json.cash = cashAmount
+                                        json.cash = cashAmount - getBalance();
                                         json.mpesa = mpesaAmount
                                         json.credit = creditAmount
                                         json.cheque = chequeAmount
+
+
+                                        console.log(cashAmount-getBalance())
+                                        console.log(">> Payment Done: ", JSON.stringify(json));
+
 
 
                                         SalesModel.addPaymentSaleDetails(uniqueSaleId, json);
@@ -382,6 +395,27 @@ Controls2.Drawer {
     Connections
     {
         target: SalesModel
+
+        function userDebtChanged(user, bal)
+        {
+
+        }
+
+        function giveBalanceChanged(bal)
+        {
+            if(bal===0)
+            {
+                root.close();
+                AlarmsModel.addAlarmItem("info", "Success repaying debt")
+            }
+
+            else
+            {
+                root.close()
+                messageBox.open();
+                messageBox.text = qsTr("User debt cleared, give a Change of Ksh. ") + bal.toString();
+            }
+        }
 
         function onAddCrediteePaymentChanged(status)
         {

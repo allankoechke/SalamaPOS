@@ -5,13 +5,20 @@
 #include <QDebug>
 #include <QSqlDatabase>
 #include <QJsonObject>
+#include <QJsonDocument>
 #include <QRect>
 #include <QIcon>
 #include <QScreen>
+#include <QFile>
+#include <QIODevice>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QGuiApplication>
 #include <QSettings>
+#include <QNetworkInterface>
+#include <QStandardPaths>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 
 #include "databaseinterface.h"
 #include "serialportinterface.h"
@@ -56,7 +63,10 @@ public:
     Q_INVOKABLE void getMessagesStatisticsForDashboard(const QString &uname);
     Q_INVOKABLE void getRemindersStatisticsForDashboard();
     Q_INVOKABLE void getDashboardTableData();
-    // Q_INVOKABLE QVariantList getCreditees();
+    Q_INVOKABLE void downloadUpdate();
+    Q_INVOKABLE void check4Update();
+    Q_INVOKABLE void getSalesSummary(const int &ind);
+    Q_INVOKABLE void installUpdate();
 
     void setTabularData();
 
@@ -100,6 +110,8 @@ public:
 
     bool productStockAdded() const;
 
+    int versionInt() const;
+
 public slots:
     void setIsDarkTheme(bool isDarkTheme);
 
@@ -140,6 +152,11 @@ public slots:
     void setProductTypeAdded(bool productTypeAdded);
 
     void setProductStockAdded(bool productStockAdded);
+
+    void setVersionInt(int versionInt);
+
+    //
+    void onNewVersionAvailable(const QJsonObject &json);
 
 signals:
     void databaseReadyChanged();
@@ -186,24 +203,33 @@ signals:
 
     void productStockAddedChanged(bool productStockAdded);
 
+    void versionIntChanged(int versionInt);
+
+    void started(int version);
+
+    //
+    void newVersionAvailableChanged(QVariant ver);
+    void updateProgressChanged(int value);
+    void downloadFinished(QString path);
+    void downloadStarted();
+    void salesSummaryCost(int cash,int mpesa,int cheque,int credit,int paid,int totals);
+
 private slots:
 
 private:
     DatabaseInterface * m_databaseInterface;
     DateTime * m_dateTime;
+    WebApiInterface * webInt;
+
     bool m_isDarkTheme, m_isFirstTimeUse;
     QSettings * m_settings;
     int m_dueSoonReminders, m_overdueReminders, m_solvedReminders, m_salesNumbers, m_salesCost, m_setMessages, m_receivedMessages, m_unreadMessages;
     QStringList m_plotXAxis;
-    QList<int> m_cashYAxis;
-    QList<int> m_mpesaYAxis;
-    QList<int> m_creditYAxis;
-    QList<int> m_chequeYAxis;
-    int m_plotYmax;
-    bool m_tablesCreated;
-    bool m_productsAdded;
-    bool m_productTypeAdded;
-    bool m_productStockAdded;
+    QList<int> m_cashYAxis, m_mpesaYAxis, m_creditYAxis, m_chequeYAxis;
+    int m_plotYmax, m_versionInt;
+    bool m_tablesCreated, m_productsAdded, m_productTypeAdded, m_productStockAdded;
+    QJsonObject m_UpdateJSON;
+    QString m_path, r_path;
 };
 
 #endif // QMLINTERFACE_H
