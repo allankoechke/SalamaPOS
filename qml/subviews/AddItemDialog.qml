@@ -21,6 +21,10 @@ Window {
     width: 500
     height: 400
 
+    Component.onCompleted: {
+        console.log("Loaded the Add Item Dialog!");
+    }
+
     onClosing: {
         close.accepted = false
         CompleterModel.addCompleterItems("")

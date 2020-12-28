@@ -3,6 +3,19 @@
 #include <QQuickStyle>
 #include <QQmlApplicationEngine>
 #include <QFont>
+#include <QFontDatabase>
+
+#define DEBUG_MODE // 1
+
+// To add a console when running on windows
+#ifdef Q_OS_WINDOWS
+#ifdef DEBUG_MODE
+
+#include <windows.h>
+#include <stdio.h>
+
+#endif
+#endif
 
 #include "qmlinterface.h"
 #include "models/stockitemsmodel.h"
@@ -16,10 +29,43 @@
 
 int main(int argc, char *argv[])
 {
+#ifdef Q_OS_WINDOWS
+#ifdef DEBUG_MODE
+    // detach from the current console window
+    // if launched from a console window, that will still run waiting for the new console (below) to close
+    // it is useful to detach from Qt Creator's <Application output> panel
+    FreeConsole();
+
+    // create a separate new console window
+    AllocConsole();
+
+    // attach the new console to this application's process
+    AttachConsole(GetCurrentProcessId());
+
+    // reopen the std I/O streams to redirect I/O to the new console
+    freopen("CON", "w", stdout);
+    freopen("CON", "w", stderr);
+    freopen("CON", "r", stdin);
+
+#endif
+#endif
+
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QQuickStyle::setStyle(QStringLiteral("Material"));
     QApplication app(argc, argv);
-    app.setFont(QFont(":/assets/fonts/montserrat/Montserrat-Regular.ttf"));
+    QFontDatabase fontDb;
+    int status = fontDb.addApplicationFont(":/assets/fonts/montserrat/Montserrat-Regular.ttf");
+
+    if(status != -1)
+    {
+        app.setFont(QFont(QFontDatabase::applicationFontFamilies(status).at(0)));
+    }
+
+    else
+    {
+        qDebug() << "Could not load the specified font!";
+    }
+
     QQmlApplicationEngine engine;
 
     // Singletons

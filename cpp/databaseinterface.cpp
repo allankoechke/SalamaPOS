@@ -14,6 +14,7 @@ DatabaseInterface::DatabaseInterface(QObject *parent) : QObject(parent)
     db_pswd = jsonObj.value(QString("password")).toString();
     db_name = jsonObj.value(QString("database")).toString();
 
+    /*
     QSqlDatabase db = QSqlDatabase::database("setDb");
     db = db.addDatabase("QPSQL");
     db.setHostName("localhost");
@@ -42,6 +43,7 @@ DatabaseInterface::DatabaseInterface(QObject *parent) : QObject(parent)
     db.close();
     db.removeDatabase("setDb");
     qDebug() << "Database Created!";
+    */
 }
 
 

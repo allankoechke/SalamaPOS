@@ -208,7 +208,7 @@ void StockItemsModel::addNewItem(const QVariant &barcode, const QVariant &name, 
         query.bindValue(":product_bp", bp.toString().toFloat());
         query.bindValue(":product_sp", sp.toString().toFloat());
         query.bindValue(":product_company", company.toString());
-        query.bindValue(":type_id", category.toString());
+        query.bindValue(":type_id", "35702"); // category.toString());
 
         QSqlQuery stock_query;
         stock_query.prepare("INSERT INTO \"stock\"(barcode,stock_qty,last_update) VALUES (:barcode,:stock_qty,:last_update)");
@@ -242,6 +242,8 @@ void StockItemsModel::updateItem(const QVariant &barcode, const QVariant &name, 
 {
     QSqlDatabase m_db = QSqlDatabase::database();
 
+    qDebug() << "Category: " << category;
+
     if(m_db.isOpen())
     {
         QSqlQuery query;
@@ -251,7 +253,7 @@ void StockItemsModel::updateItem(const QVariant &barcode, const QVariant &name, 
         query.bindValue(":product_unit", unit.toString());
         query.bindValue(":product_bp", bp.toString().toFloat());
         query.bindValue(":product_sp", sp.toString().toFloat());
-        query.bindValue(":type_id", category.toString().toInt());
+        query.bindValue(":type_id", "35702"); // category.toString().toInt());
         query.bindValue(":product_company", company.toString());
         query.bindValue(":orig_barcode", orig_barcode.toString());
 
