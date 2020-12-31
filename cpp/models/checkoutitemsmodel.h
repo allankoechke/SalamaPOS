@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QDebug>
 #include <QAbstractListModel>
-#include "checkoutitems.h"
+#include "src/checkoutitems.h"
 
 class CheckoutItemsModel : public QAbstractListModel
 {
@@ -69,10 +69,9 @@ public:
 signals:
 
     void sellTotalsChanged(int sellTotals);
-
     void saleQtyChanged(bool state);
-
     void checkoutModelSizeChanged(int checkoutModelSize);
+    void logDataChanged(QString level, QString info);
 
 private:
     QList<CheckoutItems *> mCheckoutItem;

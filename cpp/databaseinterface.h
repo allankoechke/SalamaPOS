@@ -22,7 +22,7 @@ class DatabaseInterface : public QObject
 public:
     explicit DatabaseInterface(QObject *parent = nullptr);
 
-    bool initializeDatabase();
+    QString initializeDatabase();
 
 signals:
 

@@ -47,7 +47,7 @@ DatabaseInterface::DatabaseInterface(QObject *parent) : QObject(parent)
 }
 
 
-bool DatabaseInterface::initializeDatabase()
+QString DatabaseInterface::initializeDatabase()
 {
     QSqlDatabase m_db;
 
@@ -61,50 +61,59 @@ bool DatabaseInterface::initializeDatabase()
 
         if(!m_db.open())
         {
-            qDebug() << "Error Connecting Db: " << m_db.lastError().text();
+            return "false:Error Connecting Db => " + m_db.lastError().text();
         }
-
-        Q_ASSERT(m_db.open());
-
-        QSqlQuery query;
-        QString sql;
-
-        QFile file(":/sql/tables.sql");
-        file.open(QIODevice::ReadOnly);
-        sql = file.readAll();
-
-        auto sql_segments = sql.split("--comment");
-
-        m_db.transaction();
-        // int index = 0;
-
-        foreach (const QString &sql_str, sql_segments)
-        {
-            // index ++;
-            if(query.exec(sql_str))
-            {
-            }
-
-            else
-            {
-                qDebug() << "Error executing : " << query.lastError().text();
-            }
-
-            // qDebug() << "Data " << index << " / " << sql_segments.size();
-        }
-
-        if(m_db.isOpen())
-            return true;
 
         else
         {
-            qDebug() << "Error Creating Db: " << query.lastError().text();
+            Q_ASSERT(m_db.open());
+
+            QSqlQuery query;
+            QString sql;
+
+            QFile file(":/sql/tables.sql");
+            file.open(QIODevice::ReadOnly);
+            sql = file.readAll();
+
+            auto sql_segments = sql.split("--comment");
+
+            m_db.transaction();
+            // int index = 0;
+
+            foreach (const QString &sql_str, sql_segments)
+            {
+                // index ++;
+                if(query.exec(sql_str))
+                {
+                    // m_db.commit();
+                }
+
+                else
+                {
+                    m_db.rollback();
+
+                    qDebug() << "Error executing : " << query.lastError().text();
+                }
+
+                // qDebug() << "Data " << index << " / " << sql_segments.size();
+            }
+
+            if(m_db.isOpen())
+                return "true:OK";
+
+            else
+            {
+                QString str = "Error Creating Db: " + query.lastError().text();
+                // qDebug() << str;
+                return "false:" + str;
+            }
         }
 
     } catch (std::exception &e) {
-        qDebug() << ">> Error executing SQL: " << e.what();
-        return false;
+        QString err = ">> Error executing SQL: " + QString::fromUtf8(e.what());
+        // qDebug() << err;
+        return "false:"+err;
     }
 
-    return false;
+    return "false:Error Creating Database";
 }

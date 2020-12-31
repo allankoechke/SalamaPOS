@@ -50,7 +50,7 @@ public slots:
     void setSize(int size);
 
 signals:
-
+    void logDataChanged(QString level, QString info);
     void sizeChanged(int size);
 
 private:

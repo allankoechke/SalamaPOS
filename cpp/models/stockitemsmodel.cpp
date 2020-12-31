@@ -193,7 +193,10 @@ QHash<int, QByteArray> StockItemsModel::roleNames() const
 
 void StockItemsModel::addNewItem(const QVariant &barcode, const QVariant &name, const QVariant &unit, const QVariant &bp, const QVariant &sp, const QVariant &qty, const QVariant &company, const QVariant &date, const QVariant &category)
 {
+    emit logDataChanged("INFO", "Starting StockItemsModel::addNewItem()");
+
     QSqlDatabase m_db = QSqlDatabase::database();
+
     Q_UNUSED(date)
 
     QString dateNow = m_dateTime->getTimestamp("now").at(0);
@@ -219,12 +222,12 @@ void StockItemsModel::addNewItem(const QVariant &barcode, const QVariant &name, 
         if(query.exec() && stock_query.exec())
         {
             m_db.commit();
-            // qDebug() << ">> New item Added";
+
+            emit logDataChanged("INFO", "New item Added successfully barcode=" + barcode.toString());
 
             addNewItem(new StockItems(barcode.toString(), name.toString(), unit.toString(), bp.toString().toFloat(), sp.toString().toFloat(), company.toString(), qty.toInt(), dateNow, category.toString()));
 
             emit itemAddingChanged(true);
-
         }
 
         else
@@ -233,16 +236,21 @@ void StockItemsModel::addNewItem(const QVariant &barcode, const QVariant &name, 
 
             emit itemAddingChanged(false);
 
-            qDebug() << "Error executing SQL: " << m_db.lastError().text() << " :: " << query.lastError().text() << " :: " << stock_query.lastError().text();
+            emit logDataChanged("CRITICAL", "Error executing SQL: " + m_db.lastError().text() + " :: " + query.lastError().text() + " :: " + stock_query.lastError().text());
         }
     }
+
+    emit logDataChanged("INFO", "Ending StockItemsModel::addNewItem()");
 }
 
 void StockItemsModel::updateItem(const QVariant &barcode, const QVariant &name, const QVariant &unit, const QVariant &bp, const QVariant &sp, const QVariant &company, const QVariant &category, const QVariant &orig_barcode, const QVariant &index)
 {
+    emit logDataChanged("INFO", "Starting StockItemsModel::updateItem()");
+
     QSqlDatabase m_db = QSqlDatabase::database();
 
-    qDebug() << "Category: " << category;
+    // TODO: this category brings a QComboBox item
+    // qDebug() << "Category: " << category;
 
     if(m_db.isOpen())
     {
@@ -264,6 +272,8 @@ void StockItemsModel::updateItem(const QVariant &barcode, const QVariant &name, 
 
         if(query.exec() && stock_query.exec())
         {
+            m_db.commit();
+
             // Reflect changes on the model
             setData(this->index(index.toString().toInt()), barcode, BarcodeRole);
             setData(this->index(index.toString().toInt()), name, ItemNameRole);
@@ -273,23 +283,28 @@ void StockItemsModel::updateItem(const QVariant &barcode, const QVariant &name, 
             setData(this->index(index.toString().toInt()), company, ItemCompanyRole);
             setData(this->index(index.toString().toInt()), category, ItemCategoryRole);
 
-
             emit itemUpdatedChanged(true);
+
+            emit logDataChanged("INFO", "Item Details updated successfully, barcode=" + barcode.toString());
         }
 
         else
         {
             m_db.rollback();
 
-            qDebug() << "Error executing SQL: " << query.lastError().text() << " :: " << stock_query.lastError().text();
+            emit logDataChanged("CRITICAL", "Error executing SQL: " + query.lastError().text() + " :: " + stock_query.lastError().text());
 
             emit itemUpdatedChanged(false);
         }
     }
+
+    emit logDataChanged("INFO", "Ending StockItemsModel::updateItem()");
 }
 
 void StockItemsModel::updateStock(const QVariant &barcode, const QVariant &qty, const QVariant &date, const QVariant &index)
 {
+    emit logDataChanged("INFO", "Starting StockItemsModel::updateStock()");
+
     QSqlDatabase m_db = QSqlDatabase::database();
     QString dateToday = date.toString();
 
@@ -308,21 +323,29 @@ void StockItemsModel::updateStock(const QVariant &barcode, const QVariant &qty, 
             setData(this->index(index.toString().toInt()), QVariant::fromValue(dateToday), ItemLastUpdateRole);
 
             emit itemStockChanged(true);
+
+            m_db.commit();
+
+            emit logDataChanged("INFO", "Successfully updated stock for item barcode = " + barcode.toString());
         }
 
         else
         {
             m_db.rollback();
 
-            qDebug() << "Error executing SQL: " << m_db.lastError().text();
+            emit logDataChanged("CRITICAL", "Error executing update_stock SQL: " + m_db.lastError().text());
 
             emit itemStockChanged(false);
         }
     }
+
+    emit logDataChanged("INFO", "Ending StockItemsModel::updateStock()");
 }
 
 void StockItemsModel::updateStockHistory(const QString &barcode, const int &stock_qty_before, const int &stock_qty_added, const QString &date_updated, const QString &who_updated, const bool &is_adding)
 {
+    emit logDataChanged("INFO", "Starting StockItemsModel::updateStockHistory()");
+
     QSqlDatabase db = QSqlDatabase::database();
 
     if(db.isOpen())
@@ -338,20 +361,24 @@ void StockItemsModel::updateStockHistory(const QString &barcode, const int &stoc
 
         if(query.exec(sql))
         {
-            qDebug() << "Stock data added!";
+            db.commit();
+
+            emit logDataChanged("INFO","Stock history data added, barcode=" + barcode);
         }
 
         else
         {
-            qDebug() << "Error adding stock record: " << query.lastError().text();
+            db.rollback();
+
+            emit logDataChanged("CRITICAL","Error adding stock history record: " + query.lastError().text());
         }
     }
+
+    emit logDataChanged("INFO", "Ending StockItemsModel::updateStockHistory()");
 }
 
 void StockItemsModel::updateStockOnSale(const QVariant &bcode, const int &qty)
 {
-    QSqlDatabase m_db = QSqlDatabase::database();
-
     int ind = getItemIndex(bcode);
 
     if(ind != -1)
@@ -362,8 +389,15 @@ void StockItemsModel::updateStockOnSale(const QVariant &bcode, const int &qty)
     }
 
     else
-        qDebug() << " [ERROR] Couldn't find index of item barcode: " <<bcode.toString();
+    {
+        emit logDataChanged("INFO", "Ending StockItemsModel::updateStockOnSale()");
 
+        emit itemStockAfterSaleChanged(false);
+
+        emit logDataChanged("CRITICAL", "Couldn't find index of item barcode: " + bcode.toString());
+
+        emit logDataChanged("INFO", "Ending StockItemsModel::updateStockOnSale()");
+    }
 }
 
 bool StockItemsModel::addNewItem(StockItems *stockItem)
@@ -397,7 +431,7 @@ int StockItemsModel::getItemIndex(const QVariant &bcode)
 
 void StockItemsModel::initializeStockFromDb()
 {
-    qInfo() << ">> Fetching Stock Item Data from Database";
+    emit logDataChanged("INFO", "Starting StockItemsModel::initializeStockFromDb()");
 
     QSqlDatabase m_db = QSqlDatabase::database();
 
@@ -424,13 +458,17 @@ void StockItemsModel::initializeStockFromDb()
 
                 addNewItem(new StockItems(barcode, name, unit, bp, sp, company, qty, item, category));
             }
+
+            emit logDataChanged("INFO", "Stock Data Initialized Successfully!");
         }
 
         else
         {
-            qDebug() << "Error executing SQL: " << m_db.lastError().text() << " :: " << query.lastError().text();
+            emit logDataChanged("CRITICAL", "Error executing SQL: " + m_db.lastError().text() + " :: " + query.lastError().text());
         }
     }
+
+    emit logDataChanged("INFO", "Ending StockItemsModel::initializeStockFromDb()");
 }
 
 int StockItemsModel::getItemStock(const QVariant &barcode)
@@ -477,7 +515,7 @@ QJsonObject StockItemsModel::getItemData(const QString &barcode)
 
             emit itemDataChanged(true, m_itemDetails);
 
-            QJsonDocument doc(m_itemDetails);
+            // QJsonDocument doc(m_itemDetails);
 
             return m_itemDetails;
         }
@@ -509,7 +547,7 @@ void StockItemsModel::getItemCategories()
 
     if(m_db.isOpen())
     {
-        QString sql = "SELECT type_id,type_name FROM product_type;";
+        // QString sql = "SELECT type_id,type_name FROM product_type;";
         QSqlQuery query;
 
         if(query.exec("SELECT type_id,type_name FROM product_type;"))
@@ -533,36 +571,49 @@ void StockItemsModel::getItemCategories()
 
         else
         {
-            qDebug() << "Error fetching item category :: [" <<query.executedQuery() << "]" << query.lastError().text();
+            emit logDataChanged("INFO", "Starting StockItemsModel::getItemCategories()");
+
+            emit logDataChanged("CRITICAL", "Error fetching item category :: [" + query.executedQuery() + "]" + query.lastError().text());
+
+            emit logDataChanged("INFO", "Ending StockItemsModel::getItemCategories()");
         }
     }
 }
 
 void StockItemsModel::addItemCategory(const QString &category)
 {
+    emit logDataChanged("INFO", "Starting StockItemsModel::addItemCategory()");
+
     QSqlDatabase m_db = QSqlDatabase::database();
 
-    QString id = QString::number(QDateTime::currentSecsSinceEpoch());
+    QString id = "CAT" + QString::number(QDateTime::currentSecsSinceEpoch());
 
     if(m_db.isOpen())
     {
         QString sql = "INSERT INTO product_type(type_id,type_name) VALUES ('" + id + "', '" + category + "');";
         QSqlQuery query;
+
         if(query.exec(sql))
         {
-            qDebug() << "Item Category added!";
+            m_db.commit();
+
+            emit logDataChanged("INFO", "Item Category added!");
         }
 
         else
         {
-            qDebug() << "Error adding item category :[" << query.executedQuery() << "]: " << query.lastError().text();
+            m_db.rollback();
+
+            emit logDataChanged("CRITICAL", "Error adding item category :[" + query.executedQuery() + "]: " + query.lastError().text());
         }
     }
+
+    emit logDataChanged("INFO", "Starting StockItemsModel::addItemCategory()");
 }
 
 QList<QString> StockItemsModel::getCategryList()
 {
-    qDebug() << "Model Size: " << m_categoryNames.size();
+    // qDebug() << "Model Size: " << m_categoryNames.size();
     return m_categoryNames;
 }
 

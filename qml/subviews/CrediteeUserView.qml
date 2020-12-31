@@ -23,12 +23,7 @@ Item
     function loadPaymentHistory()
     {
         crediteePaymentModel.clear();
-        var data = CrediteeModel.getPaymentHistory(idNo)
-
-        for(var i=0; i<data.length; i++)
-        {
-
-        }
+        CrediteeModel.getPaymentHistory(idNo)
     }
 
     ListModel
@@ -235,6 +230,8 @@ Item
                     ListView
                     {
                         anchors.fill: parent
+                        width: scroll.width
+                        height: scroll.height
 
                         model: crediteePaymentModel
                         delegate: Component
@@ -243,7 +240,7 @@ Item
 
                             CrediteePaymentsTableDelegate
                             {
-                                width: scroll.width - 15
+                                width: scroll.width // - 15
                                 no: model.index
                                 paid: _paid
                                 due: _due
@@ -256,12 +253,35 @@ Item
         }
     }
 
-    function onPaymentReceived(date, paid, due)
+    Connections
     {
-        crediteePaymentModel.append("{
-            \"_paid\":" + paid + ",
-            \"_due\":" + due +",
-            \"_date\":" + date + " }");
+        target: CrediteeModel
+
+        function onPaymentReceived(date, paid, due)
+        {
+            // console.log("History Added: ", date, " ", paid, " ", due)
+
+            crediteePaymentModel.append(JSON.parse('{
+            "_paid":' + paid + ',
+            "_due":' + due +',
+            "_date":"' + date + '" }'));
+        }
+    }
+
+    Connections
+    {
+        target: CrediteeModel
+
+        function onDebRepaymentChanged(state)
+        {
+            if(state)
+            {
+                debt = debt-creditRepayDialog.debtPaid
+                creditRepayDialog.debtPaid = "";
+                loadPaymentHistory();
+                creditRepayDialog.close();
+            }
+        }
     }
 }
 

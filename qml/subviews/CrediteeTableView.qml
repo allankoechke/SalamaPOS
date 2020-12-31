@@ -122,6 +122,7 @@ Item
                                     crediteeUserView.debt = debt;
                                     crediteeUserView.fname = fullname.split(" ")[0];
                                     crediteeUserView.lname = fullname.split(" ")[1];
+                                    crediteeUserView.loadPaymentHistory();
                                 }
                             }
                         }

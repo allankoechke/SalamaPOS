@@ -35,11 +35,15 @@ Window {
         // ProductSalesModel.getSalesSummary(cb.currentIndex)
         // console.log("Current index: ", cb.currentIndex)
         // QmlInterface.getSalesSummary(cb.currentIndex)
+        console.log("Finished loading sales summary")
+        QmlInterface.logToFile("INFO", "QML => Finished loading sales summary")
     }
 
     function call_getSalesSummary()
     {
+        QmlInterface.logToFile("INFO", "QML => SalesSummaryDialog.qml: ComboBox::currentIndex="+cb.currentIndex)
         QmlInterface.getSalesSummary(cb.currentIndex)
+
     }
 
 
@@ -74,13 +78,14 @@ Window {
                     currentIndex: 0
 
                     editable: false
-                    enabled: isAdmin
-                    model: ["Today", "Yesterday", "This Week", "This Month", "This Year", "All Time", "Custom"]
+                    // enabled: isAdmin
+                    model: isAdmin? ["Today", "Yesterday", "This Week", "This Month", "This Year", "All Time", "Custom"]:["Today", "Yesterday"]
 
                     Layout.rightMargin: 10
 
                     onCurrentIndexChanged: {
-                        ProductSalesModel.getSalesSummary(currentIndex)
+                        // ProductSalesModel.getSalesSummary(currentIndex)
+                        QmlInterface.getSalesSummary(currentIndex)
                     }
                 }
             }

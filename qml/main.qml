@@ -11,6 +11,10 @@ Window {
     visible: true
     width: 600
     height: 500
+    minimumHeight: 600
+    maximumHeight: QmlInterface.getScreenSize()["height"]
+    minimumWidth: 700
+    maximumWidth: QmlInterface.getScreenSize()["width"]
     x: (QmlInterface.getScreenSize()["width"]-width)/2
     y: (QmlInterface.getScreenSize()["height"]-height)/2
     flags: mainAppView.navBarIndex===7? Qt.FramelessWindowHint:Qt.Window
@@ -132,15 +136,43 @@ Window {
     {
         target: QmlInterface
 
-        function onDatabaseReadyChanged()
+        function onDatabaseLoadedChanged(state)
+        {
+            console.log("database loaded? " , state)
+        }
+
+        function onDatabaseConnectionErrorStringChanged(err)
+        {
+            console.log("Error Str: ", err)
+        }
+
+        function onDatabaseReadyChanged(state, err)
         {
             console.log(">> Database Ready Signal in QML!")
+
+            // databaseConnStatus = state
+            // databaseConnStatusStr = state? "DB Connected":"DB Connection Error"
+        }
+
+        function onLogFileNameChanged(logFileName)
+        {
+            console.log(">> Log File Name Changed")
+        }
+
+        function onDatabaseConnectionChanged(state, msg)
+        {
+            console.log(">> Database Conn Changed")
         }
     }
 
     Connections
     {
         target: AccountsModel
+
+        function onLogDataChanged(level, info)
+        {
+            QmlInterface.logToFile(level, info)
+        }
 
         function onUserAccountsLoaded(status)
         {
@@ -175,6 +207,58 @@ Window {
             QmlInterface.getSalesStatisticsForDashboard();
 
             isAdmin = loggedUser_canAddAccounts && loggedUser_canDeleteAccounts && loggedUser_canAddItems && loggedUser_canDeleteItems && loggedUser_canAddStock && loggedUser_canDeleteStock && loggedUser_canUndoSales && loggedUser_canBackupDb
+
+            QmlInterface.logToFile("INFO", "Logged In User: username="+loggedUser_username)
+        }
+    }
+
+    Connections
+    {
+        target: CheckoutModel
+
+        function onLogDataChanged(level, info)
+        {
+            QmlInterface.logToFile(level, info)
+        }
+    }
+
+    Connections
+    {
+        target: CrediteeModel
+
+        function onLogDataChanged(level, info)
+        {
+            QmlInterface.logToFile(level, info)
+        }
+    }
+
+    Connections
+    {
+        target: ProductSalesModel
+
+        function onLogDataChanged(level, info)
+        {
+            QmlInterface.logToFile(level, info)
+        }
+    }
+
+    Connections
+    {
+        target: SalesModel
+
+        function onLogDataChanged(level, info)
+        {
+            QmlInterface.logToFile(level, info)
+        }
+    }
+
+    Connections
+    {
+        target: StockItemModel
+
+        function onLogDataChanged(level, info)
+        {
+            QmlInterface.logToFile(level, info)
         }
     }
 }

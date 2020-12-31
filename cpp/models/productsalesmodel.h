@@ -10,7 +10,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 
-#include "productsales.h"
+#include "src/productsales.h"
 #include "../datetime.h"
 
 class ProductSalesModel : public QAbstractListModel
@@ -58,6 +58,7 @@ public:
 
 signals:
     void salesSummaryCost(int cash, int mpesa, int cheque, int credit, int paid, int totals);
+    void logDataChanged(QString level, QString info);
 
 private:
     QList<ProductSales *> m_productSales;

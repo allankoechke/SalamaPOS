@@ -239,6 +239,8 @@ QHash<int, QByteArray> saleItemsModel::roleNames() const
 
 void saleItemsModel::addSaleItem(const QVariant &barcode, const int &qty, const QVariant &uname, const QVariant &saleid, const QVariant &dt)
 {
+    emit logDataChanged("INFO", "Starting saleItemsModel::addSaleItem()");
+
     Q_UNUSED(dt)
 
     QString dateToday = m_dateTime->getTimestamp("now").at(0);
@@ -253,7 +255,7 @@ void saleItemsModel::addSaleItem(const QVariant &barcode, const int &qty, const 
         if(fetchItem.exec())
         {
             while (fetchItem.next()) {
-                QString unit = fetchItem.value(0).toString();
+                // QString unit = fetchItem.value(0).toString();
                 float bp = fetchItem.value(1).toFloat();
                 float sp = fetchItem.value(2).toFloat();
                 int currentStock = fetchItem.value(3).toInt();
@@ -269,7 +271,7 @@ void saleItemsModel::addSaleItem(const QVariant &barcode, const int &qty, const 
 
                     if(writeSales.exec())
                     {
-                        // qDebug() << ">> Success writing Sale to db";
+                        // qDebug() << "Success writing Sale to db";
 
                         int c_qty = currentStock - qty;
 
@@ -280,23 +282,31 @@ void saleItemsModel::addSaleItem(const QVariant &barcode, const int &qty, const 
 
                         if(stock_query.exec())
                         {
+                            // TODO: check on this
                             emit updateStockChanged(barcode.toString(), c_qty);
 
                             emit updateSalesModelChanged(barcode.toString(), qty);
+
+                            m_db.commit();
                         }
 
                         else
                         {
-                            qDebug() << " [ERROR] Updating Stock after sale -> " << stock_query.lastError().text();
+                            m_db.rollback();
+
+                            emit logDataChanged("CRITICAL", "Updating Stock after sale -> " + stock_query.lastError().text());
                         }
+
                         emit saleItemAddedChanged(true);
                     }
 
                     else
                     {
+                        m_db.rollback();
+
                         emit saleItemAddedChanged(false);
 
-                        qDebug() << "ERROR executing SQL: [" << writeSales.executedQuery() << "] ->" << writeSales.lastError().text();
+                        emit logDataChanged("CRITICAL", "ERROR executing SQL: [" + writeSales.executedQuery() + "] ->" + writeSales.lastError().text());
                     }
                 }
             }
@@ -304,12 +314,14 @@ void saleItemsModel::addSaleItem(const QVariant &barcode, const int &qty, const 
     }
 
     else
-        qDebug() << " [ERROR] Database not open";
+        emit logDataChanged("FATAL", "Database not open");
+
+    emit logDataChanged("INFO", "Ending saleItemsModel::addSaleItem()");
 }
 
 void saleItemsModel::addMpesaSale(const QVariant &mpesaId, const QVariant &salesId)
 {
-    qInfo() << "[INFO] Starting Adding Mpesa Sale";
+    emit logDataChanged("INFO", "Starting saleItemsModel::addMpesaSale()");
 
     QSqlDatabase m_db = QSqlDatabase::database();
 
@@ -320,20 +332,24 @@ void saleItemsModel::addMpesaSale(const QVariant &mpesaId, const QVariant &sales
 
     if(writeMpesa.exec())
     {
-        qDebug() << ">> Success writing to mpesa!";
+        m_db.commit();
+
+        emit logDataChanged("INFO", "Success writing sales info to mpesa!");
     }
 
     else
     {
-        qDebug() << "Error writing to Credit: " << writeMpesa.lastError().text();
+        m_db.rollback();
+
+        emit logDataChanged("CRITICAL", "Error writing sale info to mpesa: " + writeMpesa.lastError().text());
     }
 
-    qInfo() << "[INFO] Ending Adding Mpesa Sale";
+    emit logDataChanged("INFO", "Ending saleItemsModel::addMpesaSale()");
 }
 
 void saleItemsModel::addCreditSale(const QVariant &crediteeId, const QVariant &dueDate, const QVariant &salesId, const int &amount)
 {
-    qInfo() << "[INFO] Starting Adding Credit Sale";
+    emit logDataChanged("INFO", "Starting saleItemsModel::addCreditSale()");
 
     QSqlDatabase m_db = QSqlDatabase::database();
     // qDebug() << "Creditee ID: " << crediteeId << " : " << crediteeId.toString().toInt();
@@ -367,37 +383,48 @@ void saleItemsModel::addCreditSale(const QVariant &crediteeId, const QVariant &d
 
             if(writeCredit.exec())
             {
-                // qDebug() << ">> Success writing to credit!";
                 emit addCrediteePaymentChanged(true);
-                qDebug() << "Creditee Balance Updated!";
+
+                emit logDataChanged("INFO", "Creditee Balance Updated after sale!");
+
+                m_db.commit();
             }
 
             else
             {
-                qDebug() << "Error writing to Credit: " << writeCredit.lastError().text();
+                m_db.rollback();
+
+                emit addCrediteePaymentChanged(false);
+
+                emit logDataChanged("CRITICAL", "Error writing to Credit ==> " + writeCredit.lastError().text());
             }
         }
 
         else
         {
-            qDebug() << "Failed to update Creditee Balance: " << setCreditBal.lastError().text();
+            m_db.rollback();
+
+            emit logDataChanged("CRITICAL", "Failed to update Creditee Balance: " + setCreditBal.lastError().text());
         }
     }
 
     else
     {
-        qDebug() << "Error fetching Creditee Balance: " << getCreditBal.lastError().text();
+        emit logDataChanged("CRITICAL", "Error fetching Creditee Balance: " + getCreditBal.lastError().text());
     }
 
-    qInfo() << "[INFO] Ending Adding Credit Sale";
     emit addCrediteePaymentChanged(false);
+
+    emit logDataChanged("INFO", "Ending saleItemsModel::addCreditSale()");
 }
 
 void saleItemsModel::addPaymentSaleDetails(const QVariant &saleId, const QJsonObject &json)
 {
+    emit logDataChanged("INFO", "Starting saleItemsModel::addPaymentSaleDetails()");
+
     QSqlDatabase m_db = QSqlDatabase::database();
 
-    qDebug() << ">> Adding Payment Data:: > " << QJsonDocument(json);
+    // qDebug() << ">> Adding Payment Data:: > " << QJsonDocument(json);
 
     QSqlQuery writePayment;
     writePayment.prepare("INSERT INTO payment(cash,mpesa,cheque,credit,sales_id) VALUES(:cash,:mpesa,:cheque,:credit,:id)");
@@ -411,19 +438,23 @@ void saleItemsModel::addPaymentSaleDetails(const QVariant &saleId, const QJsonOb
 
     if(writePayment.exec())
     {
-        qDebug() << ">> Sucess Adding to sale payments  ";
+        m_db.commit();
+
+        emit logDataChanged("INFO", ">> Sucess Adding to sale payments");
 
         emit paymentItemAdded(true);
-
-        m_db.commit();
     }
 
     else
     {
+        m_db.rollback();
+
         emit paymentItemAdded(false);
 
-        qDebug() << ">> Error executing SQL: " << writePayment.lastError().text();
+        emit logDataChanged("CRITICAL", "Error executing SQL: " + writePayment.lastError().text());
     }
+
+    emit logDataChanged("INFO", "Ending saleItemsModel::addPaymentSaleDetails()");
 }
 
 QString saleItemsModel::getUniqueSaleId()

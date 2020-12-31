@@ -18,6 +18,7 @@ Controls2.Popup
     property int currentIndex: -1
     property alias debt: amountDueLabel.text
     property alias debtPaid: repayInput.text
+    property alias isError: err.visible
     property string crediteeId: ""
 
     signal accepted()
@@ -105,6 +106,19 @@ Controls2.Popup
                 validator: RegExpValidator {regExp: RegExp("[0-9]+")}
             }
 
+            AppText
+            {
+                id: err
+                size: 20
+                color: "red"
+                visible: false
+                text: qsTr("Amount entered exceed Amount owed")
+
+                Layout.preferredWidth: 200
+                horizontalAlignment: AppText.AlignLeft
+                Layout.alignment: Qt.AlignVCenter
+            }
+
             Item
             {
                 Layout.fillWidth: true
@@ -175,7 +189,14 @@ Controls2.Popup
                         {
                             anchors.fill: parent
                             onClicked: {
-                                CrediteeModel.repayDebt(crediteeId, debt, debtPaid);
+                                if(parseInt(debtPaid) > parseInt(debt) || parseInt(debtPaid)===0)
+                                    isError=true
+
+                                else
+                                {
+                                    isError=false
+                                    CrediteeModel.repayDebt(crediteeId, debt, debtPaid);
+                                }
                             }
                         }
                     }

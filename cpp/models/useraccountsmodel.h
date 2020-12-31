@@ -13,7 +13,7 @@
 #include <QJsonDocument>
 #include <QCryptographicHash>
 #include <QAbstractListModel>
-#include "useraccounts.h"
+#include "src/useraccounts.h"
 #include "../datetime.h"
 
 class UserAccountsModel : public QAbstractListModel
@@ -122,6 +122,8 @@ signals:
     void userAccountsLoaded(bool status);
 
     void usernameExistsChanged(bool status);
+
+    void logDataChanged(QString level, QString info);
 
 private:
     QList<UserAccounts *> mUserAccounts;

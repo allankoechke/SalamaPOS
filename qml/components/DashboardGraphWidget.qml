@@ -1,34 +1,71 @@
 import QtQuick 2.0
 import QtCharts 2.3
+// import QwtCharts 1.0
 
 Item {
+    id: root
     anchors.fill: parent
     anchors.margins: 1
 
-    Component.onCompleted: {
-        var date = new Date()
-    }
-
-    property var cash_x: [0,0,0,0,0,0,10]
-
     ChartView {
+        id: chartV
         title: "Weekly Sales Summary"
-        anchors.fill: parent
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
         antialiasing: true
         titleColor: QmlInterface.isDarkTheme? "#f4f4f4":"#535353"
         backgroundColor: QmlInterface.isDarkTheme? "#29292d":"white"
-        // legend.visible: false
         legend.alignment: Qt.AlignBottom
+        legend.color: QmlInterface.isDarkTheme? "#f4f4f4":"#535353"
 
         BarSeries {
             id: myBarSeries
-            axisY: ValueAxis {min: 0; max: QmlInterface.plotYmax }
-            axisX: BarCategoryAxis { categories: QmlInterface.plotXAxis }
+            axisY: ValueAxis {
+                min: 0; max: QmlInterface.plotYmax;
+                labelsColor: QmlInterface.isDarkTheme? "#f4f4f4":"#535353"
+                labelFormat: "%.0f"
+                labelsFont:Qt.font({pixelSize: 10})
+            }
+            axisX: BarCategoryAxis {
+                categories: QmlInterface.plotXAxis;
+                labelsColor: QmlInterface.isDarkTheme? "#f4f4f4":"#535353"
+                labelsFont:Qt.font({pixelSize: 11})
+            }
 
-            BarSet { label: "Cash"; values: [] }
-            BarSet { label: "M-Pesa"; values: [] }
-            BarSet { label: "Cheque"; values: [] }
-            BarSet { label: "Credit"; values: [] }
+            BarSet
+            {
+                id: cashBar
+                label: "Cash";
+                labelColor: QmlInterface.isDarkTheme? "#f4f4f4":"#535353";
+                values: [];
+                color: "#00bfff"
+            }
+
+            BarSet
+            {
+                label: "M-Pesa";
+                labelColor: QmlInterface.isDarkTheme? "#f4f4f4":"#535353";
+                values: [];
+                color: "#a0522d"
+            }
+
+            BarSet
+            {
+                label: "Cheque";
+                labelColor: QmlInterface.isDarkTheme? "#f4f4f4":"#535353";
+                values: [];
+                color: "#dc143c"
+            }
+
+            BarSet
+            {
+                label: "Credit";
+                labelColor: QmlInterface.isDarkTheme? "#f4f4f4":"#535353";
+                values: [];
+                color: "#d2691e"
+            }
         }
 
     }
@@ -37,82 +74,41 @@ Item {
     {
         target: QmlInterface
 
-        function onCashYAxisChanged(cashYAxis)
+        function onDataReadyForPlotting()
         {
-            for(var j=0; j<myBarSeries.count; j++)
+            // console.log("New plot values");
+
+            let csh = [], mpsa=[], cr=[], chq=[];
+
+            for(var i=0; i<7; i++)
             {
-                // console.log("> ", myBarSeries.at(j).label)
-                if(myBarSeries.at(j).label === "Cash")
-                {
-                    myBarSeries.remove(myBarSeries.at(j));
-                    break;
-                }
+                csh[i] = QmlInterface.cashYAxis[i]
+                mpsa[i]= QmlInterface.mpesaYAxis[i]
+                cr[i] = QmlInterface.creditYAxis[i]
+                chq[i] = QmlInterface.chequeYAxis[i]
             }
 
-            let arr = []
+            myBarSeries.clear();
+            myBarSeries.append("Cash", csh)
+            myBarSeries.append("M-Pesa", mpsa)
+            myBarSeries.append("Credit", cr)
+            myBarSeries.append("Cheque", chq)
+        }
 
-            for(var i=0; i<cashYAxis.length; i++)
-                arr[i] = cashYAxis[i]
-
-            myBarSeries.append("Cash", arr)
-
+        function onCashYAxisChanged(cashYAxis)
+        {
         }
 
         function onMpesaYAxisChanged(mpesaYAxis)
         {
-            for(var j=0; j<myBarSeries.count; j++)
-            {
-                if(myBarSeries.at(j).label === "M-Pesa")
-                {
-                    myBarSeries.remove(myBarSeries.at(j));
-                    break;
-                }
-            }
-
-            let arr1 = []
-
-            for(var i=0; i<mpesaYAxis.length; i++)
-                arr1[i] = mpesaYAxis[i]
-
-            myBarSeries.append("M-Pesa", arr1)
         }
 
         function onCreditYAxisChanged(creditYAxis)
         {
-            for(var j=0; j<myBarSeries.count; j++)
-            {
-                if(myBarSeries.at(j).label === "Credit")
-                {
-                    myBarSeries.remove(myBarSeries.at(j));
-                    break;
-                }
-            }
-
-            let arr2 = []
-
-            for(var i=0; i<7; i++)
-                arr2[i] = creditYAxis[i]
-
-            myBarSeries.append("Credit", arr2)
         }
 
         function onChequeYAxisChanged(chequeYAxis)
         {
-            for(var j=0; j<myBarSeries.count; j++)
-            {
-                if(myBarSeries.at(j).label === "Credit")
-                {
-                    myBarSeries.remove(myBarSeries.at(j));
-                    break;
-                }
-            }
-
-            let arr3 = []
-
-            for(var i=0; i<chequeYAxis.length; i++)
-                arr3[i] = chequeYAxis[i]
-
-            myBarSeries.append("Credit", arr3)
         }
     }
 }

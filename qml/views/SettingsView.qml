@@ -112,4 +112,14 @@ Item {
         }
     }
 
+    Connections
+    {
+        target: QmlInterface
+
+        function onIsDarkThemeChanged()
+        {
+            QmlInterface.logToFile("INFO", "QML => DashboardView::ChangeThemeColor IsDarkTheme?"+QmlInterface.isDarkTheme? "From Light Theme -> Dark Theme":"From Dark Theme -> Light Theme")
+        }
+    }
+
 }

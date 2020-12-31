@@ -132,10 +132,16 @@ QHash<int, QByteArray> CrediteeAccountsModel::roleNames() const
 
 void CrediteeAccountsModel::addNewCreditee(const QString &fname, const QString &lname, const QString &mobile, const QString &idNo)
 {
+    emit logDataChanged("INFO", "Starting CrediteeAccountsModel::addNewCreditee()");
+
     QSqlDatabase db = QSqlDatabase::database();
 
     if(getIndex(idNo) != -1)
+    {
         emit idExists();
+
+        emit logDataChanged("WARNING", "User ID No. exists");
+    }
 
     else
         if(db.isOpen())
@@ -146,7 +152,11 @@ void CrediteeAccountsModel::addNewCreditee(const QString &fname, const QString &
 
             if(query.exec(sql))
             {
-                qDebug() << " [INFO] Creditee user added to database";
+                db.commit();
+
+                // qDebug() << " [INFO] Creditee user added to database";
+
+                emit logDataChanged("INFO", "Creditee user added to database");
 
                 addNewCreditee(new CrediteeAccount(fname, lname, mobile, idNo, 0));
 
@@ -155,20 +165,32 @@ void CrediteeAccountsModel::addNewCreditee(const QString &fname, const QString &
 
             else
             {
-                qDebug() << " [ERROR] Could't execute SQL (" << query.executedQuery() << ") : " << query.lastError().text();
-                crediteeAdded(false);
+                db.rollback();
+
+                auto errStr = " [ERROR] Could't execute SQL (" + query.executedQuery() + ") : " + query.lastError().text();
+
+                // qDebug() << errStr;
+
+                emit logDataChanged("CRITICAL", errStr);
+
+                emit crediteeAdded(false);
             }
         }
 
         else
         {
-            qDebug() << " [ERROR] Database not open!";
+            // qDebug() << " [ERROR] Database not open!";
+
             emit crediteeAdded(false);
         }
+
+    emit logDataChanged("INFO", "Ending CrediteeAccountsModel::addNewCreditee()");
 }
 
 void CrediteeAccountsModel::updateCreditee(const QString &fname, const QString &lname, const QString &mobile, const QString &idNo, const QString &orig_id)
 {
+    emit logDataChanged("INFO", "Starting CrediteeAccountsModel::updateCreditee()");
+
     QSqlDatabase db = QSqlDatabase::database();
 
     if(idNo != orig_id && getIndex(idNo) != -1)
@@ -183,7 +205,11 @@ void CrediteeAccountsModel::updateCreditee(const QString &fname, const QString &
 
             if(query.exec(sql))
             {
-                qDebug() << " [INFO] Creditee user updated in the database";
+                db.commit();
+
+                // qDebug() << " [INFO] Creditee user updated in the database";
+
+                emit logDataChanged("INFO", "Creditee user updated in the database");
 
                 int index = getIndex(orig_id);
 
@@ -197,20 +223,32 @@ void CrediteeAccountsModel::updateCreditee(const QString &fname, const QString &
 
             else
             {
-                qDebug() << " [ERROR] Could't execute SQL (" << query.executedQuery() << ") : " << query.lastError().text();
-                crediteeUpdated(false);
+                db.rollback();
+
+                auto errStr = " [ERROR] Could't execute SQL (" + query.executedQuery() + ") : " + query.lastError().text();
+
+                // qDebug() << errStr;
+
+                emit crediteeUpdated(false);
+
+                emit logDataChanged("CRITICAL", errStr);
             }
         }
 
         else
         {
-            qDebug() << " [ERROR] Database not open!";
+            // qDebug() << " [ERROR] Database not open!";
+
             emit crediteeUpdated(false);
         }
+
+    emit logDataChanged("INFO", "Ending CrediteeAccountsModel::updateCreditee()");
 }
 
 void CrediteeAccountsModel::loadCrediteeAccounts()
 {
+    emit logDataChanged("INFO", "Starting CrediteeAccountsModel::loadCrediteeAccounts()");
+
     QSqlDatabase db = QSqlDatabase::database();
 
     if(m_crediteeAccount.size() != 0)
@@ -223,7 +261,7 @@ void CrediteeAccountsModel::loadCrediteeAccounts()
 
     if(db.isOpen())
     {
-        QString dateToday = dateTime->getTimestamp("now").at(0);
+        // QString dateToday = dateTime->getTimestamp("now").at(0);
         QString sql = "SELECT firstname,lastname,national_id,phone_no,amount_due FROM creditee;";
         QSqlQuery query;
 
@@ -240,12 +278,18 @@ void CrediteeAccountsModel::loadCrediteeAccounts()
                 addNewCreditee(new CrediteeAccount(fname, lname, mobile, idNo, due));
             }
 
-            qDebug() << " [INFO] Creditee user Accounts loaded";
+            // qDebug() << " [INFO] Creditee user Accounts loaded";
+
+            emit logDataChanged("INFO", "Creditee user Accounts loaded");
         }
 
         else
         {
-            qDebug() << " [ERROR] Could't execute SQL (" << query.executedQuery() << ") : " << query.lastError().text();
+            QString errStr = " [ERROR] Could't execute SQL (" + query.executedQuery() + ") : " + query.lastError().text();
+
+            // qDebug() << errStr;
+
+            emit logDataChanged("CRITICAL", errStr);
         }
     }
 
@@ -253,10 +297,14 @@ void CrediteeAccountsModel::loadCrediteeAccounts()
     {
         qDebug() << " [ERROR] Database not open!";
     }
+
+    emit logDataChanged("INFO", "Ending CrediteeAccountsModel::loadCrediteeAccounts()");
 }
 
 void CrediteeAccountsModel::getPaymentHistory(const QString &idNo)
 {
+    emit logDataChanged("INFO", "Starting CrediteeAccountsModel::getPaymentHistory()");
+
     QSqlDatabase db = QSqlDatabase::database();
 
     if(db.isOpen())
@@ -272,15 +320,23 @@ void CrediteeAccountsModel::getPaymentHistory(const QString &idNo)
                 int paid = query.value(1).toInt();
                 int due = query.value(2).toInt();
 
-                emit paymentReceived(date, paid, due);
+                QDateTime dt = QDateTime::fromString(date, "yyyy-MM-ddThh:mm:ss.zzz");
+
+                emit paymentReceived(dt.toString(" dd MMM, yyyy hh:mm AP"), paid, due);
             }
 
-            qDebug() << " [INFO] Creditee user Accounts loaded";
+            // qDebug() << " [INFO] Creditee user Accounts loaded";
+
+            emit logDataChanged("INFO", "Creditee user Accounts loaded");
         }
 
         else
         {
-            qDebug() << " [ERROR] Could't execute SQL (" << query.executedQuery() << ") : " << query.lastError().text();
+            QString errStr = " [ERROR] Could't execute SQL (" + query.executedQuery() + ") : " + query.lastError().text();
+
+            // qDebug() << errStr;
+
+            emit logDataChanged("CRITICAL", errStr);
         }
     }
 
@@ -288,10 +344,14 @@ void CrediteeAccountsModel::getPaymentHistory(const QString &idNo)
     {
         qDebug() << " [ERROR] Database not open!";
     }
+
+    emit logDataChanged("INFO", "Ending CrediteeAccountsModel::getPaymentHistory()");
 }
 
 bool CrediteeAccountsModel::repayDebt(const QString &crediteeId, const int &debt, const int &debtPaid)
 {
+    emit logDataChanged("INFO", "Starting CrediteeAccountsModel::repayDebt()");
+
     // QSqlDatabase::database().transaction();
     QSqlDatabase db = QSqlDatabase::database();
     db.transaction();
@@ -320,17 +380,38 @@ bool CrediteeAccountsModel::repayDebt(const QString &crediteeId, const int &debt
 
             emit giveBalanceChanged(debtPaid - debt);
 
-            qDebug() << " [INFO] Creditee debt repayment successful";
+            // qDebug() << " [INFO] Creditee debt repayment successful";
+
+            emit logDataChanged("INFO", "Creditee debt repayment successful");
+
+            emit debRepaymentChanged(true);
+
             return true;
         }
 
         else
         {
+            db.rollback();
+
+            QString errStr;
+
             if(query.lastError().text() != "")
-                qDebug() << " [ERROR] Could't execute SQL (" << query.executedQuery() << ") : " << query.lastError().text();
+            {
+                errStr = " [ERROR] Could't execute SQL (" + query.executedQuery() + ") : " + query.lastError().text();
+
+                // qDebug() << errStr;
+
+                emit logDataChanged("CRITICAL", errStr);
+            }
 
             else
-                qDebug() << " [ERROR] Could't execute SQL (" << query1.executedQuery() << ") : " << query1.lastError().text();
+            {
+                errStr = " [ERROR] Could't execute SQL (" + query1.executedQuery() + ") : " + query1.lastError().text();
+
+                // qDebug() << errStr;
+
+                emit logDataChanged("CRITICAL", errStr);
+            }
         }
     }
 
@@ -340,6 +421,9 @@ bool CrediteeAccountsModel::repayDebt(const QString &crediteeId, const int &debt
     }
 
     db.rollback();
+
+    emit logDataChanged("INFO", "Ending CrediteeAccountsModel::repayDebt()");
+
     return false;
 }
 

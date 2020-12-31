@@ -60,8 +60,8 @@ Item {
                     currentIndex: 0
 
                     editable: false
-                    enabled: isAdmin
-                    model: ["Today", "Yesterday", "This Week", "This Month", "This Year", "All Time", "Custom"]
+                    // enabled: isAdmin
+                    model: isAdmin? ["Today", "Yesterday", "This Week", "This Month", "This Year", "All Time", "Custom"]:["Today", "Yesterday"]
 
                     Layout.rightMargin: 10
 

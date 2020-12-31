@@ -177,13 +177,13 @@ void CheckoutItemsModel::changeSellStock(const QVariant &qty, const QVariant &ba
     {
         setData(this->index(index), qty.toString().toInt(), SellQtyRole);
 
-        saleQtyChanged(true);
+        emit saleQtyChanged(true);
 
         findTotals();
     }
 
     else
-        saleQtyChanged(false);
+        emit saleQtyChanged(false);
 }
 
 void CheckoutItemsModel::startANewSell()

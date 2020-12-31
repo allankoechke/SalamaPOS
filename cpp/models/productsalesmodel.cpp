@@ -181,7 +181,9 @@ QHash<int, QByteArray> ProductSalesModel::roleNames() const
 
 void ProductSalesModel::loadSalesData()
 {
-    qDebug() << " [INFO] Starting fetch of the day's sales data ...";
+    emit logDataChanged("INFO", "Starting ProductSalesModel::loadSalesData()");
+
+    // qDebug() << " [INFO] Starting fetch of the day's sales data ...";
 
     QSqlDatabase mdb = QSqlDatabase::database();
 
@@ -192,17 +194,19 @@ void ProductSalesModel::loadSalesData()
     {
         QString sql = "SELECT sales.sales_id,barcode,sales_date,product_bp,product_sp,sale_qty,cash,mpesa,cheque,credit FROM sales INNER JOIN payment ON sales.sales_id = payment.sales_id";
         QSqlQuery query, itemQuery;
-        QJsonDocument doc = QJsonDocument::fromVariant("{ \"cash\": 0, \"mpesa\": 0, \"cheque\": 0, \"credit\": 0 }");
+        // QJsonDocument doc = QJsonDocument::fromVariant("{ \"cash\": 0, \"mpesa\": 0, \"cheque\": 0, \"credit\": 0 }");
 
         if(query.exec(sql))
         {
-            qDebug() << " [INFO] Successfully loaded todays sales ..";
+            // qDebug() << " [INFO] Successfully loaded todays sales ..";
+
+            emit logDataChanged("INFO", "Successfully loaded todays sales");
 
             while(query.next())
             {
                 QString sales_id = query.value(0).toString();
                 QString barcode = query.value(1).toString();
-                QString sales_date = query.value(2).toString();
+                // QString sales_date = query.value(2).toString();
                 int product_bp = query.value(3).toInt();
                 int product_sp = query.value(4).toInt();
                 int sale_qty = query.value(5).toInt();
@@ -237,7 +241,13 @@ void ProductSalesModel::loadSalesData()
                     }
 
                     else
-                        qDebug() << "[ERROR] Couldn't fetch item data from products : " << itemQuery.lastError().text();
+                    {
+                        QString errStr = "[ERROR] Couldn't fetch item data from products : " + itemQuery.lastError().text();
+
+                        // qDebug() << errStr;
+
+                        emit logDataChanged("CRITICAL", errStr);
+                    }
                 }
 
                 else
@@ -247,19 +257,31 @@ void ProductSalesModel::loadSalesData()
                     setData(this->index(_ind), n_qty, ProductQtyRole);
 
                     // qDebug() << " [INFO] Item exist, updating ...";
+
+                    emit logDataChanged("INFO", "Item exist in cart, updating");
                 }
             }
         }
 
         else
-            qDebug() << "[ERROR] Could'nt load todays sale data! > " << query.lastError().text();
+        {
+            QString errStr = "[ERROR] Could'nt load todays sale data! > " + query.lastError().text();
+
+            // qDebug() << errStr;
+
+            emit logDataChanged("CRITICAL", errStr);
+        }
     }
 
-    qDebug() << " [INFO] Ending fetch of the day's sales data ...";
+    // qDebug() << " [INFO] Ending fetch of the day's sales data ...";
+
+    emit logDataChanged("INFO", "Ending ProductSalesModel::loadSalesData()");
 }
 
 void ProductSalesModel::addSalesData(const QVariant &barcode, const int &qty, const QJsonObject &cost)
 {
+    emit logDataChanged("INFO", "Starting ProductSalesModel::addSalesData()");
+
     Q_UNUSED(cost)
 
     int index = getSaleItemIndex(barcode.toString());
@@ -285,7 +307,7 @@ void ProductSalesModel::addSalesData(const QVariant &barcode, const int &qty, co
             {
                 QString sales_id = query.value(0).toString();
                 QString barcode = query.value(1).toString();
-                QString sales_date = query.value(2).toString();
+                // QString sales_date = query.value(2).toString();
                 int product_bp = query.value(3).toInt();
                 int product_sp = query.value(4).toInt();
                 int sale_qty = query.value(5).toInt();
@@ -316,10 +338,12 @@ void ProductSalesModel::addSalesData(const QVariant &barcode, const int &qty, co
                 }
 
                 else
-                    qDebug() << "[ERROR] Couldn't fetch item data from products : " << itemQuery.lastError().text();
+                    emit logDataChanged("CRITICAL", "Couldn't fetch item data from products ==> " + itemQuery.lastError().text());
             }
         }
     }
+
+    emit logDataChanged("INFO", "Ending ProductSalesModel::addSalesData()");
 }
 
 void ProductSalesModel::addSalesData(const QVariant &barcode, const int &qty)
@@ -364,8 +388,7 @@ void ProductSalesModel::showThisYearsSales()
 
 void ProductSalesModel::getSalesSummary(const int &ind)
 {
-
-
+    Q_UNUSED(ind)
 }
 
 void ProductSalesModel::addSalesData(ProductSales *sales)
@@ -392,12 +415,12 @@ int ProductSalesModel::getSaleItemIndex(QString barcode)
 
 bool ProductSalesModel::executeQuery(const QStringList &list)
 {
-    qDebug() << " [INFO] Starting fetch of the day's sales data ...";
+    emit logDataChanged("INFO", "Starting ProductSalesModel::executeQuery");
 
     QSqlDatabase mdb = QSqlDatabase::database();
 
     if(!mdb.isOpen())
-        qDebug() << "[ERROR] Database not open/ready yet!";
+        emit logDataChanged("FATAL", "[ERROR] Database not open/ready yet!");
 
     else
     {
@@ -411,7 +434,7 @@ bool ProductSalesModel::executeQuery(const QStringList &list)
             {
                 QString sales_id = query.value(0).toString();
                 QString barcode = query.value(1).toString();
-                QString sales_date = query.value(2).toString();
+                // QString sales_date = query.value(2).toString();
                 int product_bp = query.value(3).toInt();
                 int product_sp = query.value(4).toInt();
                 int sale_qty = query.value(5).toInt();
@@ -447,7 +470,7 @@ bool ProductSalesModel::executeQuery(const QStringList &list)
                     }
 
                     else
-                        qDebug() << "[ERROR] Couldn't fetch item data from products : " << itemQuery.lastError().text();
+                        emit logDataChanged("CRITICAL", "Couldn't fetch item data from products : " + itemQuery.lastError().text());
 
                 }
 
@@ -466,12 +489,15 @@ bool ProductSalesModel::executeQuery(const QStringList &list)
 
         else
         {
-            qDebug() << query.executedQuery();
-            qDebug() << "[ERROR] Could'nt load sale data! > " << query.lastError().text();
+            // qDebug() << query.executedQuery();
+
+            emit logDataChanged("CRITICAL", "Could'nt load sale data! ==> " + query.lastError().text());
         }
     }
 
-    qDebug() << " [INFO] Ending fetch of the day's sales data ...";
+    // qDebug() << " [INFO] Ending fetch of the day's sales data ...";
+
+    emit logDataChanged("INFO", "Ending ProductSalesModel::executeQuery");
 
     return false;
 }

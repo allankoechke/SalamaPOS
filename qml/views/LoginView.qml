@@ -140,21 +140,28 @@ Item {
                         {
                             anchors.fill: parent
                             onClicked: {
-                                var uname = _uname.text
-                                var pswd = _pswd.text
-
-                                // console.log("Accounts: ", AccountsModel.rowCount())
-                                if(uname !== "" && pswd !== "")
+                                if(QmlInterface.databaseLoaded)
                                 {
-                                    AccountsModel.loginUser(uname, pswd);
+                                    var uname = _uname.text
+                                    var pswd = _pswd.text
+
+                                    // console.log("Accounts: ", AccountsModel.rowCount())
+                                    if(uname !== "" && pswd !== "")
+                                    {
+                                        AccountsModel.loginUser(uname, pswd);
+                                    }
+
+                                    else
+                                    {
+                                        isError = true;
+                                        errorString = qsTr("Required field is short")
+                                        AlarmsModel.addAlarmItem("error", "Empty or short Fields!")
+                                    }
                                 }
 
                                 else
-                                {
-                                    isError = true;
-                                    errorString = qsTr("Required field is short")
-                                    AlarmsModel.addAlarmItem("error", "Empty or short Fields!")
-                                }
+                                    AlarmsModel.addAlarmItem("error", QmlInterface.databaseConnectionErrorString)
+
                             }
                         }
                     }
@@ -172,7 +179,13 @@ Item {
                         MouseArea
                         {
                             anchors.fill: parent
-                            onClicked: userAccountPopup.open()
+                            onClicked: {
+                                if(QmlInterface.databaseLoaded)
+                                    userAccountPopup.open()
+
+                                else
+                                    AlarmsModel.addAlarmItem("error", QmlInterface.databaseConnectionErrorString)
+                            }
                         }
                     }
                 }

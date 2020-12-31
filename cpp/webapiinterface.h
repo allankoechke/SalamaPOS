@@ -8,6 +8,9 @@
 #include <QNetworkReply>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QRunnable>
+#include <QtNetwork>
+#include <QThreadPool>
 
 class WebApiInterface : public QObject
 {
@@ -22,11 +25,35 @@ public slots:
 
     void onInstallUpdate();
 
+    void onWebRunnableFinished(const QString &str);
+
+    void connect2Web(const QString &state, const QJsonObject &data);
+
 signals:
     void newVersionAvailable(const QJsonObject &json);
 
 private:
     QNetworkAccessManager m_networkManager;
+
+    QThreadPool m_ThreadPool;
 };
 
+
+class WebInterfaceRunnable :public QObject, public QRunnable
+{
+    Q_OBJECT
+public:
+    explicit WebInterfaceRunnable(QObject * parent = nullptr);
+
+    void setValues(const QString &state, const QJsonObject &data);
+
+    void run();
+
+signals:
+    void finished(QString reply);
+
+private:
+    QString m_token,m_url, m_state;
+    QJsonObject m_data;
+};
 #endif // WEBAPIINTERFACE_H

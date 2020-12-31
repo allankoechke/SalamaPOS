@@ -56,6 +56,8 @@ signals:
     void idExists();
     void paymentReceived(QString date, int paid, int due);
     void giveBalanceChanged(int bal);
+    void logDataChanged(QString level, QString info);
+    void debRepaymentChanged(bool state);
 
 private:
     QList<CrediteeAccount *> m_crediteeAccount;

@@ -12,7 +12,7 @@
 #include <QSqlDatabase>
 #include <QAbstractListModel>
 
-#include "saleitems.h"
+#include "src/saleitems.h"
 #include "../datetime.h"
 
 class saleItemsModel : public QAbstractListModel
@@ -61,6 +61,7 @@ signals:
     void updateStockChanged(QString bcode, int qty);
     void updateSalesModelChanged(QString bcode, int qty);
     void addCrediteeChanged(QString idNo, int amount);
+    void logDataChanged(QString level, QString info);
 
 private:
     QList<SaleItems *> m_saleItems;

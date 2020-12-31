@@ -63,7 +63,11 @@ Item {
                         model: ["Light Theme (Default)", "Dark Theme"]
                         currentIndex: QmlInterface.isDarkTheme===false? 0:1
 
-                        onCurrentIndexChanged: currentIndex===0? QmlInterface.isDarkTheme=false:QmlInterface.isDarkTheme=true
+                        onCurrentIndexChanged: {
+                            currentIndex===0? QmlInterface.isDarkTheme=false:QmlInterface.isDarkTheme=true
+
+
+                        }
                     }
                 }
             }

@@ -88,6 +88,7 @@ Item {
                             else
                             {
                                 AlarmsModel.addAlarmItem("error", "User has no rights to add users")
+                                QmlInterface.logToFile("WARNING", "QML => AccountsView::AddNewUser User doesnt have rights to add users")
                                 console.log("[Error] User doesnt have rights to add users")
                             }
                         }
@@ -179,6 +180,7 @@ Item {
                                     else
                                     {
                                         AlarmsModel.addAlarmItem("warning","This can be done by admins only!")
+                                        QmlInterface.logToFile("WARNING", "QML => AccountsView::EditAccount This can be done by admins only")
                                     }
                                 }
                             }

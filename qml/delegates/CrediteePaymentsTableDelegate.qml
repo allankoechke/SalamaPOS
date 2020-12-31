@@ -6,11 +6,10 @@ import "../components"
 Rectangle {
     id: root
 
-    Layout.fillWidth: true
-    Layout.preferredHeight: 40
-
+    height: 40
     radius: 0
-    color:menuColor
+    color: QmlInterface.isDarkTheme? (((no+1)%2)===0? Qt.lighter("#29292d", 1.3):Qt.lighter("#29292d", 1.5)):(((no+1)%2)===0? "#eeeeee":"white")
+
 
     property int no: 0
     property alias due: p_due.text

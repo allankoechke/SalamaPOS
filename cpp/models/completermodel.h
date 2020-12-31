@@ -7,7 +7,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QAbstractListModel>
-#include "completer.h"
+#include "src/completer.h"
 
 class CompleterModel : public QAbstractListModel
 {
@@ -57,7 +57,7 @@ public:
     void setCompleterSize(int completerSize);
 
 signals:
-
+    void logDataChanged(QString level, QString info);
     void completerSizeChanged(int completerSize);
 
 private:

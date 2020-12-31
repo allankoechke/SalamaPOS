@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QDebug>
 #include <QAbstractListModel>
-#include "stockitems.h"
+#include "src/stockitems.h"
 #include "../databaseinterface.h"
 #include "../datetime.h"
 
@@ -101,6 +101,8 @@ signals:
     void categoryNamesChanged(QList<QString> categoryNames);
 
     void categoryIdChanged(QList<QString> categoryId);
+
+    void logDataChanged(QString level, QString info);
 
 private slots:
 

@@ -201,8 +201,14 @@ Item {
                             {
                                 anchors.fill: parent
                                 onClicked: {
+                                    console.log("Open the SalesSummaryDialog()")
+                                    QmlInterface.logToFile("INFO", "Open the SalesSummaryDialog()")
                                     salesSummaryDialog.show();
+                                    console.log("Load Sales for SalesSummaryDialog()")
+                                    QmlInterface.logToFile("INFO", "Load Sales for SalesSummaryDialog()")
                                     salesSummaryDialog.call_getSalesSummary()
+                                    console.log("Finished Opening SalesSummaryDialog()")
+                                    QmlInterface.logToFile("INFO", "Finished Opening SalesSummaryDialog()")
                                 }
                             }
                         }
@@ -603,7 +609,7 @@ Item {
                                     label: qsTr("Search item")
 
                                     onClicked: {
-
+                                        QmlInterface.logToFile("INFO", "QML => DashboardView::SearchItem ...")
                                     }
                                 }
 
@@ -615,9 +621,18 @@ Item {
 
                                     onClicked: {
                                         if(loggedUser_canAddAccounts)
+                                        {
                                             userAccountPopup.open()
 
-                                        AlarmsModel.addAlarmItem("error", "User has no rights to add users")
+                                            QmlInterface.logToFile("INFO", "QML => DashboardView::AddNewUser User has rights to add users")
+                                        }
+
+                                        else
+                                        {
+                                            AlarmsModel.addAlarmItem("error", "User has no rights to add users")
+
+                                            QmlInterface.logToFile("INFO", "QML => DashboardView::AddNewUser User has no rights to add users")
+                                        }
                                     }
                                 }
 
@@ -630,6 +645,7 @@ Item {
                                     onClicked: {
                                         navBarIndex = 2; // Switch to item stock window
                                         stackStockView.currentScreen = 1;
+                                        QmlInterface.logToFile("INFO", "QML => DashboardView::AddStock Switching to Stock Window")
                                     }
                                 }
 
@@ -640,6 +656,7 @@ Item {
 
                                     onClicked: {
                                         navBarIndex = 4;
+                                        QmlInterface.logToFile("INFO", "QML => DashboardView::SendMessage Clicked")
                                     }
                                 }
 
@@ -660,6 +677,8 @@ Item {
 
                                     onClicked: {
                                         // TODO
+                                        QmlInterface.logToFile("INFO", "QML => DashboardView::SyncToOnlineAccount clicked")
+
                                     }
                                 }
                             }

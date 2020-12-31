@@ -89,6 +89,8 @@ QHash<int, QByteArray> CompleterModel::roleNames() const
 
 void CompleterModel::addCompleterItems(const QVariant &str)
 {
+    emit logDataChanged("INFO", "Starting CompleterModel::addCompleterItems()");
+
     // Clear existing model
     if(m_completer.size() != 0)
         clearModel();
@@ -127,9 +129,15 @@ void CompleterModel::addCompleterItems(const QVariant &str)
 
         else
         {
-            qDebug() << "Error Executing SQL: [" << query.executedQuery() << "] -> " << query.lastError().text();
+            auto errStr = "Error Executing SQL: [" + query.executedQuery() + "] -> " + query.lastError().text();
+
+            // qDebug() << errStr;
+
+            emit logDataChanged("CRITICAL", errStr);
         }
     }
+
+    emit logDataChanged("INFO", "Ending CompleterModel::addCompleterItems()");
 }
 
 void CompleterModel::removeCompleterItem(const QVariant &str)

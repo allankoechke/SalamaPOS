@@ -26,6 +26,7 @@
 #include "models/productsalesmodel.h"
 #include "models/crediteeaccountsmodel.h"
 #include "models/alarmsmodel.h"
+// #include "qwtbarplot.h"
 
 int main(int argc, char *argv[])
 {
@@ -88,6 +89,8 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("ProductSalesModel", &m_pSale);
     engine.rootContext()->setContextProperty("CrediteeModel", &creditee);
     engine.rootContext()->setContextProperty("AlarmsModel", &m_alarmModel);
+    // Registering c++ class LineSeriesChart as qml component to be imported QwtCharts 1.0
+    // qmlRegisterType<QwtBarPlot>("QwtCharts",1,0,"QwtBarChart");
 
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

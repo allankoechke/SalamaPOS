@@ -11,6 +11,8 @@
 #include <QScreen>
 #include <QFile>
 #include <QIODevice>
+#include <fstream>
+#include <QTimer>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QGuiApplication>
@@ -25,6 +27,7 @@
 #include "webapiinterface.h"
 #include "websocketsinterface.h"
 #include "datetime.h"
+// #include "WebInterfaceRunnable.h"
 
 class QmlInterface : public QObject
 {
@@ -32,6 +35,8 @@ class QmlInterface : public QObject
 
 public:
     explicit QmlInterface(QObject *parent = nullptr);
+
+    ~QmlInterface();
 
     Q_PROPERTY(bool isDarkTheme READ isDarkTheme WRITE setIsDarkTheme NOTIFY isDarkThemeChanged)
     Q_PROPERTY(bool isFirstTimeUse READ isFirstTimeUse WRITE setIsFirstTimeUse NOTIFY isFirstTimeUseChanged)
@@ -56,6 +61,9 @@ public:
     Q_PROPERTY(bool productTypeAdded READ productTypeAdded WRITE setProductTypeAdded NOTIFY productTypeAddedChanged)
     Q_PROPERTY(bool productStockAdded READ productStockAdded WRITE setProductStockAdded NOTIFY productStockAddedChanged)
     Q_PROPERTY(int versionInt READ versionInt WRITE setVersionInt NOTIFY versionIntChanged)
+    Q_PROPERTY(std::string logFileName READ logFileName WRITE setLogFileName NOTIFY logFileNameChanged)
+    Q_PROPERTY(bool databaseLoaded READ databaseLoaded WRITE setDatabaseLoaded NOTIFY databaseLoadedChanged)
+    Q_PROPERTY(QString databaseConnectionErrorString READ databaseConnectionErrorString WRITE setDatabaseConnectionErrorString NOTIFY databaseConnectionErrorStringChanged)
 
     Q_INVOKABLE QJsonObject getScreenSize();
     Q_INVOKABLE void fetchSavedSettings();
@@ -67,6 +75,8 @@ public:
     Q_INVOKABLE void check4Update();
     Q_INVOKABLE void getSalesSummary(const int &ind);
     Q_INVOKABLE void installUpdate();
+    Q_INVOKABLE void logToFile(const QString &level, const QString &log);
+    // void logToFile(QString level, QString log);
 
     void setTabularData();
 
@@ -111,6 +121,14 @@ public:
     bool productStockAdded() const;
 
     int versionInt() const;
+
+    void emitDatabaseState(const bool &state, const QString &status);
+
+    std::string logFileName() const;
+
+    bool databaseLoaded() const;
+
+    QString databaseConnectionErrorString() const;
 
 public slots:
     void setIsDarkTheme(bool isDarkTheme);
@@ -158,8 +176,14 @@ public slots:
     //
     void onNewVersionAvailable(const QJsonObject &json);
 
+    void setLogFileName(std::string logFileName);
+
+    void setDatabaseLoaded(bool databaseLoaded);
+
+    void setDatabaseConnectionErrorString(QString databaseConnectionErrorString);
+
 signals:
-    void databaseReadyChanged();
+    void databaseReadyChanged(bool state, QString msg);
 
     void isDarkThemeChanged(bool isDarkTheme);
 
@@ -214,22 +238,40 @@ signals:
     void downloadStarted();
     void salesSummaryCost(int cash,int mpesa,int cheque,int credit,int paid,int totals);
 
+    void logFileNameChanged(std::string logFileName);
+    void databaseConnectionChanged(bool state, QString msg);
+
+    void databaseLoadedChanged(bool databaseLoaded);
+
+    void databaseConnectionErrorStringChanged(QString databaseConnectionErrorString);
+    void updateBarPlotsChanged();
+
 private slots:
+    void onLogsTimerTimeout();
 
 private:
+    void initializeLogFileName();
+
     DatabaseInterface * m_databaseInterface;
     DateTime * m_dateTime;
     WebApiInterface * webInt;
+    WebInterfaceRunnable * m_WebInterface;
+    QSettings * m_settings;
 
     bool m_isDarkTheme, m_isFirstTimeUse;
-    QSettings * m_settings;
     int m_dueSoonReminders, m_overdueReminders, m_solvedReminders, m_salesNumbers, m_salesCost, m_setMessages, m_receivedMessages, m_unreadMessages;
     QStringList m_plotXAxis;
     QList<int> m_cashYAxis, m_mpesaYAxis, m_creditYAxis, m_chequeYAxis;
     int m_plotYmax, m_versionInt;
-    bool m_tablesCreated, m_productsAdded, m_productTypeAdded, m_productStockAdded;
+    bool m_tablesCreated, m_productsAdded, m_productTypeAdded, m_productStockAdded, m_logFileDayChanged = false;
     QJsonObject m_UpdateJSON;
-    QString m_path, r_path;
+    QString m_path, r_path, m_logsPath;
+    std::string m_logFileName;
+
+    std::ofstream logWriter;
+    QTimer * logsTimer;
+    bool m_databaseLoaded;
+    QString m_databaseConnectionErrorString;
 };
 
 #endif // QMLINTERFACE_H

@@ -316,11 +316,17 @@ QHash<int, QByteArray> UserAccountsModel::roleNames() const
 
 void UserAccountsModel::addNewUserAccount(const QVariant &userFirstname, const QVariant &userLastname, const QVariant &userUsername, const QVariant &userPassword, const QVariant &userPhoneNo, const QVariant &userDateAdded)
 {
+    emit logDataChanged("INFO", "Starting AddNewUserAccount()");
+
     Q_UNUSED(userDateAdded)
+
     if(getUserIndex(userUsername.toString()) != -1)
     {
         emit usernameExistsChanged(true);
-        qDebug() << ">> Duplicate username ...";
+
+        // qDebug() << ">> Duplicate username ...";
+
+        emit logDataChanged("WARNING", "Username entered exists in the database");
     }
 
     else
@@ -348,11 +354,14 @@ void UserAccountsModel::addNewUserAccount(const QVariant &userFirstname, const Q
             if(query.exec() && priviledges_query.exec())
             {
                 m_db.commit();
-                qDebug() << ">> New User Added";
+
+                // qDebug() << ">> New User Added";
 
                 addNewUserAccount(new UserAccounts(userFirstname.toString(), userLastname.toString(), userUsername.toString(), userPhoneNo.toString(), password, dateToday, true, false, true, false, true, false, false, false, false, getUserRoleAsAString(true, false, true, false, true, false, false, false)));
 
                 emit userAddedChanged(true);
+
+                emit logDataChanged("INFO", "New User Account Added Successfully");
 
             }
 
@@ -362,14 +371,20 @@ void UserAccountsModel::addNewUserAccount(const QVariant &userFirstname, const Q
 
                 emit userAddedChanged(false);
 
-                qDebug() << "Error executing SQL: " << query.lastError().text() << " :: " << priviledges_query.lastError().text();
+                QString errorStr = "Error executing SQL: " + query.lastError().text() + " :: " + priviledges_query.lastError().text();
+
+                emit logDataChanged("CRITICAL", errorStr);
             }
         }
     }
+
+    emit logDataChanged("INFO", "Ending AddNewUserAccount()");
 }
 
 void UserAccountsModel::updatePassword(const QVariant &userUsername, const QVariant &userPassword)
 {
+    emit logDataChanged("INFO", "Starting updatePassword()");
+
     QSqlDatabase m_db = QSqlDatabase::database();
 
     QString password = hashPassword(userPassword.toString());
@@ -388,11 +403,14 @@ void UserAccountsModel::updatePassword(const QVariant &userUsername, const QVari
             if(query.exec())
             {
                 m_db.commit();
-                qDebug() << ">> User Updated";
+
+                // qDebug() << ">> User Password Updated";
 
                 setData(this->index(index), QVariant::fromValue(password), UserPasswordRole);
 
                 emit userPasswordChanged(true);
+
+                emit logDataChanged("INFO", "User Password Updated");
             }
 
             else
@@ -401,17 +419,30 @@ void UserAccountsModel::updatePassword(const QVariant &userUsername, const QVari
 
                 emit userPasswordChanged(false);
 
-                qDebug() << "Error executing SQL: " << query.lastError().text();
+                QString errorStr = "Error executing SQL: " + query.lastError().text();
+
+                // qDebug() << errorStr;
+
+                emit logDataChanged("CRITICAL", errorStr);
             }
         }
     }
 
     else
-        qDebug() << ">> User index could not be found ...";
+    {
+        // qDebug() << ">> User index could not be found ...";
+
+        emit logDataChanged("CRITICAL", "User index could not be found");
+    }
+
+    emit logDataChanged("INFO", "Ending updatePassword()");
+
 }
 
 void UserAccountsModel::removeUserAccount(const QVariant &userUsername, QVariant index)
 {
+    emit logDataChanged("INFO", "Starting removeUserAccount()");
+
     QSqlDatabase m_db = QSqlDatabase::database();
 
     if(m_db.isOpen())
@@ -423,7 +454,10 @@ void UserAccountsModel::removeUserAccount(const QVariant &userUsername, QVariant
         if(query.exec())
         {
             m_db.commit();
-            qDebug() << ">> New User Deleted";
+
+            // qDebug() << ">> New User Deleted";
+
+            emit logDataChanged("INFO", "New User Deleted");
 
             removeUserAccount(index.toString().toInt());
 
@@ -437,13 +471,21 @@ void UserAccountsModel::removeUserAccount(const QVariant &userUsername, QVariant
 
             emit userRemovedChanged(false);
 
-            qDebug() << "Error executing SQL: " << query.lastError().text();
+            auto errStr = "Error executing SQL: " + query.lastError().text();
+
+            // qDebug() << errStr;
+
+            emit logDataChanged("CRITICAL", errStr);
         }
     }
+
+    emit logDataChanged("INFO", "Ending removeUserAccount()");
 }
 
 void UserAccountsModel::updateUserAccount(const QVariant &userFirstname, const QVariant &userLastname, const QVariant &userUsername, const QVariant &userPhoneNo, const QVariant &orig_username)
 {
+    emit logDataChanged("INFO", "Starting updateUserAccount() -> Account Details");
+
     if(userUsername != orig_username && getUserIndex(userUsername.toString()) != -1)
         emit usernameExistsChanged(true);
 
@@ -467,7 +509,10 @@ void UserAccountsModel::updateUserAccount(const QVariant &userFirstname, const Q
                 if(query.exec())
                 {
                     m_db.commit();
-                    qDebug() << " [INFO] User Details updated";
+
+                    // qDebug() << " [INFO] User Details updated";
+
+                    emit logDataChanged("INFO","User Details updated");
 
                     setData(this->index(index_), userFirstname, UserFirstnameRole);
                     setData(this->index(index_), userLastname, UserLastnameRole);
@@ -494,7 +539,11 @@ void UserAccountsModel::updateUserAccount(const QVariant &userFirstname, const Q
 
                     emit userUpdatedChanged(false);
 
-                    qDebug() << "Error executing SQL: " << query.lastError().text();
+                    auto errStr = "Error executing SQL: " + query.lastError().text();
+
+                    // qDebug() << errStr;
+
+                    emit logDataChanged("CRITICAL", errStr);
                 }
             }
 
@@ -504,10 +553,14 @@ void UserAccountsModel::updateUserAccount(const QVariant &userFirstname, const Q
         else
             qDebug() << "Index not found! ";
     }
+
+    emit logDataChanged("INFO", "Ending updateUserAccount() -> Account Details");
 }
 
 void UserAccountsModel::updateUserAccount(const QVariant &userUsername, const bool &canAddUsers, const bool &canRemoveUsers, const bool &canAddItems, const bool &canRemoveItems, const bool &canAddStock, const bool &canRemoveStock, const bool &canUndoSales, const bool &canBackupDb)
 {
+    emit logDataChanged("INFO", "Starting updateUserAccount() -> Account Priviledges");
+
     int index_ = getUserIndex(userUsername.toString());
 
     if(index_ == -1)
@@ -533,7 +586,11 @@ void UserAccountsModel::updateUserAccount(const QVariant &userUsername, const bo
 
             if(query.exec())
             {
-                qDebug() << " [Info] User Priviledges updated";
+                m_db.commit();
+
+                // qDebug() << " [Info] User Priviledges updated";
+
+                emit logDataChanged("INFO", "User Priviledges updated");
 
                 setData(this->index(index_), canAddUsers, CanAddUsersRole);
                 setData(this->index(index_), canRemoveUsers, CanRemoveUsersRole);
@@ -571,16 +628,26 @@ void UserAccountsModel::updateUserAccount(const QVariant &userUsername, const bo
 
             else
             {
+                m_db.rollback();
+
                 emit userPriviledgesChanged(false);
 
-                qDebug() << "Error executing SQL: " << query.lastError().text() << " :: " << query.executedQuery();
+                auto errStr = "Error executing SQL: " + query.lastError().text() + " :: " + query.executedQuery();
+
+                // qDebug() << errStr;
+
+                emit logDataChanged("CRITICAL", errStr);
             }
         }
     }
+
+    emit logDataChanged("INFO", "Ending updateUserAccount() -> Account Priviledges");
 }
 
 void UserAccountsModel::markAccountForDeleting(const QVariant &userUsername)
 {
+    emit logDataChanged("INFO", "Starting markAccountForDeleting()");
+
     QSqlDatabase m_db = QSqlDatabase::database();
 
     int index = getUserIndex(userUsername.toString());
@@ -598,11 +665,13 @@ void UserAccountsModel::markAccountForDeleting(const QVariant &userUsername)
             {
                 m_db.commit();
 
-                qDebug() << ">> To delete Account Updated";
+                // qDebug() << ">> To delete Account Updated";
 
                 removeUserAccount(index);
 
                 emit toDeleteAccountChanged(true);
+
+                emit logDataChanged("INFO", "To delete Account Updated");
             }
 
             else
@@ -611,22 +680,35 @@ void UserAccountsModel::markAccountForDeleting(const QVariant &userUsername)
 
                 emit toDeleteAccountChanged(false);
 
-                qDebug() << "Error executing SQL: " << query.lastError().text();
+                auto errStr = "Error executing SQL: " + query.lastError().text();
+
+                // qDebug() << errStr;
+
+                emit logDataChanged("CRITICAL", errStr);
             }
         }
     }
 
     else
-        qDebug() << ">> User index could not be found ...";
+    {
+        // qDebug() << ">> User index could not be found ...";
+
+        emit logDataChanged("WARNING", "User index could not be found");
+    }
+
+    emit logDataChanged("INFO", "Ending markAccountForDeleting()");
 }
 
 void UserAccountsModel::loadAllUserAccounts()
 {
+    emit logDataChanged("INFO", "Starting loadAllUserAccounts()");
+
     QSqlDatabase m_db = QSqlDatabase::database();
 
     if(m_db.isOpen())
     {
         QSqlQuery query;
+
         const QString sql = "SELECT firstname,lastname,users.username,password,phone_no,date_added, can_add_user, can_remove_user, can_add_product,\
                 can_remove_product, can_add_stock, can_remove_stock, can_remove_sales, can_backup, to_change_password FROM \"users\" INNER \
                 JOIN \"priviledges\" ON users.username = priviledges.username";
@@ -665,20 +747,29 @@ void UserAccountsModel::loadAllUserAccounts()
         {
             emit userAccountsLoaded(false);
 
-            qDebug() << "Error executing SQL: " << query.lastError().text();
+            auto errStr = "Error executing SQL: " + query.lastError().text();
+
+            // qDebug() << errStr;
+
+            emit logDataChanged("CRITICAL", errStr);
         }
     }
+
+    emit logDataChanged("INFO", "Ending loadAllUserAccounts()");
 }
 
 void UserAccountsModel::loginUser(const QVariant &uname, const QVariant &pswd)
 {
+    emit logDataChanged("INFO", "Starting loginUser()");
+
     const int ind = getUserIndex(uname.toString());
 
     if(ind == -1)
     {
         emit loggingInUsernameStatus(false);
 
-        qDebug() << ">> User not in the database";
+        emit logDataChanged("INFO", "User not in the database");
+        // qDebug() << ">> User not in the database";
     }
 
     else
@@ -689,7 +780,8 @@ void UserAccountsModel::loginUser(const QVariant &uname, const QVariant &pswd)
 
         if(login(savedP, pswd.toString()))
         {
-            qDebug() << " [DEBUG] Password correct!";
+            // qDebug() << " [DEBUG] Password correct!";
+
             emit loggingInPasswordStatus(true);
 
             QJsonDocument doc(m_loggedInUser);
@@ -717,13 +809,17 @@ void UserAccountsModel::loginUser(const QVariant &uname, const QVariant &pswd)
         {
             emit loggingInPasswordStatus(false);
 
-            qDebug() << ">> Wrong User password";
+            // qDebug() << ">> Wrong User password";
         }
     }
+
+    emit logDataChanged("INFO", "Ending loginUser()");
 }
 
 QJsonObject UserAccountsModel::getUpdatedPriviledges(int index)
 {
+    emit logDataChanged("INFO", "Starting getUpdatedPriviledges()");
+
     if(index < mUserAccounts.size())
     {
         m_status["canAddUser"] = data(this->index(index), CanAddUsersRole).toBool();
@@ -738,7 +834,11 @@ QJsonObject UserAccountsModel::getUpdatedPriviledges(int index)
         return m_status;
     }
 
-    qDebug() << " [ERROR] Invalid User Account index...";
+    // qDebug() << " [ERROR] Invalid User Account index...";
+
+    emit logDataChanged("WARNING", "Invalid User Account index");
+
+    emit logDataChanged("INFO", "Ending getUpdatedPriviledges()");
 
     return QJsonObject();
 }
