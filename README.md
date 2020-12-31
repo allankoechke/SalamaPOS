@@ -1,2 +1,2 @@
-# MySaleNew
-POS Software 2020
+# SalamaPOS
+POS Software 2021
