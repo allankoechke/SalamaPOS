@@ -25,16 +25,10 @@ Window {
     width: 500
     height: 470
 
-    /*onClosing: {
-        close.accepted = false
-        close.accepted = true
-    }*/
+    onClosing: cb.currentIndex = 0;
 
     Component.onCompleted: {
         cb.currentIndex = 0;
-        // ProductSalesModel.getSalesSummary(cb.currentIndex)
-        // console.log("Current index: ", cb.currentIndex)
-        // QmlInterface.getSalesSummary(cb.currentIndex)
         console.log("Finished loading sales summary")
         QmlInterface.logToFile("INFO", "QML => Finished loading sales summary")
     }

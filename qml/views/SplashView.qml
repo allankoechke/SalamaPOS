@@ -84,7 +84,7 @@ Item {
     AppText
     {
         color: QmlInterface.isDarkTheme? "#999fa6":"#2e2e2e"
-        text: qsTr("(c)2020")
+        text: qsTr("(c)")+Qt.formatDate(new Date(), "yyyy")
         font.pixelSize: 13
 
         anchors.bottom: parent.bottom

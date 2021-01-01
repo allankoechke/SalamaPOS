@@ -66,6 +66,14 @@ Item {
                 values: [];
                 color: "#d2691e"
             }
+
+            BarSet
+            {
+                label: "Debt Paid";
+                labelColor: QmlInterface.isDarkTheme? "#f4f4f4":"#535353";
+                values: [];
+                color: "#00ff7f"
+            }
         }
 
     }
@@ -78,7 +86,7 @@ Item {
         {
             // console.log("New plot values");
 
-            let csh = [], mpsa=[], cr=[], chq=[];
+            let csh = [], mpsa=[], cr=[], chq=[], crp=[];
 
             for(var i=0; i<7; i++)
             {
@@ -86,29 +94,15 @@ Item {
                 mpsa[i]= QmlInterface.mpesaYAxis[i]
                 cr[i] = QmlInterface.creditYAxis[i]
                 chq[i] = QmlInterface.chequeYAxis[i]
+                crp[i] = QmlInterface.creditPaidYAxis[i]
             }
 
             myBarSeries.clear();
             myBarSeries.append("Cash", csh)
             myBarSeries.append("M-Pesa", mpsa)
-            myBarSeries.append("Credit", cr)
             myBarSeries.append("Cheque", chq)
-        }
-
-        function onCashYAxisChanged(cashYAxis)
-        {
-        }
-
-        function onMpesaYAxisChanged(mpesaYAxis)
-        {
-        }
-
-        function onCreditYAxisChanged(creditYAxis)
-        {
-        }
-
-        function onChequeYAxisChanged(chequeYAxis)
-        {
+            myBarSeries.append("Credit", cr)
+            myBarSeries.append("Debt Paid", crp)
         }
     }
 }

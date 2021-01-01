@@ -5,7 +5,7 @@
 #include <QFont>
 #include <QFontDatabase>
 
-#define DEBUG_MODE // 1
+#define DEBUG_MODE
 
 // To add a console when running on windows
 #ifdef Q_OS_WINDOWS

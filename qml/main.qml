@@ -80,7 +80,7 @@ Window {
     Timer
     {
         id: popupTimer
-        interval: 3000
+        interval: 4500
         repeat: false
         running: false
 
@@ -135,6 +135,12 @@ Window {
     Connections
     {
         target: QmlInterface
+
+        function onIsInternetConnectedChanged(state)
+        {
+            console.log(state? "Internet is UP":"Internet is DOWN")
+            QmlInterface.logToFile("INFO", state? "Connected to Internet":"Disconnected from the Internet")
+        }
 
         function onDatabaseLoadedChanged(state)
         {

@@ -18,6 +18,11 @@ class WebApiInterface : public QObject
 public:
     explicit WebApiInterface(QObject *parent = nullptr);
 
+    ~WebApiInterface()
+    {
+        delete checkConnectivityTimer;
+    }
+
 public slots:
     void onCheckForUpdates(const int &cVersion);
 
@@ -29,6 +34,8 @@ public slots:
 
     void connect2Web(const QString &state, const QJsonObject &data);
 
+    void onCheckConnectivityTimerTimeout();
+
 signals:
     void newVersionAvailable(const QJsonObject &json);
 
@@ -36,6 +43,10 @@ private:
     QNetworkAccessManager m_networkManager;
 
     QThreadPool m_ThreadPool;
+
+    QTimer *checkConnectivityTimer;
+
+    bool hasPendingWebRequestForConnectivity = false;
 };
 
 

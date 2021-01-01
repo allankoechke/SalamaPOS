@@ -23,7 +23,7 @@ Rectangle {
 
         AppText
         {
-            color: "#f4f4f4"
+            color: QmlInterface.isDarkTheme? "#f4f4f4":"#555555"
             size: 18
             font.bold: true
             text: (no + 1).toString() + "."
@@ -44,7 +44,7 @@ Rectangle {
             AppText
             {
                 id: p_date
-                color: "#f4f4f4"
+                color: QmlInterface.isDarkTheme? "#f4f4f4":"#555555"
                 size: 15
                 width: parent.width
                 elide: AppText.ElideRight
@@ -66,7 +66,7 @@ Rectangle {
             AppText
             {
                 id: p_amount
-                color: "#f4f4f4"
+                color: QmlInterface.isDarkTheme? "#f4f4f4":"#555555"
                 size: 15
                 width: parent.width
                 elide: AppText.ElideRight
@@ -88,7 +88,7 @@ Rectangle {
             AppText
             {
                 id: p_due
-                color: "#f4f4f4"
+                color: QmlInterface.isDarkTheme? "#f4f4f4":"#555555"
                 size: 15
                 width: parent.width
                 elide: AppText.ElideRight
@@ -109,10 +109,10 @@ Rectangle {
 
             AppText
             {
-                color: "#f4f4f4"
-                size: 18
-                font.bold: true
-                text: qsTr("View")
+                color: QmlInterface.isDarkTheme? "#f4f4f4":"#555555"
+                size: 12
+                // font.bold: true
+                text: qsTr("NONE")
                 width: parent.width
                 elide: AppText.ElideRight
 

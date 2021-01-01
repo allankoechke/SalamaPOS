@@ -2,6 +2,10 @@
 
 WebApiInterface::WebApiInterface(QObject *parent) : QObject(parent)
 {
+    checkConnectivityTimer = new QTimer(this);
+    // checkConnectivityTimer->setInterval(10000);
+    // checkConnectivityTimer->start();
+    // connect(checkConnectivityTimer, &QTimer::timeout, this, &WebApiInterface::onCheckConnectivityTimerTimeout);
 
 }
 
@@ -52,11 +56,11 @@ void WebApiInterface::onWebRunnableFinished(const QString &str)
 
 void WebApiInterface::connect2Web(const QString &state, const QJsonObject &data)
 {
-//    if(!m_isOnline)
-//    {
-//        m_isOnline = true;
-//        emit isOnlineChanged(true);
-//    }
+    //    if(!m_isOnline)
+    //    {
+    //        m_isOnline = true;
+    //        emit isOnlineChanged(true);
+    //    }
 
     Q_UNUSED(state)
     Q_UNUSED(data)
@@ -70,6 +74,35 @@ void WebApiInterface::connect2Web(const QString &state, const QJsonObject &data)
         // m_ThreadPool.start(m_WebInterface);
     }
 }
+
+void WebApiInterface::onCheckConnectivityTimerTimeout()
+{
+    if(!hasPendingWebRequestForConnectivity)
+    {
+        hasPendingWebRequestForConnectivity = true;
+
+        connect(&m_networkManager, &QNetworkAccessManager::finished,
+                this, [=](QNetworkReply* pReply){
+
+            auto replyData = pReply->readAll();
+            auto data = replyData.data();
+            QJsonDocument document = QJsonDocument::fromJson(data);
+            // QJsonObject rootObj = document.object();
+
+            // qDebug() << "Received Data: " << document;
+            // qDebug() << "Data: " << data;
+
+            pReply->deleteLater();
+
+            hasPendingWebRequestForConnectivity = false;
+        });
+
+        QUrl url("https://www.google.com/");
+        QNetworkRequest request(url);
+        m_networkManager.get(request);
+    }
+}
+
 WebInterfaceRunnable::WebInterfaceRunnable(QObject *parent):QObject(parent)
 {
     setAutoDelete(false);

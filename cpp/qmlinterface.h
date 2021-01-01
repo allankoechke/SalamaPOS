@@ -27,6 +27,7 @@
 #include "webapiinterface.h"
 #include "websocketsinterface.h"
 #include "datetime.h"
+#include "pingserverprocess.h"
 // #include "WebInterfaceRunnable.h"
 
 class QmlInterface : public QObject
@@ -53,6 +54,7 @@ public:
     Q_PROPERTY(QList<int> mpesaYAxis READ mpesaYAxis WRITE setMpesaYAxis NOTIFY mpesaYAxisChanged)
     Q_PROPERTY(QList<int> creditYAxis READ creditYAxis WRITE setCreditYAxis NOTIFY creditYAxisChanged)
     Q_PROPERTY(QList<int> chequeYAxis READ chequeYAxis WRITE setChequeYAxis NOTIFY chequeYAxisChanged)
+    Q_PROPERTY(QList<int> creditPaidYAxis READ creditPaidYAxis WRITE setCreditPaidYAxis NOTIFY creditPaidYAxisChanged)
     Q_PROPERTY(int plotYmax READ plotYmax WRITE setPlotYmax NOTIFY plotYmaxChanged)
 
     // Configuration properties
@@ -64,6 +66,7 @@ public:
     Q_PROPERTY(std::string logFileName READ logFileName WRITE setLogFileName NOTIFY logFileNameChanged)
     Q_PROPERTY(bool databaseLoaded READ databaseLoaded WRITE setDatabaseLoaded NOTIFY databaseLoadedChanged)
     Q_PROPERTY(QString databaseConnectionErrorString READ databaseConnectionErrorString WRITE setDatabaseConnectionErrorString NOTIFY databaseConnectionErrorStringChanged)
+    Q_PROPERTY(bool isInternetConnected READ isInternetConnected WRITE setIsInternetConnected NOTIFY isInternetConnectedChanged)
 
     Q_INVOKABLE QJsonObject getScreenSize();
     Q_INVOKABLE void fetchSavedSettings();
@@ -130,6 +133,10 @@ public:
 
     QString databaseConnectionErrorString() const;
 
+    bool isInternetConnected() const;
+
+    QList<int> creditPaidYAxis() const;
+
 public slots:
     void setIsDarkTheme(bool isDarkTheme);
 
@@ -181,6 +188,10 @@ public slots:
     void setDatabaseLoaded(bool databaseLoaded);
 
     void setDatabaseConnectionErrorString(QString databaseConnectionErrorString);
+
+    void setIsInternetConnected(bool isInternetConnected);
+
+    void setCreditPaidYAxis(QList<int> creditPaidYAxis);
 
 signals:
     void databaseReadyChanged(bool state, QString msg);
@@ -246,8 +257,14 @@ signals:
     void databaseConnectionErrorStringChanged(QString databaseConnectionErrorString);
     void updateBarPlotsChanged();
 
+    void isInternetConnectedChanged(bool isInternetConnected);
+
+    void creditPaidYAxisChanged(QList<int> creditPaidYAxis);
+
 private slots:
     void onLogsTimerTimeout();
+
+    void onInternetConnectionStatusChanged(bool state);
 
 private:
     void initializeLogFileName();
@@ -257,6 +274,7 @@ private:
     WebApiInterface * webInt;
     WebInterfaceRunnable * m_WebInterface;
     QSettings * m_settings;
+    PingServerProcess *pingServer;
 
     bool m_isDarkTheme, m_isFirstTimeUse;
     int m_dueSoonReminders, m_overdueReminders, m_solvedReminders, m_salesNumbers, m_salesCost, m_setMessages, m_receivedMessages, m_unreadMessages;
@@ -272,6 +290,9 @@ private:
     QTimer * logsTimer;
     bool m_databaseLoaded;
     QString m_databaseConnectionErrorString;
+    bool m_isInternetConnected;
+    QDir d;
+    QList<int> m_creditPaidYAxis;
 };
 
 #endif // QMLINTERFACE_H

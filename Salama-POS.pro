@@ -33,6 +33,7 @@ SOURCES += \
         cpp/models/src/useraccounts.cpp \
         cpp/models/stockitemsmodel.cpp \
         cpp/models/useraccountsmodel.cpp \
+        cpp/pingserverprocess.cpp \
         cpp/qmlinterface.cpp \
         # cpp/qwtbarplot.cpp \
         # cpp/qwtbarplotdata.cpp \
@@ -82,6 +83,7 @@ HEADERS += \
     cpp/models/src/useraccounts.h \
     cpp/models/stockitemsmodel.h \
     cpp/models/useraccountsmodel.h \
+    cpp/pingserverprocess.h \
     cpp/qmlinterface.h \
     # cpp/qwtbarplot.h \
     # cpp/qwtbarplotdata.h \

@@ -223,7 +223,7 @@ void StockItemsModel::addNewItem(const QVariant &barcode, const QVariant &name, 
         {
             m_db.commit();
 
-            emit logDataChanged("INFO", "New item Added successfully barcode=" + barcode.toString());
+            emit logDataChanged("INFO", "StockItemsModel::addNewItem => New item Added successfully barcode=" + barcode.toString());
 
             addNewItem(new StockItems(barcode.toString(), name.toString(), unit.toString(), bp.toString().toFloat(), sp.toString().toFloat(), company.toString(), qty.toInt(), dateNow, category.toString()));
 
@@ -236,7 +236,7 @@ void StockItemsModel::addNewItem(const QVariant &barcode, const QVariant &name, 
 
             emit itemAddingChanged(false);
 
-            emit logDataChanged("CRITICAL", "Error executing SQL: " + m_db.lastError().text() + " :: " + query.lastError().text() + " :: " + stock_query.lastError().text());
+            emit logDataChanged("CRITICAL", "StockItemsModel::addNewItem => Error executing SQL: " + m_db.lastError().text() + " :: " + query.lastError().text() + " :: " + stock_query.lastError().text());
         }
     }
 
@@ -285,14 +285,14 @@ void StockItemsModel::updateItem(const QVariant &barcode, const QVariant &name, 
 
             emit itemUpdatedChanged(true);
 
-            emit logDataChanged("INFO", "Item Details updated successfully, barcode=" + barcode.toString());
+            emit logDataChanged("INFO", "StockItemsModel::updateItem => Item Details updated successfully, barcode=" + barcode.toString());
         }
 
         else
         {
             m_db.rollback();
 
-            emit logDataChanged("CRITICAL", "Error executing SQL: " + query.lastError().text() + " :: " + stock_query.lastError().text());
+            emit logDataChanged("CRITICAL", "StockItemsModel::updateItem => Error executing SQL: " + query.lastError().text() + " :: " + stock_query.lastError().text());
 
             emit itemUpdatedChanged(false);
         }
@@ -539,6 +539,8 @@ QJsonObject StockItemsModel::getItemData(const QString &barcode)
 
 void StockItemsModel::getItemCategories()
 {
+    emit logDataChanged("INFO", "Starting StockItemsModel::getItemCategories()");
+
     QSqlDatabase m_db = QSqlDatabase::database();
 
     QList<QString> l_id, l_name;
@@ -567,17 +569,18 @@ void StockItemsModel::getItemCategories()
             emit categoryIdChanged(l_id);
             emit categoryNamesChanged(l_name);
 
+            emit logDataChanged("INFO", "Item categories fetched successfully");
+
         }
 
         else
         {
-            emit logDataChanged("INFO", "Starting StockItemsModel::getItemCategories()");
-
             emit logDataChanged("CRITICAL", "Error fetching item category :: [" + query.executedQuery() + "]" + query.lastError().text());
 
-            emit logDataChanged("INFO", "Ending StockItemsModel::getItemCategories()");
         }
     }
+
+    emit logDataChanged("INFO", "Ending StockItemsModel::getItemCategories()");
 }
 
 void StockItemsModel::addItemCategory(const QString &category)
@@ -597,14 +600,14 @@ void StockItemsModel::addItemCategory(const QString &category)
         {
             m_db.commit();
 
-            emit logDataChanged("INFO", "Item Category added!");
+            emit logDataChanged("INFO", "StockItemsModel::addItemCategory => Item Category added!");
         }
 
         else
         {
             m_db.rollback();
 
-            emit logDataChanged("CRITICAL", "Error adding item category :[" + query.executedQuery() + "]: " + query.lastError().text());
+            emit logDataChanged("CRITICAL", "StockItemsModel::addItemCategory => Error adding item category :[" + query.executedQuery() + "]: " + query.lastError().text());
         }
     }
 

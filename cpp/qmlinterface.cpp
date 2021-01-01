@@ -3,25 +3,27 @@
 #include <QFileInfo>
 #include <QDesktopServices>
 
+// api key
 // mSRtsFRHmOS6xOkik2jWO9lMMGSkoEmmM4mgNQB11SGWDHKhNjCVhAaWFj1MONYD
 
 QmlInterface::QmlInterface(QObject *parent) : QObject(parent)
 {
     setDatabaseLoaded(false);
     setDatabaseConnectionErrorString("No connection made yet!");
+    setIsInternetConnected(false);
 
     // Ensure logs directory has been created
     QString logsPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
-    QDir d;
     d.mkpath(logsPath+"/SalamaPOS/logs");
-
     m_logsPath = logsPath+"/SalamaPOS/logs";
     logToFile("INFO", "\n\n----------------------------------------\nStarting SalamaPOS Application\n----------------------------------------\n\n");
 
+    QString versionString = "21.01.01";
+
     // Set App Company Details
     qApp->setApplicationName("Salama P.O.S.");
-    qApp->setApplicationVersion("20.10.26");
-    qApp->setApplicationDisplayName("Salama P.O.S.");
+    qApp->setApplicationVersion(versionString);
+    qApp->setApplicationDisplayName("Salama P.O.S. v21.01.01");
     qApp->setOrganizationName("lalanke");
     qApp->setWindowIcon(QIcon(":/assets/images/6.png"));
     qApp->setOrganizationDomain("lalanke.com");
@@ -30,17 +32,19 @@ QmlInterface::QmlInterface(QObject *parent) : QObject(parent)
 
     // Retrieve settings
     setIsDarkTheme(m_settings->value("Theme/isDarkTheme", false).toBool());
-    setVersionInt(m_settings->value("General/version", 1).toInt());
+    setVersionInt(m_settings->value("General/version", 3).toInt());
 
     // Initialize database
     m_databaseInterface = new DatabaseInterface(parent);
     m_WebInterface = new WebInterfaceRunnable(this);
     m_dateTime = new DateTime();
     webInt = new WebApiInterface();
+    pingServer = new PingServerProcess(this);
 
     connect(this, &QmlInterface::started, webInt, &WebApiInterface::onCheckForUpdates);
     connect(webInt, &WebApiInterface::newVersionAvailable, this, &QmlInterface::onNewVersionAvailable);
     connect(m_WebInterface, &WebInterfaceRunnable::finished, webInt, &WebApiInterface::onWebRunnableFinished);
+    connect(pingServer, &PingServerProcess::connectionStatusChanged, this, &QmlInterface::onInternetConnectionStatusChanged);
 
     QString status = m_databaseInterface->initializeDatabase();
 
@@ -48,13 +52,13 @@ QmlInterface::QmlInterface(QObject *parent) : QObject(parent)
     {
         qDebug() << "Database Creation OK";
         emitDatabaseState(true, "");
-        logToFile("INFO", "Database Connection Successful");
+        logToFile("INFO", "DatabaseInterface::initializeDatabase() => Database Connection Successful");
         setTabularData();
     }
 
     else
     {
-        logToFile("FATAL", "Could not create a database Connection ==> " + status.split(":").at(1));
+        logToFile("FATAL", "DatabaseInterface::initializeDatabase() => Could not create a database Connection ==> " + status.split(":").at(1));
         emitDatabaseState(false, status.split(":").at(1));
     }
 
@@ -110,6 +114,16 @@ QString QmlInterface::databaseConnectionErrorString() const
     return m_databaseConnectionErrorString;
 }
 
+bool QmlInterface::isInternetConnected() const
+{
+    return m_isInternetConnected;
+}
+
+QList<int> QmlInterface::creditPaidYAxis() const
+{
+    return m_creditPaidYAxis;
+}
+
 QJsonObject QmlInterface::getScreenSize()
 {
     QJsonDocument doc = QJsonDocument::fromVariant("{ \"width\":0, \"height\":0}");
@@ -133,12 +147,16 @@ QJsonObject QmlInterface::getScreenSize()
 
 void QmlInterface::fetchSavedSettings()
 {
+    logToFile("INFO", "Starting QmlInterface::fetchSavedSettings()");
+
     setIsDarkTheme(m_settings->value("Theme/isDarkTheme", false).toBool());
 
     setTablesCreated(m_settings->value("Config/isTablesCreated", false).toBool());
     setProductsAdded(m_settings->value("Config/isProductsAdded", false).toBool());
     setProductTypeAdded(m_settings->value("Config/isProductTypeAdded", false).toBool());
     setProductStockAdded(m_settings->value("Config/isProductStockAdded", false).toBool());
+
+    logToFile("INFO", "Ending QmlInterface::fetchSavedSettings()");
 }
 
 void QmlInterface::getSalesStatisticsForDashboard()
@@ -299,22 +317,15 @@ void QmlInterface::getDashboardTableData()
 
     QDateTime dt = QDateTime::currentDateTime();
     QStringList plot;
-
-    /*/ Setup graph XAxis
-    for(int i=6; i>=0; i--)
-    {
-
-    }*/
-
     QSqlDatabase db = QSqlDatabase::database();
 
     if(db.isOpen())
     {
-        QList<int> cash, mpesa, credit, cheque;
+        QList<int> cash, mpesa, credit, cheque, credit_paid;
 
         for(int i=6; i>=0; i--)
         {
-            int _cash = 0, _mpesa = 0, _cheque = 0, _credit = 0;
+            int _cash = 0, _mpesa = 0, _cheque = 0, _credit = 0, _credit_paid=0;
 
             if(i==1)
                 plot.append("Yesterday");
@@ -333,9 +344,8 @@ void QmlInterface::getDashboardTableData()
             QString end = n_dt.toString("yyyy-MM-dd ") + "23:59:59+03";
             QString start = n_dt.toString("yyyy-MM-dd ") + "00:00:00+03";
 
-            // qDebug() << "Start: " << start << "\tEnd: " << end;
-
-            QString sql = "SELECT cash, mpesa, cheque, credit FROM payment INNER JOIN sales ON payment.sales_id=sales.sales_id WHERE sales_date > '"+start+"' AND sales_date < '"+end+"';";
+            QString sql0, sql = "SELECT cash, mpesa, cheque, credit FROM payment INNER JOIN sales ON payment.sales_id=sales.sales_id WHERE sales_date > '"+start+"' AND sales_date < '"+end+"';";
+            sql0 = "SELECT payment_amount FROM credit_payments WHERE payment_timestamp > '"+start+"' AND payment_timestamp < '"+end+"';";
             QSqlQuery query;
 
             if(query.exec(sql))
@@ -350,8 +360,20 @@ void QmlInterface::getDashboardTableData()
 
                     // qDebug() << "Cash: " << _cash << "\tMpesa: " << _mpesa << "\tCheque: " << _cheque << "\tCredit: " << _credit;
                 }
+
+                if(query.exec(sql0))
+                {
+                    while(query.next())
+                    {
+                        _credit_paid += query.value(0).toInt();
+                    }
+
+                } else {
+                    logToFile("CRITICAL", "QmlInterface::getDashboardTableData() => Couldn't load re-payment_history data from db :" + query.lastError().text());
+                }
+
             } else {
-                logToFile("CRITICAL", "Couldn't load data from db :" + query.lastError().text());
+                logToFile("CRITICAL", "QmlInterface::getDashboardTableData() => Couldn't load payment data from db :" + query.lastError().text());
             }
 
             m_plotXAxis.clear();
@@ -361,6 +383,7 @@ void QmlInterface::getDashboardTableData()
             mpesa.append(_mpesa);
             cheque.append(_cheque);
             credit.append(_credit);
+            credit_paid.append(_credit_paid);
 
         }
 
@@ -368,17 +391,20 @@ void QmlInterface::getDashboardTableData()
         m_mpesaYAxis.clear();
         m_creditYAxis.clear();
         m_chequeYAxis.clear();
+        m_creditPaidYAxis.clear();
         setPlotYmax(10);
 
         setCashYAxis(cash);
         setCreditYAxis(credit);
         setChequeYAxis(cheque);
         setMpesaYAxis(mpesa);
+        setCreditPaidYAxis(credit_paid);
 
         std::sort(cash.begin(), cash.end());
         std::sort(mpesa.begin(), mpesa.end());
         std::sort(cheque.begin(), cheque.end());
         std::sort(credit.begin(), credit.end());
+        std::sort(credit_paid.begin(), credit_paid.end());
 
         if(cash.at(cash.size() - 1) > plotYmax())
             setPlotYmax(cash.at(cash.size() - 1) + 10);
@@ -391,6 +417,9 @@ void QmlInterface::getDashboardTableData()
 
         if(credit.at(credit.size() - 1) > plotYmax())
             setPlotYmax(credit.at(credit.size() - 1) + 10);
+
+        if(credit_paid.at(credit_paid.size() - 1) > plotYmax())
+            setPlotYmax(credit_paid.at(credit_paid.size() - 1) + 10);
 
         emit dataReadyForPlotting();
     }
@@ -448,6 +477,24 @@ void QmlInterface::setDatabaseConnectionErrorString(QString databaseConnectionEr
     emit databaseConnectionErrorStringChanged(m_databaseConnectionErrorString);
 }
 
+void QmlInterface::setIsInternetConnected(bool isInternetConnected)
+{
+    if (m_isInternetConnected == isInternetConnected)
+        return;
+
+    m_isInternetConnected = isInternetConnected;
+    emit isInternetConnectedChanged(m_isInternetConnected);
+}
+
+void QmlInterface::setCreditPaidYAxis(QList<int> creditPaidYAxis)
+{
+    if (m_creditPaidYAxis == creditPaidYAxis)
+        return;
+
+    m_creditPaidYAxis = creditPaidYAxis;
+    emit creditPaidYAxisChanged(m_creditPaidYAxis);
+}
+
 void QmlInterface::onLogsTimerTimeout()
 {
     QString logName = QDateTime::currentDateTime().toString("yyyy-MM-dd")+"_app.log";
@@ -457,6 +504,12 @@ void QmlInterface::onLogsTimerTimeout()
     setLogFileName(path.toStdString());
 
     qDebug() << "File Name: " << path;
+}
+
+void QmlInterface::onInternetConnectionStatusChanged(bool state)
+{
+    setIsInternetConnected(state);
+    // qDebug() << "Is Connected? " << state;
 }
 
 void QmlInterface::initializeLogFileName()
@@ -635,6 +688,8 @@ void QmlInterface::getSalesSummary(const int &ind)
 
 void QmlInterface::setTabularData()
 {
+    logToFile("INFO", "Starting QmlInterface::setTabularData()");
+
     QFile file(":/sql/type.sql");
     file.open(QIODevice::ReadOnly);
     QString sql = file.readAll();
@@ -643,7 +698,7 @@ void QmlInterface::setTabularData()
     QSqlDatabase db = QSqlDatabase::database();
     QSqlQuery query;
 
-    bool isDbSetUp = m_settings->value("Config/isDbSetUp", false).toBool();
+    bool isDbSetUp = true; // m_settings->value("Config/isDbSetUp", false).toBool();
 
     if(db.isOpen() && !isDbSetUp)
     {
@@ -678,6 +733,9 @@ void QmlInterface::setTabularData()
         else
             qDebug() << "[ERROR] Type Data Exec: " << query.lastError().text();
     }
+
+
+    logToFile("INFO", "Ending QmlInterface::setTabularData()");
 }
 
 bool QmlInterface::isDarkTheme() const
