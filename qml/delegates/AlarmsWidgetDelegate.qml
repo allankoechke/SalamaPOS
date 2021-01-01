@@ -9,7 +9,7 @@ Rectangle {
 
     width: 300
     height: 50
-    color: category==="error"? "red":category==="info"? "green":"yellow"
+    color: category==="error"? "red":category==="info"? "green":"orange"
     radius: 5
 
     property string alarmId

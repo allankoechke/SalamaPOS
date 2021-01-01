@@ -276,10 +276,20 @@ Item
         {
             if(state)
             {
+                // Set new value for the remianing debt value
                 debt = debt-creditRepayDialog.debtPaid
+
+                // Reset the amount paid field
                 creditRepayDialog.debtPaid = "";
+
+                // Reload the payment history data
                 loadPaymentHistory();
+
+                // Close the repay dialog
                 creditRepayDialog.close();
+
+                // Reload the Dashboard Graph with data from the DB
+                QmlInterface.getDashboardTableData();
             }
         }
     }

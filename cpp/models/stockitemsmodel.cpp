@@ -357,7 +357,7 @@ void StockItemsModel::updateStockHistory(const QString &barcode, const int &stoc
 
         QString sql = "INSERT INTO stock_history(barcode, stock_qty_before, stock_qty_added, date_updated, who_updated, is_adding) VALUES (" +barcode+ ", "+a+", "+b+", '"+date_updated+"', '"+who_updated+"', '"+(is_adding? "True":"False")+"');";
 
-        qDebug() << sql;
+        // qDebug() << sql;
 
         if(query.exec(sql))
         {

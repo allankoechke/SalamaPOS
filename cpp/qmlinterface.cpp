@@ -149,8 +149,7 @@ void QmlInterface::fetchSavedSettings()
 {
     logToFile("INFO", "Starting QmlInterface::fetchSavedSettings()");
 
-    setIsDarkTheme(m_settings->value("Theme/isDarkTheme", false).toBool());
-
+    setIsDarkTheme(m_settings->value("Theme/isDarkTheme", true).toBool());
     setTablesCreated(m_settings->value("Config/isTablesCreated", false).toBool());
     setProductsAdded(m_settings->value("Config/isProductsAdded", false).toBool());
     setProductTypeAdded(m_settings->value("Config/isProductTypeAdded", false).toBool());

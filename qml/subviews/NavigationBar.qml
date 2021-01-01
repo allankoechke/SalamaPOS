@@ -38,6 +38,19 @@ Rectangle {
                 anchors.centerIn: parent
             }
 
+            AppText
+            {
+                color: "white"
+                // font.bold: true
+                size: 12
+                text: "<i>v</i><b>21.01.01</b>"
+                textFormat: AppText.StyledText
+
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.top: parent.bottom
+                anchors.topMargin: 5
+            }
+
         }
 
         NavButton

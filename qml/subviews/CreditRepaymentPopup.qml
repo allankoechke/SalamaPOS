@@ -23,6 +23,8 @@ Controls2.Popup
 
     signal accepted()
 
+    onClosed: isError=false;
+
     contentItem: Rectangle
     {
         color: bgColor

@@ -12,13 +12,13 @@ Window {
     width: 600
     height: 500
     minimumHeight: 600
-    maximumHeight: QmlInterface.getScreenSize()["height"]
-    minimumWidth: 700
-    maximumWidth: QmlInterface.getScreenSize()["width"]
+    // maximumHeight: QmlInterface.getScreenSize()["height"]
+    minimumWidth: 800
+    // maximumWidth: QmlInterface.getScreenSize()["width"]
     x: (QmlInterface.getScreenSize()["width"]-width)/2
     y: (QmlInterface.getScreenSize()["height"]-height)/2
     flags: mainAppView.navBarIndex===7? Qt.FramelessWindowHint:Qt.Window
-    title: qsTr("MySale App")
+    // title: qsTr("SalamaPOS App")
 
     property alias montserratFontLoader: montserratFontLoader
     property alias fontAwesomeFontLoader: fontAwesomeFontLoader
