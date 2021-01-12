@@ -321,21 +321,28 @@ void QmlInterface::getDashboardTableData()
     if(db.isOpen())
     {
         QList<int> cash, mpesa, credit, cheque, credit_paid;
+        QString dt_str;
 
         for(int i=6; i>=0; i--)
         {
             int _cash = 0, _mpesa = 0, _cheque = 0, _credit = 0, _credit_paid=0;
 
             if(i==1)
-                plot.append("Yesterday");
+            {
+                dt_str = "Yesterday";
+                plot.append(dt_str);
+            }
 
             else if(i == 0)
-                plot.append("Today");
+            {
+                dt_str = "Today";
+                plot.append(dt_str);
+            }
 
             else
             {
                 auto n_dt = dt.addDays(-i);
-                QString dt_str = n_dt.toString("ddd MMM, yyyy");
+                dt_str = n_dt.toString("ddd MMM, yyyy");
                 plot.append(dt_str);
             }
 
@@ -383,6 +390,13 @@ void QmlInterface::getDashboardTableData()
             cheque.append(_cheque);
             credit.append(_credit);
             credit_paid.append(_credit_paid);
+
+            qDebug() << "\n" << dt_str << " Statistics: ";
+            qDebug() << "\tCash Sales: " << _cash;
+            qDebug() << "\tMpesa Sales: " << _mpesa;
+            qDebug() << "\tCheque Sales: " << _cheque;
+            qDebug() << "\tCredit Taken: " << _credit;
+            qDebug() << "\tCredit Paid: " << _credit_paid;
 
         }
 
@@ -1059,14 +1073,14 @@ void QmlInterface::logToFile(const QString &level, const QString &log)
             QString logName = QDateTime::currentDateTime().toString("yyyy-MM-dd")+"_app.log";
             logWriter.open((m_logsPath+"/"+logName).toStdString(), std::ios::out | std::ios::app | std::ios::binary | std::ios::ate);
 
-            QString content=QString("%1 \t[%2]\tLog: %3\n").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd_hh:mm:ss.z"), level, log);
+            QString content=QString("%1 \t [%2]\tLog: %3 \r\n").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd_hh:mm:ss.z"), level, log);
             logWriter << content.toStdString();
             logWriter.close();
         }
 
         else
         {
-            QString content=QString("%1 \t[%2]\tLog: %3\n").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd_hh:mm:ss.z"), level, log);
+            QString content=QString("%1 \t [%2]\tLog: %3 \r\n").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd_hh:mm:ss.z"), level, log);
             logWriter << content.toStdString();
             logWriter.close();
         }
