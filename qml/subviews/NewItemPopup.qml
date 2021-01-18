@@ -90,7 +90,8 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Item Name")
                         hintText: qsTr("Enter item name")
-                        validator: RegExpValidator {regExp: RegExp("^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$")} // "[a-zA-Z0-9]+[\s]+")}
+                        // validator: RegExpValidator {regExp: RegExp("^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$")} // "[a-zA-Z0-9]+[\s]+")}
+                        validator: RegExpValidator {regExp: RegExp("^[a-zA-Z0-9%-]+( [a-zA-Z0-9%-]+)*$")} // "[a-zA-Z0-9]+[\s]+")}
                     }
 
                     AppTextInput
@@ -144,7 +145,8 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Item's Company")
                         hintText: qsTr("Manufacturing company")
-                        validator: RegExpValidator {regExp: RegExp("^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$")}
+                        // validator: RegExpValidator {regExp: RegExp("^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$")}
+                        validator: RegExpValidator {regExp: RegExp("^[a-zA-Z0-9%-]+( [a-zA-Z0-9%-]+)*$")} // "[a-zA-Z0-9]+[\s]+")}
                     }
 
                     Item
