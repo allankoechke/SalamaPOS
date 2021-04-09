@@ -5,6 +5,9 @@
 
 <p>This has been built in <b><i>C++ && Js</i></b> for the backend logic, <b><i>PostgreSql</i></b> for the database, and <b><i>Qt/QML</i></b> for the UI.</p>
 
+<h2>Supported Platforms</h2>
+<p>The app can be built and run on the platforms Qt supports, but this has been tested on Windows & Linux OS.</p>
+
 <h2>Building the App</h2>
 <p>Ensure you have the following prerequisites: </p>
 <ul>
