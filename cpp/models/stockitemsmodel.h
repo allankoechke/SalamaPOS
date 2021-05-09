@@ -75,6 +75,8 @@ public:
 
     void removeItem(int index);
 
+    void removeAllItems();
+
     QList<QString> categoryNames() const;
 
     QList<QString> categoryId() const;

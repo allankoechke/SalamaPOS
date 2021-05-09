@@ -6,6 +6,17 @@ import QtQuick.Controls 2.4 as Controls2
 import "./views"
 import "./delegates"
 
+/*
+
+  1. Price List
+  2. Input digits for Sales, Checkout, for stock [ WORKING ON IT ]
+  2. Authentication for Admin ( Dad )
+  3. Disable adding users for normal accounts
+  4. Adding user to display on Stock List [DONE]
+
+
+  */
+
 Window {
     id: mainApp
     visible: true

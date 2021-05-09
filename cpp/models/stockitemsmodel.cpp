@@ -198,6 +198,7 @@ void StockItemsModel::addNewItem(const QVariant &barcode, const QVariant &name, 
     QSqlDatabase m_db = QSqlDatabase::database();
 
     Q_UNUSED(date)
+    Q_UNUSED(category)
 
     QString dateNow = m_dateTime->getTimestamp("now").at(0);
 
@@ -225,7 +226,9 @@ void StockItemsModel::addNewItem(const QVariant &barcode, const QVariant &name, 
 
             emit logDataChanged("INFO", "StockItemsModel::addNewItem => New item Added successfully barcode=" + barcode.toString());
 
-            addNewItem(new StockItems(barcode.toString(), name.toString(), unit.toString(), bp.toString().toFloat(), sp.toString().toFloat(), company.toString(), qty.toInt(), dateNow, category.toString()));
+            // The line appends the item to the list, so the user wont see it there using the alphabetic order listing
+            // addNewItem(new StockItems(barcode.toString(), name.toString(), unit.toString(), bp.toString().toFloat(), sp.toString().toFloat(), company.toString(), qty.toInt(), dateNow, category.toString()));
+            initializeStockFromDb();
 
             emit itemAddingChanged(true);
         }
@@ -248,9 +251,6 @@ void StockItemsModel::updateItem(const QVariant &barcode, const QVariant &name, 
     emit logDataChanged("INFO", "Starting StockItemsModel::updateItem()");
 
     QSqlDatabase m_db = QSqlDatabase::database();
-
-    // TODO: this category brings a QComboBox item
-    // qDebug() << "Category: " << category;
 
     if(m_db.isOpen())
     {
@@ -435,6 +435,8 @@ void StockItemsModel::initializeStockFromDb()
 
     QSqlDatabase m_db = QSqlDatabase::database();
 
+    removeAllItems();
+
     getItemCategories();
 
     if(m_db.isOpen())
@@ -492,8 +494,6 @@ int StockItemsModel::getItemStock(const QVariant &barcode)
 QJsonObject StockItemsModel::getItemData(const QString &barcode)
 {
     const int index = getItemIndex(barcode);
-
-    // qDebug() << "Index: " << index;
 
     if(index != -1)
     {
@@ -631,6 +631,14 @@ void StockItemsModel::removeItem(int index)
     m_stockItems.removeAt(index);
     endRemoveRows();
 }
+
+void StockItemsModel::removeAllItems()
+{
+    beginRemoveRows(QModelIndex(), 0, m_stockItems.size());
+    m_stockItems.clear();
+    endRemoveRows();
+}
+
 
 QList<QString> StockItemsModel::categoryNames() const
 {
