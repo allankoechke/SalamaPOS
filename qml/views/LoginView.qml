@@ -91,7 +91,7 @@ Item {
                 border.color: "silver"
 
                 Layout.preferredWidth: _root.width*0.9
-                Layout.preferredHeight: 250
+                Layout.preferredHeight: 200
                 Layout.alignment: Qt.AlignHCenter
 
                 ColumnLayout
@@ -170,7 +170,7 @@ Item {
                     {
                         text: qsTr("Don't have an account? Create One")
                         size: 13
-                        visible: AccountsModel.rowCount() < 3
+                        visible: false
                         color: QmlInterface.isDarkTheme? "grey":"#535353"
 
                         Layout.alignment: Qt.AlignHCenter

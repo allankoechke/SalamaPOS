@@ -7,14 +7,13 @@ import "./views"
 import "./delegates"
 
 /*
-
   1. Price List
-  2. Input digits for Sales, Checkout, for stock [ WORKING ON IT ]
-  2. Authentication for Admin ( Dad )
-  3. Disable adding users for normal accounts
+  2. Input digits for Sales, Checkout, for stock [ DONE ]
+  2. Authentication for Admin ( Dad ) [ DONE ]
+  3. Disable adding users for normal accounts [ DONE]
   4. Adding user to display on Stock List [DONE]
-
-
+  5. Empty state for Model-Views
+  6. Backup (offline)
   */
 
 Window {
@@ -23,13 +22,11 @@ Window {
     width: 600
     height: 500
     minimumHeight: 600
-    // maximumHeight: QmlInterface.getScreenSize()["height"]
     minimumWidth: 800
-    // maximumWidth: QmlInterface.getScreenSize()["width"]
     x: (QmlInterface.getScreenSize()["width"]-width)/2
     y: (QmlInterface.getScreenSize()["height"]-height)/2
     flags: mainAppView.navBarIndex===7? Qt.FramelessWindowHint:Qt.Window
-    // title: qsTr("SalamaPOS App")
+
 
     property alias montserratFontLoader: montserratFontLoader
     property alias fontAwesomeFontLoader: fontAwesomeFontLoader

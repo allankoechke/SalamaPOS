@@ -55,6 +55,7 @@ Item {
                     color: menuColor
                     radius: 4
                     enabled: loggedUser_canAddAccounts
+                    visible: loggedUser_canAddAccounts
                     opacity: enabled? 1:0.2
 
                     RowLayout
