@@ -53,8 +53,7 @@
         <file>qml/components/AppTextInput.qml</file>
         <file>qml/subviews/NewItemPopup.qml</file>
         <file>sql/tables.sql</file>
-        <file>qml/subviews/StockPopup.qml</file>
-        <file>qml/components/CustomSpinBox.qml</file>
+        <file>qml/subviews/AddRemoveStockPopup.qml</file>
         <file>sql/add_item.sql</file>
         <file>qml/components/VSeparator.qml</file>
         <file>qml/subviews/CheckoutQtyEditPopup.qml</file>
@@ -103,5 +102,6 @@
         <file>qml/subviews/SalesSummaryDialog.qml</file>
         <file>qml/components/SaleSummaryCostWidget.qml</file>
         <file>qml/components/MessageBox.qml</file>
+        <file>qml/components/StockQtyInputBox.qml</file>
     </qresource>
 </RCC>

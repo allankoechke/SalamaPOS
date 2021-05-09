@@ -17,7 +17,7 @@ Rectangle {
 
     property alias checkoutPopup: checkoutPopup
     property alias userMenuPopup: userMenuPopup
-    property alias stockPopup: stockPopup
+    property alias addRemoveStockPopup: addRemoveStockPopup
     property alias checkoutQtyPopup: checkoutQtyPopup
     property alias userAccountPopup: userAccountPopup
     property alias accountsPopup: accountsPopup
@@ -256,9 +256,9 @@ Rectangle {
         id: newItemPopup
     }
 
-    StockPopup
+    AddRemoveStockPopup
     {
-        id: stockPopup
+        id: addRemoveStockPopup
     }
 
     CheckoutQtyEditPopup

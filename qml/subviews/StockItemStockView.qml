@@ -65,10 +65,10 @@ Rectangle {
                             if(loggedUser_canAddStock | loggedUser_canDeleteStock)
                             {
                                 listView.currentIndex =  index
-                                stockPopup.open()
-                                stockPopup.currentIndex = index
-                                stockPopup.currentStock = qty;
-                                stockPopup.barcode = barCode;
+                                addRemoveStockPopup.open()
+                                addRemoveStockPopup.currentIndex = index
+                                addRemoveStockPopup.currentStock = qty;
+                                addRemoveStockPopup.barcode = barCode;
                             }
 
                             else

@@ -15,13 +15,6 @@ Controls2.Popup
     modal: true
     closePolicy: Controls2.Popup.NoAutoClose
 
-    onClosed: {
-        combo.currentIndex = 0;
-        currentStock = 0;
-        addStock.value = 1;
-        reduceStock.value = 0;
-    }
-
     property int currentIndex: -1
 
     property bool hasPermissions: true
@@ -29,9 +22,15 @@ Controls2.Popup
     property int currentStock: 0
     property string barcode: ""
     property alias combo: combo
-    property int valueQty: combo.currentIndex===0? addStock.value:reduceStock.value
+    property int valueQty: parseInt(addRemoveStock.value)
 
     signal accepted()
+
+    onClosed: {
+        combo.currentIndex = 0;
+        currentStock = 0;
+        addRemoveStock.value = '';
+    }
 
     onOpened: {
         if(loggedUser_canAddItems)
@@ -49,10 +48,8 @@ Controls2.Popup
             combo.currentIndex = 1;
             combo.enabled = false;
         }
-
-
-
     }
+
 
     contentItem: Rectangle
     {
@@ -75,7 +72,7 @@ Controls2.Popup
                     color: "black"
                     height: 3
                     width: parent.width
-                    opacity: 0.08
+                    opacity: 0.1
 
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 5
@@ -84,7 +81,7 @@ Controls2.Popup
                 AppText
                 {
                     color: QmlInterface.isDarkTheme? "grey":"black"
-                    size: 17
+                    size: 20
                     text: qsTr("Stock Dialog")
 
                     anchors.centerIn: parent
@@ -103,7 +100,7 @@ Controls2.Popup
 
                     AppText
                     {
-                        size: 20
+                        size: 18
                         color: QmlInterface.isDarkTheme? "grey":"black"
                         text: qsTr("Stock Action")
 
@@ -139,7 +136,7 @@ Controls2.Popup
 
                     AppText
                     {
-                        size: 20
+                        size: 18
                         color: QmlInterface.isDarkTheme? "grey":"black"
                         text: qsTr("Quantity in Stock")
 
@@ -148,23 +145,17 @@ Controls2.Popup
                         Layout.alignment: Qt.AlignVCenter
                     }
 
-                    AppText
+                    StockQtyInputBox
                     {
-                        size: 20
-                        color: QmlInterface.isDarkTheme? "grey":"black"
-                        font.bold: true
-                        text: currentStock.toString();
-
-                        Layout.fillWidth: true
-                        horizontalAlignment: AppText.AlignHCenter
-                        Layout.alignment: Qt.AlignVCenter
+                        value: currentStock.toString();
+                        input.readOnly: true
+                        input.font.bold: true
                     }
                 }
             }
 
             Item
             {
-                visible: combo.currentIndex===0
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
 
@@ -175,51 +166,18 @@ Controls2.Popup
 
                     AppText
                     {
-                        size: 20
+                        size: 18
                         color: QmlInterface.isDarkTheme? "grey":"black"
-                        text: qsTr("Quantity to Add")
+                        text: combo.currentIndex===0? qsTr("Quantity to Add"):qsTr("Quantity to Remove")
 
                         Layout.preferredWidth: 200
                         horizontalAlignment: AppText.AlignLeft
                         Layout.alignment: Qt.AlignVCenter
                     }
 
-                    CustomSpinBox
+                    StockQtyInputBox
                     {
-                        id: addStock
-                        value: 1
-                        from: 1
-                    }
-                }
-            }
-
-            Item
-            {
-                visible: combo.currentIndex===1
-                Layout.fillWidth: true
-                Layout.preferredHeight: 50
-
-                RowLayout
-                {
-                    anchors.fill: parent
-                    spacing: 10
-
-                    AppText
-                    {
-                        size: 20
-                        color: QmlInterface.isDarkTheme? "grey":"black"
-                        text: qsTr("Quantity to Remove")
-
-                        Layout.preferredWidth: 200
-                        horizontalAlignment: AppText.AlignLeft
-                        Layout.alignment: Qt.AlignVCenter
-                    }
-
-                    CustomSpinBox
-                    {
-                        id: reduceStock
-                        to: currentStock
-                        from: currentStock===0? 0:1
+                        id: addRemoveStock
                     }
                 }
             }
@@ -298,15 +256,43 @@ Controls2.Popup
 
                                 if(combo.currentIndex===0)
                                 {
-                                    StockItemModel.updateStock(barcode, valueQty+currentStock, dte, currentIndex)
-                                    StockItemModel.updateStockHistory(barcode, currentStock, valueQty, dte, loggedUser_username, true)
+                                    if(valueQty > 0)
+                                    {
+                                        console.log('Adding ', valueQty, ' to Stock.')
+                                        StockItemModel.updateStock(barcode, valueQty+currentStock, dte, currentIndex)
+                                        StockItemModel.updateStockHistory(barcode, currentStock, valueQty, dte, loggedUser_username, true)
+                                    }
 
+                                    else
+                                    {
+                                        console.log("Adding a zero qty to stock")
+                                        AlarmsModel.addAlarmItem("error", "Quantity is ZERO!")
+                                    }
                                 }
 
                                 else
                                 {
-                                    StockItemModel.updateStock(barcode, currentStock-valueQty, dte, currentIndex)
-                                    StockItemModel.updateStockHistory(barcode, currentStock, valueQty, dte, loggedUser_username, false)
+                                    if( valueQty <= currentStock && valueQty>0 && hasPermissions )
+                                    {
+                                        console.log("Removing ", valueQty, " from Stock.")
+
+                                        StockItemModel.updateStock(barcode, currentStock-valueQty, dte, currentIndex)
+                                        StockItemModel.updateStockHistory(barcode, currentStock, valueQty, dte, loggedUser_username, false)
+                                    }
+
+                                    else
+                                    {
+                                        if( valueQty > currentStock )
+                                            AlarmsModel.addAlarmItem("error", "Quantity entered exceeds quantity available")
+
+                                        else if( !hasPermissions )
+                                            AlarmsModel.addAlarmItem("error", "This can only be done by ADMINs.")
+
+                                        else if( valueQty === 0 )
+                                            AlarmsModel.addAlarmItem("error", "Quantity is ZERO!")
+
+                                        console.log("Removing 0 items from Stock OR Quantity to remove exceeds qty available OR You dont have permissions to do such!")
+                                    }
                                 }
                             }
                         }

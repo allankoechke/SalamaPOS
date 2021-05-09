@@ -136,7 +136,7 @@ Controls2.Popup
                         prefWidth: 150
                         label: qsTr("Quantity")
                         hintText: qsTr("Enter quantity added")
-                        validator: IntValidator {bottom: 1; top: 100000}
+                        validator: IntValidator {bottom: 1; top: 1000000}
                     }
 
                     AppTextInput
@@ -158,6 +158,34 @@ Controls2.Popup
                         {
                             anchors.fill: parent
                             spacing: 10
+
+                            Rectangle
+                            {
+                                Layout.fillHeight: true
+                                Layout.preferredWidth: 100
+
+                                color: menuColor
+                                radius: 3
+
+
+                                AppText
+                                {
+                                    color: "white"
+                                    size: 15
+                                    text: qsTr("Delete")
+
+                                    anchors.centerIn: parent
+                                }
+
+                                MouseArea
+                                {
+                                    anchors.fill: parent
+                                    onClicked: {
+                                        // To delete item
+                                        root.close()
+                                    }
+                                }
+                            }
 
                             HorizontalSpacer {}
 

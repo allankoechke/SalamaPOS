@@ -18,7 +18,7 @@ Controls2.Popup
 
     property alias from: qtySpinbox.from
     property alias to: qtySpinbox.to
-    property alias value: qtySpinbox.value
+    property int value: parseInt(qtySpinbox.value)
     property string barcode
 
     signal accepted()
@@ -44,7 +44,7 @@ Controls2.Popup
                     color: QmlInterface.isDarkTheme? "white":"black"
                     height: 3
                     width: parent.width
-                    opacity: 0.08
+                    opacity: 0.1
 
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 5
@@ -54,7 +54,7 @@ Controls2.Popup
                 {
                     color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
                     size: 17
-                    text: qsTr("Add/Reduce Sale Quantity")
+                    text: qsTr("Set Quantity Product Quantity")
 
                     anchors.centerIn: parent
                 }
@@ -81,9 +81,16 @@ Controls2.Popup
                         Layout.alignment: Qt.AlignVCenter
                     }
 
-                    CustomSpinBox
+                    StockQtyInputBox
                     {
                         id: qtySpinbox
+
+                        property real from: 0
+                        property real to: 0
+
+                        onValueChanged: {
+                            console.log('Value changed: ', value, ', Int: ', parseInt(qtySpinbox.value))
+                        }
                     }
                 }
             }
@@ -161,7 +168,16 @@ Controls2.Popup
                             onClicked: {
                                 console.log(">> Updating Stock: ", barcode)
 
-                                CheckoutModel.changeSellStock(qtySpinbox.value, barcode);
+                                console.log("Value", parseInt(qtySpinbox.value), "From: ", qtySpinbox.from, ", To: ", qtySpinbox.to)
+
+                                if( parseInt(qtySpinbox.value) < from || qtySpinbox.value==='' )
+                                    AlarmsModel.addAlarmItem("error", "Quantity CANT be ZERO!")
+
+                                else if( parseInt(qtySpinbox.value) > to )
+                                    AlarmsModel.addAlarmItem("error", "Quantity entered exceeds quantity available!")
+
+                                else
+                                    CheckoutModel.changeSellStock(parseInt(qtySpinbox.value), barcode);
                             }
                         }
                     }
