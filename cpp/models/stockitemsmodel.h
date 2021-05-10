@@ -46,6 +46,8 @@ public:
 
     Q_INVOKABLE void updateItem(const QVariant &barcode, const QVariant &name, const QVariant &unit, const QVariant &bp, const QVariant &sp, const QVariant &company, const QVariant &category, const QVariant &orig_barcode, const QVariant &index);
 
+    Q_INVOKABLE void deleteItem(const QString &barcode);
+
     Q_INVOKABLE void updateStock(const QVariant &barcode, const QVariant &qty, const QVariant &date, const QVariant &index);
 
     Q_INVOKABLE void updateStockHistory(const QString &barcode, const int &stock_qty_before, const int &stock_qty_added, const QString &date_updated, const QString &who_updated, const bool &is_adding);
@@ -53,6 +55,8 @@ public:
     Q_INVOKABLE void updateStockOnSale(const QVariant &bcode, const int &qty);
 
     Q_INVOKABLE void initializeStockFromDb();
+
+    Q_INVOKABLE QString generatePriceList();
 
     Q_INVOKABLE int getItemStock(const QVariant &barcode);
 
@@ -89,6 +93,8 @@ signals:
     void itemUpdatedChanged(bool state);
 
     void itemAddedChanged(bool state);
+
+    void itemDeletedChanged(bool state);
 
     void itemStockChanged(bool state);
 

@@ -91,7 +91,7 @@ Item {
                     {
                         anchors.fill: parent
                         onClicked: {
-                            addItemDialog.show();
+                             addItemToCheckoutDialog.show();
                         }
                     }
                 }
@@ -229,7 +229,7 @@ Item {
     function positionDialog()
     {
         var globalCoordinares = textField.mapToItem(mainAppViewRoot , 0, 0)
-        addItemDialog.x = globalCoordinares.x
-        addItemDialog.y = globalCoordinares.y + height + 70
+         addItemToCheckoutDialog.x = globalCoordinares.x
+         addItemToCheckoutDialog.y = globalCoordinares.y + height + 70
     }
 }

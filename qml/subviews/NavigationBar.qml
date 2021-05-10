@@ -95,6 +95,7 @@ Rectangle {
         {
             menuIcon: "\uf27a"
             menuLabel: qsTr("Messages")
+             visible: false
             isMenuCurrentlyActive: navBarIndex === 4
 
             onMenuClicked: navBarIndex = 4;

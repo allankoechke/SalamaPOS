@@ -68,7 +68,7 @@
         <file>qml/subviews/AccountsPopup.qml</file>
         <file>qml/components/AppToggle.qml</file>
         <file>qml/delegates/AutocompleteDelegate.qml</file>
-        <file>qml/subviews/AddItemDialog.qml</file>
+        <file>qml/subviews/AddItemToCheckoutDialog.qml</file>
         <file>json/sale_item.json</file>
         <file>json/status.json</file>
         <file>json/admin_account.json</file>
@@ -103,5 +103,10 @@
         <file>qml/components/SaleSummaryCostWidget.qml</file>
         <file>qml/components/MessageBox.qml</file>
         <file>qml/components/StockQtyInputBox.qml</file>
+        <file>qml/logic/Backup.qml</file>
+        <file>qml/logic/Logic.qml</file>
+        <file>qml/components/CustomButton.qml</file>
+        <file>qml/subviews/AlarmsPopup.qml</file>
+        <file>py/html2pdfrenderer.py</file>
     </qresource>
 </RCC>

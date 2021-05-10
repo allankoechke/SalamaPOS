@@ -301,6 +301,50 @@ void StockItemsModel::updateItem(const QVariant &barcode, const QVariant &name, 
     emit logDataChanged("INFO", "Ending StockItemsModel::updateItem()");
 }
 
+void StockItemsModel::deleteItem(const QString &barcode)
+{
+    emit logDataChanged("INFO", "Starting StockItemsModel::deleteItem()");
+
+    QSqlDatabase m_db = QSqlDatabase::database();
+
+    if(m_db.isOpen())
+    {
+        QString sql1, sql2;
+
+        sql1 = "DELETE FROM \"product\" WHERE barcode=:barcode";
+        sql2 = "DELETE FROM \"stock\" WHERE barcode=:barcode";
+
+        QSqlQuery query1, query2;
+        query1.prepare(sql1);
+        query1.bindValue(":barcode", barcode);
+        query2.prepare(sql1);
+        query2.bindValue(":barcode", barcode);
+
+        if( query1.exec() && query2.exec() )
+        {
+            m_db.commit();
+
+            // Reflect changes on the model
+            initializeStockFromDb();
+
+            emit itemDeletedChanged(true);
+
+            emit logDataChanged("INFO", "StockItemsModel::deleteItem => Item Details deleted successfully, barcode=" + barcode);
+        }
+
+        else
+        {
+            m_db.rollback();
+
+            emit logDataChanged("CRITICAL", "StockItemsModel::deleteItem => Error executing SQL: " + query1.lastError().text() + " :: " + query2.lastError().text());
+
+            emit itemDeletedChanged(false);
+        }
+    }
+
+    emit logDataChanged("INFO", "Ending StockItemsModel::deleteItem()");
+}
+
 void StockItemsModel::updateStock(const QVariant &barcode, const QVariant &qty, const QVariant &date, const QVariant &index)
 {
     emit logDataChanged("INFO", "Starting StockItemsModel::updateStock()");
@@ -471,6 +515,60 @@ void StockItemsModel::initializeStockFromDb()
     }
 
     emit logDataChanged("INFO", "Ending StockItemsModel::initializeStockFromDb()");
+}
+
+QString StockItemsModel::generatePriceList()
+{
+    // Generate the price list data and return it in form of html-table tags
+
+    QString html = "";
+
+    emit logDataChanged("INFO", "Starting StockItemsModel::generatePriceList()");
+
+    QSqlDatabase m_db = QSqlDatabase::database();
+
+    if(m_db.isOpen())
+    {
+        QSqlQuery query;
+        QString sql = "SELECT product_name,product_unit,product_bp,product_sp,product_company FROM \"product\" ORDER BY product_name ASC";
+
+        int index = 1;
+
+        if(query.exec(sql))
+        {
+            while(query.next())
+            {
+                QString name = query.value(0).toString();
+                QString unit = query.value(1).toString();
+                QString bp = query.value(2).toString();
+                QString sp = query.value(3).toString();
+                QString company = query.value(4).toString();
+
+                name = company==""? name:(name+" ("+company+")");
+
+                html += "<tr>";
+                html += ("<td>"+ QString::number(index) +".</td>");
+                html += ("<td>"+ name +"</td>");
+                html += ("<td>"+unit+"</td>");
+                html += ("<td>"+bp+"</td>");
+                html += ("<td>"+sp+"</td>");
+                html += "</tr>";
+
+                index ++;
+            }
+
+            emit logDataChanged("INFO", "PriceList generation successful!");
+        }
+
+        else
+        {
+            emit logDataChanged("CRITICAL", "Error executing SQL: " + m_db.lastError().text() + " :: " + query.lastError().text());
+        }
+    }
+
+    emit logDataChanged("INFO", "Ending StockItemsModel::generatePriceList()");
+
+    return html;
 }
 
 int StockItemsModel::getItemStock(const QVariant &barcode)

@@ -1,4 +1,4 @@
-QT += quick widgets charts sql quickcontrols2
+QT += quick widgets charts sql quickcontrols2  printsupport
 
 CONFIG += c++11 # qwt
 
@@ -34,6 +34,7 @@ SOURCES += \
         cpp/models/stockitemsmodel.cpp \
         cpp/models/useraccountsmodel.cpp \
         cpp/pingserverprocess.cpp \
+        cpp/processinterface.cpp \
         cpp/qmlinterface.cpp \
         # cpp/qwtbarplot.cpp \
         # cpp/qwtbarplotdata.cpp \
@@ -84,6 +85,7 @@ HEADERS += \
     cpp/models/stockitemsmodel.h \
     cpp/models/useraccountsmodel.h \
     cpp/pingserverprocess.h \
+    cpp/processinterface.h \
     cpp/qmlinterface.h \
     # cpp/qwtbarplot.h \
     # cpp/qwtbarplotdata.h \

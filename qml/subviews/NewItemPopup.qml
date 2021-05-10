@@ -164,9 +164,9 @@ Controls2.Popup
                                 Layout.fillHeight: true
                                 Layout.preferredWidth: 100
 
-                                color: menuColor
+                                color: 'red'
                                 radius: 3
-
+                                visible: !isNewItemMode && loggedUser_canDeleteItems && isAdmin
 
                                 AppText
                                 {
@@ -182,7 +182,7 @@ Controls2.Popup
                                     anchors.fill: parent
                                     onClicked: {
                                         // To delete item
-                                        root.close()
+                                        StockItemModel.deleteItem(barCode)
                                     }
                                 }
                             }
@@ -306,6 +306,22 @@ Controls2.Popup
             {
                 console.log(" [ERROR] Error Updating item");
                 AlarmsModel.addAlarmItem("error", "Error updating item")
+            }
+        }
+
+        function onItemDeletedChanged(status)
+        {
+            if(status)
+            {
+                console.log(" [INFO] Item Deleted Successfuly!");
+                AlarmsModel.addAlarmItem("info", "Item deleted successfully!")
+                root.close();
+            }
+
+            else
+            {
+                console.log(" [ERROR] Error Deleting item");
+                AlarmsModel.addAlarmItem("error", "Error deleting item")
             }
         }
 

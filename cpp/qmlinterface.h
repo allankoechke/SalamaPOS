@@ -21,6 +21,11 @@
 #include <QStandardPaths>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include <QTextDocument>
+#include <QTextStream>
+#include <QPrinter>
+#include <QDir>
+#include <QStandardPaths>
 
 #include "databaseinterface.h"
 #include "serialportinterface.h"
@@ -79,6 +84,7 @@ public:
     Q_INVOKABLE void getSalesSummary(const int &ind);
     Q_INVOKABLE void installUpdate();
     Q_INVOKABLE void logToFile(const QString &level, const QString &log);
+    Q_INVOKABLE void openLocation(const QString &path);
     // void logToFile(QString level, QString log);
 
     void setTabularData();

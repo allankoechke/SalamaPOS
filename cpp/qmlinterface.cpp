@@ -1091,3 +1091,13 @@ void QmlInterface::logToFile(const QString &level, const QString &log)
         qDebug() << "Log Writer Threw an Error!";
     }
 }
+
+void QmlInterface::openLocation(const QString &path)
+{
+    auto p = path.split('/'); // .removeLast() // .join('/');
+    p.removeLast();
+    auto r = p.join('/');
+
+    qDebug() << "Folder: " << r;
+    QDesktopServices::openUrl(r);
+}

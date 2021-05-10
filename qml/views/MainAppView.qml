@@ -24,6 +24,7 @@ Rectangle {
     property alias selectCrediteeOnSale: selectCrediteeOnSale
     property alias salesSummaryDialog: salesSummaryDialog
     property alias messageBox: messageBox
+    property alias alarmsPopup: alarmsPopup
 
     onNavBarIndexChanged: {
         switch(navBarIndex)
@@ -50,6 +51,10 @@ Rectangle {
             viewText = qsTr("Users & Accounts")
             break;
         }
+    }
+
+    Component.onCompleted: {
+        alarmsPopup.open()
     }
 
     RowLayout
@@ -276,9 +281,9 @@ Rectangle {
         id: accountsPopup
     }
 
-    AddItemDialog
+    AddItemToCheckoutDialog
     {
-        id: addItemDialog
+        id: addItemToCheckoutDialog
     }
 
     CreditsAndDebtsDrawer
@@ -304,6 +309,11 @@ Rectangle {
     SalesSummaryDialog
     {
         id: salesSummaryDialog
+    }
+
+    AlarmsPopup
+    {
+        id: alarmsPopup
     }
 
     function startApp(state)

@@ -74,7 +74,47 @@ Item {
 
                 HorizontalSpacer {}
 
-                Rectangle
+                CustomButton
+                {
+                    visible: currentScreen===0
+                    enabled: loggedUser_canAddItems
+                    Layout.preferredHeight: 45
+                    Layout.preferredWidth: row1.width+20
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.rightMargin: 20
+
+                    color: menuColor
+                    radius: 3
+                    opacity: enabled? 1:0.2
+
+                    Row
+                    {
+                        id: row1
+                        anchors.centerIn: parent
+
+                        spacing: 7
+
+                        AppIcon
+                        {
+                            color: "white"
+                            size: 15
+                            icon: "\uf067"
+                        }
+
+                        AppText
+                        {
+                            color: "white"
+                            size: 15
+                            text: qsTr("Generate Price List")
+                        }
+                    }
+
+                    onReleased: {
+                        logic.generatePriceList();
+                    }
+                }
+
+                CustomButton
                 {
                     visible: currentScreen===0
                     enabled: loggedUser_canAddItems
@@ -108,35 +148,31 @@ Item {
                         }
                     }
 
-                    MouseArea
-                    {
-                        anchors.fill: parent
-                        onClicked: {
+                    onReleased: {
 
-                            if(loggedUser_canAddItems)
-                            {
-                                newItemPopup.open()
-                                newItemPopup.barCode = new Date().getTime().toString();
-                                newItemPopup.itemName = "";
-                                newItemPopup.itemUnit = "";
-                                newItemPopup.itemBp = "";
-                                newItemPopup.itemSp = "";
-                                newItemPopup.itemQty = "";
-                                newItemPopup.itemCompany = "";
+                        if(loggedUser_canAddItems)
+                        {
+                            newItemPopup.open()
+                            newItemPopup.barCode = new Date().getTime().toString();
+                            newItemPopup.itemName = "";
+                            newItemPopup.itemUnit = "";
+                            newItemPopup.itemBp = "";
+                            newItemPopup.itemSp = "";
+                            newItemPopup.itemQty = "";
+                            newItemPopup.itemCompany = "";
 
-                                newItemPopup.isNewItemMode = true;
-                            }
+                            newItemPopup.isNewItemMode = true;
+                        }
 
-                            else
-                            {
-                                AlarmsModel.addAlarmItem("error", "User has no rights to add items")
-                                console.log(" [ERROR] User has no rights to add item")
-                            }
+                        else
+                        {
+                            AlarmsModel.addAlarmItem("error", "User has no rights to add items")
+                            console.log(" [ERROR] User has no rights to add item")
                         }
                     }
                 }
 
-                Rectangle
+                CustomButton
                 {
                     visible: false
                     Layout.fillHeight: true
@@ -165,66 +201,6 @@ Item {
                             color: "white"
                             size: 15
                             text: qsTr("Add Stock")
-                        }
-                    }
-                }
-
-                Rectangle
-                {
-                    Layout.preferredHeight: 45
-                    Layout.fillWidth: true
-                    Layout.minimumWidth: 100
-                    Layout.maximumWidth: 300
-
-                    color: "white"
-                    border.width: 1
-                    border.color: "grey"
-                    radius: 3
-                    visible: false
-
-                    RowLayout
-                    {
-                        anchors.fill: parent
-                        spacing: 0
-
-                        TextInput
-                        {
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            verticalAlignment: TextInput.AlignVCenter
-                            horizontalAlignment: TextInput.AlignLeft
-                            Layout.leftMargin: 5
-                            color: "black"
-                            font.pixelSize: 17
-                            font.family: montserratFontLoader.name
-                            selectByMouse: true
-
-                            AppText{
-                                size: parent.font.pixelSize-3
-                                color: "grey"
-                                text: qsTr("Filter items")
-                                visible: parent.text===""
-
-                                anchors.left: parent.left
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-
-                        Rectangle
-                        {
-                            Layout.fillHeight: true
-                            width: 50
-                            Layout.margins: 1
-
-                            color: menuColor
-
-                            AppIcon
-                            {
-                                anchors.centerIn: parent
-                                size: 16
-                                color: "white"
-                                icon: "\uf002"
-                            }
                         }
                     }
                 }

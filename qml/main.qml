@@ -4,6 +4,7 @@ import QtQuick.Controls.Material 2.2
 import QtQuick.Controls 2.4 as Controls2
 
 import "./views"
+import "./logic"
 import "./delegates"
 
 /*
@@ -14,7 +15,7 @@ import "./delegates"
   4. Adding user to display on Stock List [DONE]
   5. Empty state for Model-Views
   6. Backup (offline)
-  */
+*/
 
 Window {
     id: mainApp
@@ -48,7 +49,6 @@ Window {
     property string menuColor: "#12679a"
     property string tableHeaderColor: "#5f00ff"
     property bool isDialogClosedAfterEachAdd: false
-    property alias alarmsListView: alarmsListView
 
     // Logged in user
     property string loggedUser_fullname: ""
@@ -64,12 +64,19 @@ Window {
     property bool loggedUser_canBackupDb: false
     property bool isAdmin: false
 
+    property alias backup: backup
+    property alias logic: logic
+
+    // property alias alarmsListView: mainAppView.alarmsPopup.alarmsListView
+
+
     Component.onCompleted: {
         popupTimer.start();
         timer1.start();
 
         QmlInterface.fetchSavedSettings();
         QmlInterface.getDashboardTableData();
+        backup.beginLocalBackup()
     }
 
     Timer
@@ -101,33 +108,6 @@ Window {
         id: mainAppView
     }
 
-    Item
-    {
-        z: 0
-        width: 300
-        x: mainApp.width - (width+10)
-        y: mainApp.height - (height + 10)
-        height: AlarmsModel.size===0? 0:AlarmsModel.size * 53
-        visible: mainAppView.navBarIndex !== 7 && mainAppView !== 8
-
-        ListView
-        {
-            id: alarmsListView
-            anchors.fill: parent
-            width: parent.width
-            height: parent.height
-            spacing: 5
-
-            model: AlarmsModel
-            delegate: AlarmsWidgetDelegate
-            {
-                alarmId: alarm_id
-                category: alarm_type
-                content: alarm_text
-            }
-        }
-    }
-
     FontLoader
     {
         id: fontAwesomeFontLoader
@@ -138,6 +118,16 @@ Window {
     {
         id: montserratFontLoader
         source: "qrc:/assets/fonts/montserrat/Montserrat-Regular.ttf"
+    }
+
+    Backup
+    {
+        id: backup
+    }
+
+    Logic
+    {
+        id: logic
     }
 
     Connections

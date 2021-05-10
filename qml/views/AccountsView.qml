@@ -1,4 +1,4 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.4 as Controls2
 
@@ -164,18 +164,26 @@ Item {
                                 onEditedChanged: {
                                     if((loggedUser_canAddAccounts && loggedUser_canDeleteAccounts) || isAdmin)
                                     {
+                                        if( uname == mainApp.loggedUser_username)
+                                        {
+                                            AlarmsModel.addAlarmItem("warning","Can't change priviledges for your own account!")
+                                            QmlInterface.logToFile("WARNING", "QML => AccountsView::EditAccount Attempting to change privileges for own account")
+                                        }
 
-                                        accountsPopup.open();
-                                        accountsPopup.currentIndex = index
-                                        accountsPopup.currentUser = uname
-                                        accountsPopup.canAddUsers = canCreateUser
-                                        accountsPopup.canRemoveUsers = canDeleteUser
-                                        accountsPopup.canAddItems = canCreateItems
-                                        accountsPopup.canRemoveItems = canDeleteItems
-                                        accountsPopup.canAddStock = canAddStock
-                                        accountsPopup.canDeleteStock = canDeleteStock
-                                        accountsPopup.canUndoSales = canDeleteSales
-                                        accountsPopup.canBackupDb = canBackupDb
+                                        else
+                                        {
+                                            accountsPopup.open();
+                                            accountsPopup.currentIndex = index
+                                            accountsPopup.currentUser = uname
+                                            accountsPopup.canAddUsers = canCreateUser
+                                            accountsPopup.canRemoveUsers = canDeleteUser
+                                            accountsPopup.canAddItems = canCreateItems
+                                            accountsPopup.canRemoveItems = canDeleteItems
+                                            accountsPopup.canAddStock = canAddStock
+                                            accountsPopup.canDeleteStock = canDeleteStock
+                                            accountsPopup.canUndoSales = canDeleteSales
+                                            accountsPopup.canBackupDb = canBackupDb
+                                        }
                                     }
 
                                     else
