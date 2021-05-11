@@ -107,6 +107,6 @@
         <file>qml/logic/Logic.qml</file>
         <file>qml/components/CustomButton.qml</file>
         <file>qml/subviews/AlarmsPopup.qml</file>
-        <file>py/html2pdfrenderer.py</file>
+        <file>py/server.py</file>
     </qresource>
 </RCC>

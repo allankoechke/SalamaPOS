@@ -25,6 +25,9 @@ QVariant CompleterModel::data(const QModelIndex &index, int role) const
     if(role == CompleterKeyRole)
         return completer->key();
 
+    if(role == CompleterSpRole)
+        return completer->sp();
+
 
     else return QVariant();
 }
@@ -58,6 +61,17 @@ bool CompleterModel::setData(const QModelIndex &index, const QVariant &value, in
         break;
     }
 
+    case CompleterSpRole:
+    {
+        if( completer->sp() != value.toFloat())
+        {
+            completer->setSp(value.toFloat());
+            changed = true;
+        }
+
+        break;
+    }
+
     }
 
     if(changed)
@@ -83,6 +97,7 @@ QHash<int, QByteArray> CompleterModel::roleNames() const
 
     roles[CompleterNameRole] = "name";
     roles[CompleterKeyRole] = "key";
+    roles[CompleterSpRole] = "sp";
 
     return roles;
 }
@@ -101,7 +116,7 @@ void CompleterModel::addCompleterItems(const QVariant &str)
         QSqlDatabase m_db = QSqlDatabase::database();
 
         QSqlQuery query;
-        QString sql = "SELECT barcode, product_name, product_unit, product_company FROM product WHERE product_name ILIKE \'" + str.toString() + "%\'";
+        QString sql = "SELECT barcode, product_name, product_unit, product_company, product_sp FROM product WHERE product_name ILIKE \'" + str.toString() + "%\'";
         // query.bindValue(":productname", str.toString());
 
         if(query.exec(sql))
@@ -114,6 +129,9 @@ void CompleterModel::addCompleterItems(const QVariant &str)
                 QString name = query.value(1).toString();
                 QString unit = query.value(2).toString();
                 QString company = query.value(3).toString();
+                float sp = query.value(4).toInt();
+
+                qDebug() << sp;
 
                 QString _c = (company=="" || company==" ")? "":(" ("+company+")");
 
@@ -121,7 +139,7 @@ void CompleterModel::addCompleterItems(const QVariant &str)
 
                 // qDebug() << "Key: " << bcode << "\tStr: " << _name;
 
-                addItem(new Completer(_name, bcode));
+                addItem(new Completer(_name, bcode, sp));
             }
 
             setCompleterSize(size());

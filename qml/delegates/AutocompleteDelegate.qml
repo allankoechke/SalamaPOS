@@ -8,6 +8,7 @@ Rectangle {
     property bool isHighlighted: false
     property string label: ""
     property int labelIndex: -1
+    property real sellingprice: 0
 
     signal clicked()
 
@@ -44,6 +45,17 @@ Rectangle {
                 text: label
                 color: isHighlighted? "white":QmlInterface.isDarkTheme? "#f4f4f4":"black"
             }
+        }
+
+        AppText
+        {
+            Layout.alignment: Qt.AlignVCenter
+            Layout.leftMargin: 5
+            Layout.rightMargin: 5
+            horizontalAlignment: AppText.AlignLeft
+
+            text: "Ksh. "+(sellingprice.toString())
+            color: isHighlighted? "white":QmlInterface.isDarkTheme? "#f4f4f4":"black"
         }
     }
 

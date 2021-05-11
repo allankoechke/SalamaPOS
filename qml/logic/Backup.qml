@@ -11,7 +11,7 @@ Item {
 
         authorize: ""
         command: 'pg_dump'
-        args: "--dbname=postgresql://backupdb:E5HIQFSn@127.0.0.1:5432/salama"
+        args: "--dbname=postgresql://postgres:postgresdb@127.0.0.1:5432/salama"
 
         onReadyRead: {
             console.log("Data: ", data)

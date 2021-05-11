@@ -123,6 +123,7 @@ Window {
                             width: completions.width
                             label: model.name
                             labelIndex: model.index
+                            sellingprice: model.sp
                             isHighlighted: index === currentIndex
 
                             onClicked: currentIndex = index

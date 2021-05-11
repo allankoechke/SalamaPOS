@@ -15,7 +15,8 @@ class CompleterModel : public QAbstractListModel
 
     enum CompleterModelRoles{
         CompleterNameRole = Qt::UserRole+1,
-        CompleterKeyRole
+        CompleterKeyRole,
+        CompleterSpRole
     };
 
 public:

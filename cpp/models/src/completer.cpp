@@ -4,8 +4,8 @@ Completer::Completer(QObject *parent) : QObject(parent)
 {
 }
 
-Completer::Completer(const QString &name, const QString &key, QObject *parent)
-    :QObject(parent), m_name(name), m_key(key)
+Completer::Completer(const QString &name, const QString &key, const float &sp, QObject *parent)
+    :QObject(parent), m_name(name), m_key(key), m_sp(sp)
 {
 }
 
@@ -35,4 +35,19 @@ void Completer::setKey(QString key)
 
     m_key = key;
     emit keyChanged(m_key);
+}
+
+float Completer::sp() const
+{
+    return m_sp;
+}
+
+void Completer::setSp(float sp)
+{
+    qWarning("Floating point comparison needs context sanity check");
+    if (qFuzzyCompare(m_sp, sp))
+        return;
+
+    m_sp = sp;
+    emit spChanged(m_sp);
 }

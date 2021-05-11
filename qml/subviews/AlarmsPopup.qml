@@ -30,6 +30,7 @@ Popup
         width: root.width
         height: root.height
         visible: mainAppView.navBarIndex !== 7 && mainAppView !== 8
+        color: bgColor
 
         ListView
         {
