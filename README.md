@@ -1,5 +1,4 @@
 # SalamaPOS
-<b>POS Software 2021</b>
 <p>Version <i>v21.01.01</i> aka Bumblebee</p>
 <p>This is a software where your customer makes a payment for products or services at your store/supermarket/restaurant/etc. It keeps track of the inventory, sales, invoices, payments, and much more!</p>
 
@@ -8,7 +7,9 @@
 <h2>Supported Platforms</h2>
 <p>The app can be built and run on the platforms Qt supports, but this has been tested on Windows & Linux OS.</p>
 
-<h2>Building the App</h2>
+<p><b>NOTE: I am actively maintaining the project</b></p>
+
+# Building the App
 <p>Ensure you have the following prerequisites: </p>
 <ul>
     <li>PostgreSql ( Setup the username and password )</li>
