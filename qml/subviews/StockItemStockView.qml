@@ -77,6 +77,10 @@ Rectangle {
                                 console.log(" [ERROR] User has no priviledges to perform action")
                             }
                         }
+
+                        onHistoryClicked: {
+                            stockHistoryWindow.show()
+                        }
                     }
                 }
             }

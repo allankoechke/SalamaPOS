@@ -108,5 +108,6 @@
         <file>qml/components/CustomButton.qml</file>
         <file>qml/subviews/AlarmsPopup.qml</file>
         <file>py/server.py</file>
+        <file>qml/subviews/StockHistoryWindow.qml</file>
     </qresource>
 </RCC>

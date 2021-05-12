@@ -17,6 +17,7 @@ Rectangle {
     property string lastUpdated
 
     signal clicked()
+    signal historyClicked()
 
     RowLayout
     {
@@ -147,6 +148,39 @@ Rectangle {
 
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
+            }
+        }
+
+        Item{
+            Layout.preferredWidth: 150
+            Layout.fillHeight: true
+
+            RowLayout
+            {
+                anchors.centerIn: parent
+
+                AppText
+                {
+                    color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
+                    text: qsTr("View")
+
+                    Layout.alignment: Qt.AlignVCenter
+                }
+
+                AppIcon
+                {
+                    size: 15
+                    color: menuColor
+                    icon: "\uf061"
+
+                    Layout.alignment: Qt.AlignVCenter
+                }
+            }
+
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked: root.historyClicked()
             }
         }
     }

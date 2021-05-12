@@ -25,6 +25,7 @@ Rectangle {
     property alias salesSummaryDialog: salesSummaryDialog
     property alias messageBox: messageBox
     property alias alarmsPopup: alarmsPopup
+    property alias stockHistoryWindow: stockHistoryWindow
 
     onNavBarIndexChanged: {
         switch(navBarIndex)
@@ -284,6 +285,11 @@ Rectangle {
     AddItemToCheckoutDialog
     {
         id: addItemToCheckoutDialog
+    }
+
+    StockHistoryWindow
+    {
+        id: stockHistoryWindow
     }
 
     CreditsAndDebtsDrawer

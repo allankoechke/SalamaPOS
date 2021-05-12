@@ -106,5 +106,18 @@ Rectangle {
             Layout.minimumWidth: 150
             Layout.maximumWidth: 300
         }
+
+        VSeparator{}
+
+        AppText
+        {
+            color: "white"
+            text: qsTr("History")
+            font.bold: true
+            horizontalAlignment: AppText.AlignHCenter
+
+            Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
+            Layout.preferredWidth: 150
+        }
     }
 }

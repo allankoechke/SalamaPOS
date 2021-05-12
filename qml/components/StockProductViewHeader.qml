@@ -132,5 +132,7 @@ Rectangle {
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.preferredWidth: 100
         }
+
+
     }
 }

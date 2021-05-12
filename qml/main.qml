@@ -8,13 +8,13 @@ import "./logic"
 import "./delegates"
 
 /*
-  1. Price List
+  1. Price List [DONE]
   2. Input digits for Sales, Checkout, for stock [ DONE ]
   2. Authentication for Admin ( Dad ) [ DONE ]
   3. Disable adding users for normal accounts [ DONE]
   4. Adding user to display on Stock List [DONE]
   5. Empty state for Model-Views
-  6. Backup (offline)
+  6. Backup (offline) [DONE]
 */
 
 Window {
