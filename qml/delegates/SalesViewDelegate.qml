@@ -115,24 +115,25 @@ Rectangle {
         Item{
             Layout.preferredWidth: 100
             Layout.fillHeight: true
+            visible: false
 
             RowLayout
             {
                 anchors.centerIn: parent
+
+                AppText
+                {
+                    color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
+                    text: qsTr("View")
+
+                    Layout.alignment: Qt.AlignVCenter
+                }
 
                 AppIcon
                 {
                     size: 15
                     color: menuColor
                     icon: "\uf5a1"
-
-                    Layout.alignment: Qt.AlignVCenter
-                }
-
-                AppText
-                {
-                    color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
-                    text: qsTr("Edit")
 
                     Layout.alignment: Qt.AlignVCenter
                 }

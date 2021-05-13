@@ -178,6 +178,18 @@ QString CompleterModel::getKey(int index)
     return key;
 }
 
+QVariantMap CompleterModel::getData(int index)
+{
+    QString key = data(this->index(index), CompleterKeyRole).toString();
+    QString name = data(this->index(index), CompleterNameRole).toString();
+
+    QJsonObject obj;
+    obj.insert("name", name);
+    obj.insert("key", key);
+
+    return obj.toVariantMap();
+}
+
 int CompleterModel::findItemIndex(const QString &str)
 {
     if(str != "")

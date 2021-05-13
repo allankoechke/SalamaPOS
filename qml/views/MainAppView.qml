@@ -26,6 +26,7 @@ Rectangle {
     property alias messageBox: messageBox
     property alias alarmsPopup: alarmsPopup
     property alias stockHistoryWindow: stockHistoryWindow
+    property alias adminSalesWindow: adminSalesWindow
 
     onNavBarIndexChanged: {
         switch(navBarIndex)
@@ -320,6 +321,11 @@ Rectangle {
     AlarmsPopup
     {
         id: alarmsPopup
+    }
+
+    AdminSalesWindow
+    {
+        id: adminSalesWindow
     }
 
     function startApp(state)

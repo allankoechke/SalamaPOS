@@ -88,32 +88,55 @@ Item {
 
                 HorizontalSpacer {}
 
-                Rectangle
+                CustomButton
                 {
                     Layout.preferredHeight: 45
+                    Layout.preferredWidth: 200
                     Layout.margins: 1
 
                     color: menuColor
-                    width: 45
-                    radius: height/2
+                    radius: 5
 
-                    AppIcon
+                    RowLayout
                     {
-                        anchors.centerIn: parent
+                        anchors.fill: parent
+                        spacing: 1
 
-                        color: "#f4f4f4"
-                        size: 25
-                        icon: "\uf02f"
+                        AppIcon
+                        {
+                            Layout.fillHeight: true
+                            Layout.preferredWidth: height
+                            horizontalAlignment: AppIcon.AlignHCenter
+                            verticalAlignment: AppIcon.AlignVCenter
+
+                            size: 16
+                            color: "white"
+                            icon: "\uf7d9"
+                        }
+
+                        AppText
+                        {
+                            Layout.fillHeight: true
+                            Layout.fillWidth: true
+                            horizontalAlignment: AppIcon.AlignLeft
+                            verticalAlignment: AppIcon.AlignVCenter
+
+                            color: "#f4f4f4"
+                            size: 15
+                            text: qsTr("Admin Options")
+                        }
                     }
+
+                    onClicked: adminSalesWindow.show()
                 }
 
-                Rectangle
+                CustomButton
                 {
                     Layout.preferredHeight: 45
+                    Layout.preferredWidth: 200
                     Layout.margins: 1
 
                     color: menuColor
-                    width: 200
                     radius: 5
 
                     RowLayout
@@ -146,71 +169,7 @@ Item {
                         }
                     }
 
-                    MouseArea
-                    {
-                        anchors.fill: parent
-                        onClicked: creditNdebtpopup.open()
-                    }
-                }
-
-                Rectangle
-                {
-                    Layout.preferredHeight: 45
-                    Layout.fillWidth: true
-                    Layout.minimumWidth: 100
-                    Layout.maximumWidth: 300
-
-                    color: QmlInterface.isDarkTheme? "#29292d":"white"
-                    border.width: 1
-                    border.color: "grey"
-                    radius: 3
-                    visible: false
-
-                    RowLayout
-                    {
-                        anchors.fill: parent
-                        spacing: 0
-
-                        TextInput
-                        {
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            verticalAlignment: TextInput.AlignVCenter
-                            horizontalAlignment: TextInput.AlignLeft
-                            Layout.leftMargin: 5
-                            color: "black"
-                            font.pixelSize: 17
-                            font.family: montserratFontLoader.name
-                            selectByMouse: true
-
-                            AppText{
-                                size: parent.font.pixelSize-3
-                                color: "grey"
-                                text: qsTr("Filter items")
-                                visible: parent.text===""
-
-                                anchors.left: parent.left
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-
-                        Rectangle
-                        {
-                            Layout.fillHeight: true
-                            width: 50
-                            Layout.margins: 1
-
-                            color: menuColor
-
-                            AppIcon
-                            {
-                                anchors.centerIn: parent
-                                size: 16
-                                color: "white"
-                                icon: "\uf002"
-                            }
-                        }
-                    }
+                    onClicked: creditNdebtpopup.open()
                 }
             }
         }

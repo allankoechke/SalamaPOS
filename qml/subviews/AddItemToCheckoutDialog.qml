@@ -15,7 +15,7 @@ Window {
     property alias searchText: textField.text
     property alias currentIndex: completions.currentIndex
 
-    flags:  Qt.Dialog // | Qt.WindowCloseButtonHint
+    flags:  Qt.Dialog
     modality: Qt.ApplicationModal
     color: bgColor
     width: 500

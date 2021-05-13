@@ -613,15 +613,11 @@ QJsonObject StockItemsModel::getItemData(const QString &barcode)
 
             emit itemDataChanged(true, m_itemDetails);
 
-            // QJsonDocument doc(m_itemDetails);
-
             return m_itemDetails;
         }
 
         else
         {
-            // qDebug() << ">> Low Stock on item .. ";
-
             emit itemStockWarningChanged();
 
             return m_itemDetails;

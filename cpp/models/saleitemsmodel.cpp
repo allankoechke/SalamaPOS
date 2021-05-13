@@ -465,10 +465,6 @@ QString saleItemsModel::getUniqueSaleId()
 
 QString saleItemsModel::getCurrentTimeString()
 {
-    //qint64 sec = QDateTime::currentSecsSinceEpoch();
-    //qDebug() << "MS: " << sec;
-    //QDateTime dt = QDateTime::currentDateTime();
-    //qDebug() << "Date: " << dt.toLocalTime().toString() << "\tDate: " << dt.toLocalTime().toMSecsSinceEpoch();
     return QString::number(QDateTime::currentMSecsSinceEpoch());
 }
 
@@ -480,4 +476,103 @@ QString saleItemsModel::getDayFromToday(const int &i)
 QString saleItemsModel::generateMpesaId()
 {
     return "MP"+QString::number(QDateTime::currentDateTime().toMSecsSinceEpoch());
+}
+
+QVariantMap saleItemsModel::getItemSalesDetails(const QString &barcode, const QString &date)
+{
+    emit logDataChanged("INFO", "Starting saleItemsModel::getItemSalesDetails()");
+
+    QSqlDatabase m_db = QSqlDatabase::database();
+
+    QString upper = date + " 23:59:59+03";
+    QString lower = date + " 00:00:00+03";
+
+    QJsonArray arr;
+
+
+    QSqlQuery query;
+    QString sql = "SELECT sales_id,product_sp,sale_qty FROM \"sales\" WHERE barcode='"+barcode+"' AND sales_date > '"+lower+"' AND sales_date < '"+upper+"'";
+
+    if(query.exec(sql))
+    {
+        while(query.next())
+        {
+            QString salesId = query.value(0).toString();
+            float sp = query.value(1).toInt();
+            int qty = query.value(2).toInt();
+
+            if( arr.size() == 0 )
+            {
+                QJsonObject obj;
+                obj.insert("salesId", salesId);
+                obj.insert("sp", sp);
+                obj.insert("qty", qty);
+
+                arr.append(obj);
+            }
+
+            else
+            {
+                bool found = false;
+
+                for(int i=0; i<arr.size();i++)
+                {
+                    if(salesId == arr[i].toObject().value("salesId").toString())
+                    {
+                        QJsonObject _obj = arr[i].toObject();
+                        float _sp = _obj.value("sp").toInt();
+                        int _qty = _obj.value("qty").toInt();
+
+                        found = true;
+
+                        if(_sp == sp)
+                        {
+                            int nInt = _qty + qty;
+                            _obj["qty"] = nInt;
+                            arr[i] = _obj;
+                        }
+
+                        else
+                        {
+                            QJsonObject obj;
+                            obj.insert("salesId", salesId);
+                            obj.insert("sp", sp);
+                            obj.insert("qty", qty);
+
+                            arr.append(obj);
+                        }
+                    }
+
+                    else
+                    {
+                        continue;
+                    }
+                }
+
+                if( !found )
+                {
+                    QJsonObject obj;
+                    obj.insert("salesId", salesId);
+                    obj.insert("sp", sp);
+                    obj.insert("qty", qty);
+
+                    arr.append(obj);
+                }
+            }
+
+        }
+
+        emit logDataChanged("INFO", ">> Sucess fetching sales data");
+    }
+
+    else
+    {
+        emit logDataChanged("CRITICAL", "Error executing SQL: " + query.lastError().text());
+    }
+
+    emit logDataChanged("INFO", "Ending saleItemsModel::getItemSalesDetails()");
+
+    QJsonObject json;
+    json.insert("data", arr);
+    return json.toVariantMap();
 }

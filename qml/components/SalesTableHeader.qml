@@ -90,6 +90,7 @@ Rectangle {
 
         AppText
         {
+            visible: false
             color: "white"
             text: qsTr("Action")
             horizontalAlignment: AppText.AlignHCenter

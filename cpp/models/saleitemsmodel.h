@@ -9,6 +9,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QJsonValue>
+#include <QJsonArray>
 #include <QSqlDatabase>
 #include <QAbstractListModel>
 
@@ -53,6 +54,7 @@ public:
     Q_INVOKABLE QString getCurrentTimeString();
     Q_INVOKABLE QString getDayFromToday(const int &i);
     Q_INVOKABLE QString generateMpesaId();
+    Q_INVOKABLE QVariantMap getItemSalesDetails(const QString &barcode, const QString &date);
 
 signals:
     void saleItemAddedChanged(bool status);

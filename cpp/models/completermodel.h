@@ -6,6 +6,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QJsonObject>
 #include <QAbstractListModel>
 #include "src/completer.h"
 
@@ -21,8 +22,6 @@ class CompleterModel : public QAbstractListModel
 
 public:
     explicit CompleterModel(QObject *parent = nullptr);
-
-    //  Q_PROPERTY(bool isEmpty READ isEmpty WRITE setIsEmpty NOTIFY isEmptyChanged)
 
     // QAbstractListModel overrides
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -43,6 +42,8 @@ public:
     Q_INVOKABLE int size();
 
     Q_INVOKABLE QString getKey(int index);
+
+    Q_INVOKABLE QVariantMap getData(int index);
 
     Q_PROPERTY(int completerSize READ completerSize WRITE setCompleterSize NOTIFY completerSizeChanged)
 
