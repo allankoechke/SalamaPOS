@@ -109,5 +109,8 @@
         <file>qml/subviews/AlarmsPopup.qml</file>
         <file>py/server.py</file>
         <file>qml/subviews/StockHistoryWindow.qml</file>
+        <file>qml/delegates/StockHistoryDelegate.qml</file>
+        <file>qml/components/StockHistoryHeader.qml</file>
+        <file>qml/components/ListEmptyState.qml</file>
     </qresource>
 </RCC>

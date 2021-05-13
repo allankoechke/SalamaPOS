@@ -131,8 +131,6 @@ void CompleterModel::addCompleterItems(const QVariant &str)
                 QString company = query.value(3).toString();
                 float sp = query.value(4).toInt();
 
-                qDebug() << sp;
-
                 QString _c = (company=="" || company==" ")? "":(" ("+company+")");
 
                 QString _name = unit + " " + name + _c;

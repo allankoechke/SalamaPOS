@@ -419,6 +419,8 @@ bool ProductSalesModel::executeQuery(const QStringList &list)
 
     QSqlDatabase mdb = QSqlDatabase::database();
 
+    int _count = 0;
+
     if(!mdb.isOpen())
         emit logDataChanged("FATAL", "[ERROR] Database not open/ready yet!");
 
@@ -461,10 +463,8 @@ bool ProductSalesModel::executeQuery(const QStringList &list)
                             QString name = itemQuery.value(0).toString();
                             QString unit = itemQuery.value(1).toString();
 
-                            // qDebug() << "Name: " << name << "\tUnit: " << unit;
-
                             addSalesData(new ProductSales(sales_id,barcode,name,unit,sale_qty,product_bp,product_sp, m_json));
-                            // qDebug() << m_productSales;
+                            _count++;
                         }
 
                     }
@@ -479,11 +479,10 @@ bool ProductSalesModel::executeQuery(const QStringList &list)
                     // Update the current existing item details
                     int n_qty = sale_qty + data(this->index(_ind), ProductQtyRole).toInt();
                     setData(this->index(_ind), n_qty, ProductQtyRole);
-
-                    // qDebug() << " [INFO] Item exist, updating ...";
-
                 }
             }
+
+            setCount(_count);
             return true;
         }
 
@@ -495,10 +494,9 @@ bool ProductSalesModel::executeQuery(const QStringList &list)
         }
     }
 
-    // qDebug() << " [INFO] Ending fetch of the day's sales data ...";
-
     emit logDataChanged("INFO", "Ending ProductSalesModel::executeQuery");
 
+    setCount(_count);
     return false;
 }
 
@@ -509,4 +507,20 @@ void ProductSalesModel::clearModel()
     beginRemoveRows(QModelIndex(), 0, index);
     m_productSales.clear();
     endRemoveRows();
+
+    setCount(0);
+}
+
+int ProductSalesModel::count() const
+{
+    return m_count;
+}
+
+void ProductSalesModel::setCount(int count)
+{
+    if (m_count == count)
+        return;
+
+    m_count = count;
+    emit countChanged(m_count);
 }

@@ -35,26 +35,39 @@ Rectangle {
             Layout.preferredWidth: 50
         }
 
-        AppText
-        {
-            id: itemName
-            color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
-            horizontalAlignment: AppText.AlignLeft
-
+        Item{
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.leftMargin: 5
             Layout.fillWidth: true
+            Layout.fillHeight: true
             Layout.minimumWidth: 150
+
+            AppText
+            {
+                id: itemName
+                color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
+                horizontalAlignment: AppText.AlignLeft
+                width: parent.width
+                elide: AppText.ElideRight
+                anchors.verticalCenter: parent.verticalCenter
+            }
         }
 
-        AppText
-        {
-            id: unit
-            color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
-            horizontalAlignment: AppText.AlignHCenter
+        Item{
 
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.preferredWidth: 100
+            Layout.fillHeight: true
+
+            AppText
+            {
+                id: unit
+                color: QmlInterface.isDarkTheme? "#f4f4f4":"black"
+                horizontalAlignment: AppText.AlignHCenter
+                width: parent.width
+                elide: AppText.ElideRight
+                anchors.verticalCenter: parent.verticalCenter
+            }
         }
 
         AppText

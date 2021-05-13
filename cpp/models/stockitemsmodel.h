@@ -3,6 +3,10 @@
 
 #include <QObject>
 #include <QDebug>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QDateTime>
 #include <QAbstractListModel>
 #include "src/stockitems.h"
 #include "../databaseinterface.h"
@@ -67,6 +71,8 @@ public:
     Q_INVOKABLE void addItemCategory(const QString &category);
 
     Q_INVOKABLE QList<QString> getCategryList();
+
+    Q_INVOKABLE QVariantMap loadHistory(const QString &barcode);
 
     // Q_INVOKABLE int getCategoryIndexFromId(const QString &ind);
 

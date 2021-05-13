@@ -38,6 +38,8 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QHash<int, QByteArray> roleNames() const;
 
+    Q_PROPERTY(int count READ count WRITE setCount NOTIFY countChanged)
+
     // Q_INVOKABLES
     Q_INVOKABLE void loadSalesData();
     Q_INVOKABLE void addSalesData(const QVariant &barcode, const int &qty, const QJsonObject &cost);
@@ -56,9 +58,16 @@ public:
     int getSaleItemIndex(QString barcode);
     void clearModel();
 
+    int count() const;
+
+public slots:
+    void setCount(int count);
+
 signals:
     void salesSummaryCost(int cash, int mpesa, int cheque, int credit, int paid, int totals);
     void logDataChanged(QString level, QString info);
+
+    void countChanged(int count);
 
 private:
     QList<ProductSales *> m_productSales;
@@ -66,6 +75,7 @@ private:
     QJsonObject m_json;
 
     DateTime * m_dateTime;
+    int m_count;
 };
 
 #endif // PRODUCTSALESMODEL_H

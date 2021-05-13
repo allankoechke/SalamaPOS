@@ -95,6 +95,29 @@ Window {
             border.color: QmlInterface.isDarkTheme? "transparent":"silver"
             radius: 3
 
+            Item{
+                anchors.fill: parent
+                visible: CompleterModel.completerSize === 0 && searchText !== ""
+
+                ColumnLayout{
+                    anchors.fill: parent
+
+                    ListEmptyState
+                    {
+                        emptyLabel: qsTr("Couldn't find a match for that word!")
+                    }
+                }
+            }
+
+            AppText
+            {
+                visible: searchText === "" && CompleterModel.completerSize === 0
+                color: QmlInterface.isDarkTheme? "#fefefe":"#2e2e2e"
+                text: qsTr("Start typing in the words to search for the item.")
+                size: 15
+                anchors.centerIn: parent
+            }
+
             ScrollView
             {
                 width: completionsBox.width-6
@@ -104,6 +127,8 @@ Window {
 
                 clip: true
                 spacing: 1
+
+                visible: CompleterModel.completerSize > 0
 
                 ListView
                 {

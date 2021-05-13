@@ -79,7 +79,10 @@ Rectangle {
                         }
 
                         onHistoryClicked: {
-                            stockHistoryWindow.show()
+                            stockHistoryWindow.productBarCode = barCode;
+                            stockHistoryWindow.item = _unit +" "+itemName
+                            stockHistoryWindow.show();
+                            stockHistoryWindow.startLoading();
                         }
                     }
                 }

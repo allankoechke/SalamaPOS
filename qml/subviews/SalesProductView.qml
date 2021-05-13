@@ -32,6 +32,12 @@ Rectangle {
             color: "grey"
         }
 
+        ListEmptyState
+        {
+            visible: ProductSalesModel.count === 0
+            emptyLabel: qsTr("No Sales found for this period!")
+        }
+
         Controls2.ScrollView
         {
             id: scroll
@@ -41,6 +47,7 @@ Rectangle {
             clip: true
             Controls2.ScrollBar.horizontal.policy: Controls2.ScrollBar.AlwaysOff
             Controls2.ScrollBar.vertical.policy: Controls2.ScrollBar.AlwaysOn
+            visible: ProductSalesModel.count > 0
 
             ListView
             {

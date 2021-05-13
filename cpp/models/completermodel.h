@@ -22,6 +22,8 @@ class CompleterModel : public QAbstractListModel
 public:
     explicit CompleterModel(QObject *parent = nullptr);
 
+    //  Q_PROPERTY(bool isEmpty READ isEmpty WRITE setIsEmpty NOTIFY isEmptyChanged)
+
     // QAbstractListModel overrides
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
 

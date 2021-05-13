@@ -718,6 +718,65 @@ QList<QString> StockItemsModel::getCategryList()
     return m_categoryNames;
 }
 
+QVariantMap StockItemsModel::loadHistory(const QString &barcode)
+{
+    // Load stock history for a particular item and return as a QJsonDocument
+
+    emit logDataChanged("INFO", "Starting StockItemsModel::loadHistory()");
+
+    QSqlDatabase m_db = QSqlDatabase::database();
+
+    QJsonArray arr;
+    QJsonDocument doc;
+    QJsonObject obj1;
+
+    if(m_db.isOpen())
+    {
+        QSqlQuery query;
+        QString sql = "SELECT stock_qty_before,stock_qty_added,date_updated,is_adding FROM \"stock_history\" WHERE barcode=\'"+barcode+"\' ORDER BY id DESC";
+
+        if(query.exec(sql))
+        {
+
+            while(query.next())
+            {
+                int bQty = query.value(0).toInt();
+                int aQty = query.value(1).toInt();
+                QString date = query.value(2).toString();
+                bool isAdding = query.value(3).toBool();
+                int nQty = isAdding? (bQty+aQty):(bQty-aQty);
+
+                QDateTime dt = QDateTime::fromString(date, "yyyy-MM-ddThh:mm:ss.zzz");
+                QString dt_str =  dt.toString("dd MMM yyyy hh:mm AP");
+
+
+                QJsonObject obj;
+                obj.insert("_initialQty", bQty);
+                obj.insert("_diffQty", aQty);
+                obj.insert("_newQty", nQty);
+                obj.insert("_isAdding", isAdding);
+                obj.insert("_dayUpdated", dt_str);
+
+                arr.append(obj);
+            }
+
+            emit logDataChanged("INFO", "Stock History Data loaded Successfully!");
+        }
+
+        else
+        {
+            emit logDataChanged("CRITICAL", "Error executing SQL: " + m_db.lastError().text() + " :: " + query.lastError().text());
+            qDebug() << ">> " << query.executedQuery();
+        }
+    }
+
+    obj1.insert("data", arr);
+    doc = QJsonDocument(obj1);
+    emit logDataChanged("INFO", "Ending StockItemsModel::loadHistory()");
+
+    return obj1.toVariantMap();;
+}
+
 QString StockItemsModel::getCurrentTime()
 {
     return m_dateTime->getTimestamp("now").at(0);
