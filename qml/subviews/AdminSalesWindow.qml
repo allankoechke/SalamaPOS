@@ -255,7 +255,7 @@ Window {
                 color: menuColor
 
                 onClicked: {
-                    getItems();
+                    isInvalidSelected? AlarmsModel.addAlarmItem("error", "No valid item selected"):getItems();
                 }
 
                 AppText
@@ -588,6 +588,7 @@ Window {
         onDone: {
             StockItemModel.initializeStockFromDb();
             getItems();
+            // Propagate change
             salesView.getData();
 
             if(adminTableModel.length==0)
