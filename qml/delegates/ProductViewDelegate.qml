@@ -248,6 +248,7 @@ Rectangle {
         Item{
             Layout.preferredWidth: 100
             Layout.fillHeight: true
+            visible: isAdmin
 
             RowLayout
             {

@@ -152,6 +152,7 @@ Rectangle {
         }
 
         Item{
+            visible: isAdmin
             Layout.preferredWidth: 150
             Layout.fillHeight: true
 

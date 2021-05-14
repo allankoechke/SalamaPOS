@@ -15,6 +15,27 @@ Item {
     property var currentScreen: 0
     property alias currentIndex: cb.currentIndex
 
+    function getData()
+    {
+        if(currentIndex === 0)
+            ProductSalesModel.showTodaysSales();
+
+        else if(currentIndex === 1)
+            ProductSalesModel.showYesterdaysSales();
+
+        else if(currentIndex === 2)
+            ProductSalesModel.showThisWeeksSales();
+
+        else if(currentIndex === 3)
+            ProductSalesModel.showThisMonthsSales();
+
+        else if(currentIndex === 4)
+            ProductSalesModel.showThisYearsSales();
+
+        else
+            ProductSalesModel.loadSalesData();
+    }
+
     ColumnLayout
     {
         anchors.fill: parent
@@ -66,23 +87,7 @@ Item {
                     Layout.rightMargin: 10
 
                     onCurrentIndexChanged: {
-                        if(currentIndex === 0)
-                            ProductSalesModel.showTodaysSales();
-
-                        else if(currentIndex === 1)
-                            ProductSalesModel.showYesterdaysSales();
-
-                        else if(currentIndex === 2)
-                            ProductSalesModel.showThisWeeksSales();
-
-                        else if(currentIndex === 3)
-                            ProductSalesModel.showThisMonthsSales();
-
-                        else if(currentIndex === 4)
-                            ProductSalesModel.showThisYearsSales();
-
-                        else
-                            ProductSalesModel.loadSalesData();
+                        getData();
                     }
                 }
 
@@ -96,6 +101,7 @@ Item {
 
                     color: menuColor
                     radius: 5
+                    visible: isAdmin
 
                     RowLayout
                     {

@@ -576,3 +576,324 @@ QVariantMap saleItemsModel::getItemSalesDetails(const QString &barcode, const QS
     json.insert("data", arr);
     return json.toVariantMap();
 }
+
+bool saleItemsModel::undoSale(const QString &barcode, const QString &salesid, const int &qty)
+{
+    emit logDataChanged("INFO", "Starting saleItemsModel::undoSale()");
+
+    int soldQty = qty;
+
+    QSqlDatabase m_db = QSqlDatabase::database();
+
+    try {
+        if(m_db.isOpen())
+        {
+            QSqlQuery query, query1, query2;
+
+            // PAYMENTS TABLE
+            query.prepare("SELECT cash,mpesa,cheque,credit FROM \"payment\" WHERE sales_id=:sales_id");
+            query.bindValue(":sales_id", salesid);
+
+            // SALES TABLE
+            query1.prepare("SELECT id,product_sp,sale_qty FROM \"sales\" WHERE sales_id=:sales_id AND barcode=:barcode");
+            query1.bindValue(":sales_id", salesid);
+            query1.bindValue(":barcode", barcode);
+
+            // STOCK TABLE
+            query2.prepare("SELECT stock_qty FROM \"stock\" WHERE barcode=:barcode");
+            query2.bindValue(":barcode", barcode);
+
+            if(query.exec() && query1.exec() && query2.exec())
+            {
+                bool found = false;
+                bool executedSuccessful = true;
+
+                while(query.next())
+                {
+                    found = true;
+
+                    float cash = query.value(0).toInt();
+                    float mpesa = query.value(1).toInt();
+                    // float cheque = query.value(2).toInt();
+                    // float credit = query.value(3).toInt();
+                    float subT = cash+mpesa;
+
+                    bool found1 = false;
+
+                    while (query1.next())
+                    {
+                        found1 = true;
+                        int id = query1.value(0).toInt();
+                        float sp = query1.value(1).toInt();
+                        int s_qty = query1.value(2).toInt();
+                        int n_qty, n_c, n_m, n_subT, processedQty=0;
+
+                        QString sqlA="", sqlB="", sqlC="";
+                        QSqlQuery qA, qB, qC;
+
+                        if(soldQty < s_qty)
+                        {
+                            qDebug() << "Quantity less than";
+                            n_subT = soldQty * sp;
+                            n_qty = s_qty - soldQty;
+                            processedQty = soldQty;
+
+                            if( subT >= n_subT)
+                            {
+                                if(cash >= n_subT)
+                                {
+                                    n_c = cash-n_subT;
+                                    n_subT -= n_subT;
+                                    n_m = mpesa;
+                                }
+
+                                else
+                                {
+                                    n_c = 0;
+                                    n_subT -= cash;
+                                    n_m = mpesa-n_subT;
+                                }
+
+                                sqlA = "UPDATE \"sales\" SET sale_qty=:sale_qty WHERE  id=:id";
+                                qA.prepare(sqlA);
+                                qA.bindValue(":sale_qty", n_qty);
+                                qA.bindValue(":id", id);
+
+                                sqlB = "UPDATE \"payment\" SET cash=:cash, mpesa=:mpesa WHERE  sales_id=:sales_id";
+                                qB.prepare(sqlB);
+                                qB.bindValue(":cash", n_c);
+                                qB.bindValue(":mpesa", n_m);
+                                qB.bindValue(":sales_id", salesid);
+
+                                if(mpesa>0 && n_m == 0)
+                                {
+                                    sqlC = "DELETE FROM \"mpesa\" WHERE sales_id=:sales_id";
+                                    qC.prepare(sqlC);
+                                    qC.bindValue(":sales_id", salesid);
+                                }
+                            }
+
+                            else
+                            {
+                                // The subtotals are not enough for the task
+                                break;
+                            }
+                        }
+
+                        else if(soldQty == s_qty)
+                        {
+                            qDebug() << "Quantity is equal";
+                            n_subT = soldQty * sp;
+                            processedQty = soldQty;
+                            n_qty = 0;
+
+                            if( subT==n_subT )
+                            {
+                                sqlA = "DELETE FROM \"sales\" WHERE  id=:id";
+                                qA.prepare(sqlA);
+                                qA.bindValue(":id", id);
+
+                                sqlB = "DELETE FROM \"payment\" WHERE  sales_id=:sales_id";
+                                qB.prepare(sqlB);
+                                qB.bindValue(":sales_id", salesid);
+
+                                if(mpesa>0)
+                                {
+                                    sqlC = "DELETE FROM \"mpesa\" WHERE sales_id=:sales_id";
+                                    qC.prepare(sqlC);
+                                    qC.bindValue(":sales_id", salesid);
+                                }
+                            }
+
+                            else
+                            {
+                                if( subT >= n_subT)
+                                {
+                                    if(cash >= n_subT)
+                                    {
+                                        n_c = cash-n_subT;
+                                        n_subT -= n_subT;
+                                        n_m = mpesa;
+                                    }
+
+                                    else
+                                    {
+                                        n_c = 0;
+                                        n_subT -= cash;
+                                        n_m = mpesa-n_subT;
+                                    }
+
+                                    sqlA = "UPDATE \"sales\" SET sale_qty=:sale_qty WHERE  id=:id";
+                                    qA.prepare(sqlA);
+                                    qA.bindValue(":sale_qty", n_qty);
+                                    qA.bindValue(":id", id);
+
+                                    sqlB = "UPDATE \"payment\" SET cash=:cash, mpesa=:mpesa WHERE  sales_id=:sales_id";
+                                    qB.prepare(sqlB);
+                                    qB.bindValue(":cash", n_c);
+                                    qB.bindValue(":mpesa", n_m);
+                                    qB.bindValue(":sales_id", salesid);
+
+                                    if(mpesa>0 && n_m == 0)
+                                    {
+                                        sqlC = "DELETE FROM \"mpesa\" WHERE sales_id=:sales_id";
+                                        qC.prepare(sqlC);
+                                        qC.bindValue(":sales_id", salesid);
+                                    }
+                                }
+
+                                else
+                                {
+                                    // The subtotals are not enough for the task
+                                    break;
+                                }
+                            }
+
+                        }
+
+                        else
+                        {
+                            qDebug() << "Quantity is greater";
+                        }
+
+                        if(qA.exec())
+                        {
+                            qDebug() << "qA executed successfully!";
+                            executedSuccessful = executedSuccessful && true;
+                        }
+
+                        else
+                        {
+                            executedSuccessful = executedSuccessful && false;
+                            qDebug() << "-> qA = " << sqlA;
+                            qDebug() << "[qA] Error executing SQL:: " << qA.executedQuery() << "\t" << qA.lastError();
+                        }
+
+                        if(qB.exec())
+                        {
+                            qDebug() << "qB executed successfully!";
+                            executedSuccessful = executedSuccessful && true;
+                        }
+
+                        else
+                        {
+                            executedSuccessful = executedSuccessful && false;
+                            qDebug() << "-> qA = " << sqlB;
+                            qDebug() << "[qB] Error executing SQL:: " << qB.executedQuery() << "\t" << qB.lastError();
+                        }
+
+                        if(sqlC !="")
+                        {
+                            if(qC.exec())
+                            {
+                                qDebug() << "qC executed successfully!";
+                                executedSuccessful = executedSuccessful && true;
+                            }
+
+                            else
+                            {
+                                executedSuccessful = executedSuccessful && false;
+                                qDebug() << "-> qA = " << sqlC;
+                                qDebug() << "[qC] Error executing SQL:: " << qC.executedQuery() << "\t" << qC.lastError();
+                            }
+                        }
+
+                        if(!executedSuccessful)
+                            break;
+
+                        soldQty -= processedQty;
+
+                        if(soldQty==0)
+                            break;
+                    }
+
+                    if( !found1 )
+                    {
+                        qDebug() << "Didn't find any sale items.";
+                        emit emitError("warning", "Couldn't find any matching items!");
+                    }
+
+                    if( executedSuccessful )
+                    {
+                        if(soldQty==0)
+                        {
+                            while(query2.next())
+                            {
+                                int stock_qty = query2.value(0).toInt();
+                                int n_stock_qty = stock_qty + qty;
+
+                                // qDebug() << query2.value(0).toInt() << "\t" << query2.value(0).toString();
+                                // qDebug() << "Stock: " << stock_qty << "\tSold Qty: " << qty << "\tNew Stock: " << n_stock_qty;
+
+                                QSqlQuery qA;
+                                qA.prepare("UPDATE \"stock\" SET stock_qty=:stock_qty WHERE barcode=:barcode");
+                                qA.bindValue(":stock_qty", n_stock_qty);
+                                qA.bindValue(":barcode", barcode);
+
+                                if(qA.exec())
+                                {
+                                    qDebug() << "Upadating stock executed successfully!";
+
+                                    m_db.commit();
+                                    qDebug() << "\t->Committed to database";
+                                    emit emitError("info", "All changes saved!");
+                                    return true;
+                                }
+
+                                else
+                                {
+                                    qDebug() << "[Upadating stock] Error executing SQL:: " << qA.executedQuery() << "\t" << qA.lastError();
+
+
+                                    m_db.rollback();
+                                    qDebug() << "\t->Rolling back database";
+                                    return false;
+                                }
+
+                                break;
+                            }
+                        }
+
+                        else
+                        {
+                            m_db.rollback();
+                            emit emitError("warning", "Unable to undo all the sale quantity, not enough found!");
+                            qDebug() << "Unable to undo all qty, arboting";
+                            return false;
+                        }
+                    }
+
+                    else
+                    {
+                        m_db.rollback();
+                        qDebug() << "\t->Database Rollback!";
+                    }
+
+                    break;
+                }
+
+                if(!found)
+                {
+                    qDebug() << "No data found in the payment section!";
+                }
+
+            }
+
+            else
+            {
+                qDebug() << "[MAIN] Error executing SQL: " << query.lastError() << "\t: " << query.executedQuery();
+            }
+        }
+
+        else
+            emit logDataChanged("FATAL", "Database not open");
+
+    }  catch (const std::exception &e) {
+        qDebug() << "Error encountered: " << e.what();
+        emit emitError("warning", "Failed to process request!");
+        return false;
+    }
+
+    emit logDataChanged("INFO", "Ending saleItemsModel::undoSale()");
+    return false;
+}

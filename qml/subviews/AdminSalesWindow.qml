@@ -32,7 +32,14 @@ Window {
 
     onClosing: {
         close.accepted = false
+        resetFields();
         close.accepted = true
+    }
+
+    function resetFields()
+    {
+        selectedDate=new Date();
+        selectedObject=undefined;
     }
 
     ColumnLayout
@@ -226,6 +233,7 @@ Window {
                 onClicked: {
                     selectedObject=undefined
                     selectedDate = new Date()
+                    adminTableModel = []
                 }
 
                 AppText
@@ -247,11 +255,7 @@ Window {
                 color: menuColor
 
                 onClicked: {
-                    var jsonObj = SalesModel.getItemSalesDetails(selectedObject["key"], Qt.formatDate(selectedDate, "yyyy-MM-dd"))
-
-                    console.log("JSON Obj: \n\t", JSON.stringify(jsonObj))
-
-                    adminTableModel = jsonObj.data
+                    getItems();
                 }
 
                 AppText
@@ -385,6 +389,18 @@ Window {
                 }
             }
 
+            Item{
+                anchors.fill: parent
+                anchors.topMargin: 52
+                visible: adminTableModel.length===0
+
+                AppText
+                {
+                    color: QmlInterface.isDarkTheme? "#fefefe":"#2e2e2e"
+                    text: qsTr("Nothing here!")
+                    anchors.centerIn: parent
+                }
+            }
 
             ListView
             {
@@ -392,6 +408,7 @@ Window {
                 anchors.fill: parent
                 anchors.topMargin: 52
                 model: adminTableModel
+                visible: adminTableModel.length>0
                 clip: true
                 delegate: Item{
                     id: adminDelegate
@@ -403,10 +420,19 @@ Window {
                     property string it_sales_id
                     property int it_index
 
+                    signal accepted(string salesid, string bcode, int q_ty)
+
                     it_sp: model.modelData.sp
                     it_sales_id: model.modelData.salesId
                     it_qty: model.modelData.qty
                     it_index: index+1
+
+                    onAccepted: {
+                        undoSalesPopup.open();
+                        undoSalesPopup.salesid = salesid
+                        undoSalesPopup.higherLimit = q_ty;
+                        undoSalesPopup.barcode = bcode;
+                    }
 
                     Rectangle
                     {
@@ -504,6 +530,8 @@ Window {
                                     radius: 5
                                     color: menuColor
 
+                                    onClicked: adminDelegate.accepted(adminDelegate.it_sales_id, selectedObject["key"], adminDelegate.it_qty)
+
                                     Row
                                     {
                                         anchors.centerIn: parent
@@ -551,5 +579,40 @@ Window {
         onAccepted: {
             selectedObject = obj;
         }
+    }
+
+    UndoSalesPopup
+    {
+        id: undoSalesPopup
+
+        onDone: {
+            StockItemModel.initializeStockFromDb();
+            getItems();
+            salesView.getData();
+
+            if(adminTableModel.length==0)
+            {
+                resetFields();
+            }
+        }
+    }
+
+    Connections
+    {
+        target: SalesModel
+
+        function onEmitError(s,l)
+        {
+            AlarmsModel.addAlarmItem(s,l);
+        }
+    }
+
+    function getItems()
+    {
+        var jsonObj = SalesModel.getItemSalesDetails(selectedObject["key"], Qt.formatDate(selectedDate, "yyyy-MM-dd"))
+
+        console.log("JSON Obj: \n\t", JSON.stringify(jsonObj))
+
+        adminTableModel = jsonObj.data
     }
 }

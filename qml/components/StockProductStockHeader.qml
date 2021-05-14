@@ -107,10 +107,11 @@ Rectangle {
             Layout.maximumWidth: 300
         }
 
-        VSeparator{}
+        VSeparator{ visible: isAdmin }
 
         AppText
         {
+            visible: isAdmin
             color: "white"
             text: qsTr("History")
             font.bold: true

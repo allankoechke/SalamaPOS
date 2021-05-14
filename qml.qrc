@@ -115,5 +115,6 @@
         <file>qml/subviews/AdminSalesWindow.qml</file>
         <file>qml/subviews/CalendarPopup.qml</file>
         <file>qml/subviews/SearchAndSelectItemPopup.qml</file>
+        <file>qml/subviews/UndoSalesPopup.qml</file>
     </qresource>
 </RCC>

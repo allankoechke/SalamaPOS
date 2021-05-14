@@ -120,10 +120,11 @@ Rectangle {
             Layout.maximumWidth: 300
         }
 
-        VSeparator{}
+        VSeparator{ visible: isAdmin}
 
         AppText
         {
+            visible: isAdmin
             color: "white"
             text: qsTr("Action")
             font.bold: true
@@ -132,7 +133,5 @@ Rectangle {
             Layout.alignment: Qt.AlignVCenter|Qt.AlignHCenter
             Layout.preferredWidth: 100
         }
-
-
     }
 }

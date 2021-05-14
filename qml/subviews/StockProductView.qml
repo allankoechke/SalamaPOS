@@ -65,22 +65,29 @@ Rectangle {
                         company: _company===""? "---":_company
 
                         onClicked: {
-                            newItemPopup.open();
-                            newItemPopup.currentIndex = index
-                            newItemPopup.barCode = barCode;
-                            newItemPopup.itemName = itemName;
-                            newItemPopup.itemUnit = unit;
-                            newItemPopup.itemBp = bp;
-                            newItemPopup.itemSp = sp;
-                            newItemPopup.itemQty = qty;
-                            newItemPopup.itemCompany = company==="---"? "":company;
+                            if(isAdmin)
+                            {
+                                newItemPopup.open();
+                                newItemPopup.currentIndex = index
+                                newItemPopup.barCode = barCode;
+                                newItemPopup.itemName = itemName;
+                                newItemPopup.itemUnit = unit;
+                                newItemPopup.itemBp = bp;
+                                newItemPopup.itemSp = sp;
+                                newItemPopup.itemQty = qty;
+                                newItemPopup.itemCompany = company==="---"? "":company;
 
-                            newItemPopup.isNewItemMode = false;
+                                newItemPopup.isNewItemMode = false;
+                            }
+
+                            else
+                            {
+                                AlarmsModel.addAlarmItem("error", "Sorry, this is done by admins only!")
+                            }
                         }
                     }
                 }
             }
-
         }
     }
 }

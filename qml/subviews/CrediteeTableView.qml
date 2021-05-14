@@ -21,6 +21,7 @@ Item
         Item{
             Layout.fillWidth: true
             Layout.preferredHeight: 40
+            visible: isAdmin
 
             RowLayout
             {

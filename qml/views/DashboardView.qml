@@ -615,7 +615,7 @@ Item {
 
                                 DashboardShortcutButton
                                 {
-                                    visible: loggedUser_canAddAccounts
+                                    visible: isAdmin
                                     icon: "\uf234"
                                     label: qsTr("Add new user")
 
@@ -651,6 +651,7 @@ Item {
 
                                 DashboardShortcutButton
                                 {
+                                    visible: isAdmin
                                     icon: "\uf124"
                                     label: qsTr("Send a message")
 

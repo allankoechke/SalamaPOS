@@ -55,6 +55,7 @@ public:
     Q_INVOKABLE QString getDayFromToday(const int &i);
     Q_INVOKABLE QString generateMpesaId();
     Q_INVOKABLE QVariantMap getItemSalesDetails(const QString &barcode, const QString &date);
+    Q_INVOKABLE bool undoSale(const QString &barcode, const QString &salesid, const int &qty);
 
 signals:
     void saleItemAddedChanged(bool status);
@@ -64,6 +65,7 @@ signals:
     void updateSalesModelChanged(QString bcode, int qty);
     void addCrediteeChanged(QString idNo, int amount);
     void logDataChanged(QString level, QString info);
+    void emitError(QString level, QString desc);
 
 private:
     QList<SaleItems *> m_saleItems;
