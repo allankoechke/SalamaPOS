@@ -170,7 +170,7 @@ Item {
                     {
                         text: qsTr("Don't have an account? Create One")
                         size: 13
-                        // visible: false
+                        visible: false
                         color: QmlInterface.isDarkTheme? "grey":"#535353"
 
                         Layout.alignment: Qt.AlignHCenter
