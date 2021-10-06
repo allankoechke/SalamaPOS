@@ -21,9 +21,16 @@ Item {
         {
             if (req.readyState === XMLHttpRequest.DONE)
             {
+                if(req.responseText === "")
+                {
+                    return;
+                }
+
                 console.log("Request successful!")
 
                 AlarmsModel.addAlarmItem('info', 'Price List generated successfully')
+
+                console.log(req.responseText)
 
                 var obj = JSON.parse(req.responseText)
 

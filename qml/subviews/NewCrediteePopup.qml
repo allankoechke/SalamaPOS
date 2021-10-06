@@ -8,7 +8,7 @@ Controls2.Popup
 {
     id: root
     width: 450
-    height: 350
+    height: 300
 
     x: (mainApp.width - width)/2
     y: (mainApp.height - height)/2
@@ -101,6 +101,7 @@ Controls2.Popup
                     AppTextInput
                     {
                         id: idno
+                        visible: false
                         prefWidth: 150
                         label: qsTr("National ID")
                         hintText: qsTr("Creditee ID No.")
@@ -184,8 +185,8 @@ Controls2.Popup
                                 {
                                     anchors.fill: parent
                                     onClicked: {
-
-                                        if(fname!=="" && lname !== "" && mobile!=="" && idNo!=="")
+                                        idNo = Date.now().toString()
+                                        if(fname!=="" && lname !== "" && mobile!=="")
                                         {
                                             if(isNewCrediteeMode)
                                                 CrediteeModel.addNewCreditee(fname, lname, mobile, idNo);

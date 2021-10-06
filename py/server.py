@@ -19,7 +19,7 @@ def convert():
     state = _convert(html)
 
     if state:
-        return jsonify(data=True, path=os.path.expanduser("~/Documents/PriceList.pdf"))
+        return jsonify(data=True, path=os.path.expanduser("~") +"/Documents/PriceList.pdf")
     else:
         return jsonify(data=False, path="")
 

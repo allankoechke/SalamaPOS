@@ -320,8 +320,6 @@ void CrediteeAccountsModel::getPaymentHistory(const QString &idNo)
                 int paid = query.value(1).toInt();
                 int due = query.value(2).toInt();
 
-                // qDebug() << "Paid On: " << date;
-
                 QDateTime dt = QDateTime::fromString(date, "yyyy-MM-ddThh:mm:ss.zzz");
 
                 emit paymentReceived(dt.toString(" dd MMM, yyyy hh:mm AP"), paid, due);
