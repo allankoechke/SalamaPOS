@@ -65,7 +65,7 @@ Rectangle {
                 color: "#f4f4f4"
                 size: 18
                 font.bold: true
-                text: qsTr("ID Number")
+                text: qsTr("Unique No.")
                 width: parent.width
                 elide: AppText.ElideRight
 

@@ -14,6 +14,8 @@ Controls2.Drawer {
     edge: Qt.RightEdge
     interactive: false
 
+
+
     contentItem: Rectangle
     {
         color: QmlInterface.isDarkTheme? "#1e2027":bgColor
@@ -35,7 +37,6 @@ Controls2.Drawer {
                     anchors.centerIn: parent
 
                     size: 18
-                    // font.bold: true
                     color: QmlInterface.isDarkTheme? "#999fa6":"#555555"
                     text: qsTr("Creditee & Debts Information Panel")
                 }
@@ -56,7 +57,7 @@ Controls2.Drawer {
                     MouseArea
                     {
                         anchors.fill: parent
-                        onClicked: root.close()
+                        onClicked: { stack.currentIndex = 0; root.close() }
                     }
                 }
             }
