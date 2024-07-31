@@ -62,6 +62,24 @@ Controls2.Popup
 
                     anchors.centerIn: parent
                 }
+
+                AppButton
+                {
+                    radius: 3
+                    height: 36
+                    width: 100
+                    bgRect.color: "transparent"
+                    bgRect.border {
+                        color: backgroundColor
+                        width: 1
+                    }
+
+                    text: qsTr("+ New")
+                    onClicked: newCrediteePopup.open()
+
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                }
             }
 
             Rectangle
@@ -169,7 +187,7 @@ Controls2.Popup
             Item
             {
                 Layout.fillWidth: true
-                Layout.preferredHeight: 35
+                Layout.preferredHeight: 48
 
                 RowLayout
                 {
@@ -178,71 +196,43 @@ Controls2.Popup
 
                     HorizontalSpacer {}
 
-                    Rectangle
+                    AppButton
                     {
+                        radius: 3
+                        bgRect.color: "transparent"
+                        bgRect.border {
+                            color: backgroundColor
+                            width: 1
+                        }
+
+                        text: qsTr("Cancel")
+                        onClicked: root.close()
                         Layout.fillHeight: true
                         Layout.preferredWidth: 100
-
-                        color: menuColor
-                        radius: 3
-
-
-                        AppText
-                        {
-                            color: "white"
-                            size: 15
-                            text: qsTr("Cancel")
-
-                            anchors.centerIn: parent
-                        }
-
-                        MouseArea
-                        {
-                            anchors.fill: parent
-                            onClicked: root.close()
-                        }
                     }
 
-                    Rectangle
+                    AppButton
                     {
+                        text: qsTr("Select")
+                        onClicked: {
+                            root.accepted()
+                            root.close()
+                        }
+
                         Layout.fillHeight: true
                         Layout.preferredWidth: 120
-
-                        color: menuColor
-                        radius: 3
-
-                        RowLayout
-                        {
-                            anchors.centerIn: parent
-
-                            spacing: 10
-
-                            AppIcon
-                            {
-                                color: "white"
-                                size: 15
-                                icon: "\uf067"
-                            }
-
-                            AppText
-                            {
-                                color: "white"
-                                size: 15
-                                text: qsTr("Select")
-                            }
-                        }
-
-                        MouseArea
-                        {
-                            anchors.fill: parent
-                            onClicked: {
-                                root.accepted()
-                                root.close()
-                            }
-                        }
                     }
                 }
             }
+        }
+    }
+
+    Connections {
+        target: newCrediteePopup
+
+        function onCrediteeAdded() {
+            // TODO
+            // Fetch the creditee and update the table
         }
     }
 }

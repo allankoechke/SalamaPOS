@@ -289,7 +289,7 @@ Controls2.Drawer {
                                     size: 20
                                     opacity: enabled? 1:0.2
                                     enabled: parseInt(creditAmount===""? 0:creditAmount)>0
-                                    text: isCrediteeSelected? qsTr("Creditee Selected"):qsTr("Select Creditee")
+                                    text: isCrediteeSelected? qsTr("Creditee Selected"):qsTr("Select/Add Creditee")
 
                                     Layout.fillWidth: true
                                     Layout.fillHeight: true

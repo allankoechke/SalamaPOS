@@ -24,6 +24,8 @@ Controls2.Popup
     property alias mobile: _mobile.text
     property alias idNo: idno.text
 
+    signal crediteeAdded()
+
     contentItem: Rectangle
     {
         color: QmlInterface.isDarkTheme? "#1e2027":bgColor
@@ -222,7 +224,8 @@ Controls2.Popup
                 idNo = "";
                 mobile = "";
 
-                root.close();
+                root.crediteeAdded()
+                root.close();                
             }
 
             else
@@ -240,6 +243,7 @@ Controls2.Popup
                 idNo = "";
                 mobile = "";
 
+                root.crediteeAdded()
                 root.close();
             }
 

@@ -14,8 +14,6 @@ Controls2.Drawer {
     edge: Qt.RightEdge
     interactive: false
 
-
-
     contentItem: Rectangle
     {
         color: QmlInterface.isDarkTheme? "#1e2027":bgColor
