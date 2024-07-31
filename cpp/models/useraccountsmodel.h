@@ -67,6 +67,8 @@ public:
 
     Q_INVOKABLE void markAccountForDeleting(const QVariant &userUsername);
 
+    Q_INVOKABLE bool updatePassword(const QString& currentPasswordText, const QString& passwordText);
+
     Q_INVOKABLE void loadAllUserAccounts();
 
     Q_INVOKABLE void loginUser(const QVariant &uname, const QVariant &pswd);

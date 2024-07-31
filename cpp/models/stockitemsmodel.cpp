@@ -787,9 +787,15 @@ void StockItemsModel::removeItem(int index)
 
 void StockItemsModel::removeAllItems()
 {
-    beginRemoveRows(QModelIndex(), 0, m_stockItems.size());
-    m_stockItems.clear();
-    endRemoveRows();
+    // TODO fix crash
+    if(m_stockItems.size() > 0)
+    {
+        beginRemoveRows(QModelIndex(), 0, m_stockItems.size());
+        m_stockItems.clear();
+        endRemoveRows();
+    } else {
+        m_stockItems.clear();
+    }
 }
 
 

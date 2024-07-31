@@ -111,6 +111,7 @@ Rectangle {
         {
             menuIcon: "\uf0c0"
             menuLabel: qsTr("Accounts")
+            visible: mainApp.isAdmin
             isMenuCurrentlyActive: navBarIndex === 6
 
             onMenuClicked: navBarIndex = 6;

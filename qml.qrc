@@ -116,5 +116,7 @@
         <file>qml/subviews/CalendarPopup.qml</file>
         <file>qml/subviews/SearchAndSelectItemPopup.qml</file>
         <file>qml/subviews/UndoSalesPopup.qml</file>
+        <file>qml/subviews/PasswordResetPopup.qml</file>
+        <file>qml/components/AppButton.qml</file>
     </qresource>
 </RCC>

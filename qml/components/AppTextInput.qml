@@ -5,7 +5,8 @@ import QtQuick.Controls 2.4 as Controls2
 Item
 {
     Layout.fillWidth: true
-    Layout.preferredHeight: 40
+    Layout.preferredHeight: implicitHeight
+    implicitHeight: 40
 
     property alias label: textLabel.text
     property alias readOnly: textInput.readOnly

@@ -3,6 +3,7 @@ import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
 
 import "../components"
+import "../subviews"
 
 Popup {
     id: root
@@ -113,7 +114,10 @@ Popup {
                 forecolor: "white"
                 icon: "\uf084"
 
-                onClicked: root.close()
+                onClicked: {
+                    // root.close();
+                    passwordResetPopup.open()
+                }
             }
 
             CommandButton

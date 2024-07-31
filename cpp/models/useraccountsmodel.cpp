@@ -1,5 +1,7 @@
 #include "useraccountsmodel.h"
 
+#include <memory>
+
 UserAccountsModel::UserAccountsModel(QObject *parent) : QAbstractListModel(parent)
 {
 
@@ -35,6 +37,8 @@ QVariant UserAccountsModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     UserAccounts * accounts = mUserAccounts.at(index.row());
+
+    // shared/unique ptr
 
     if(role == UserFirstnameRole)
         return accounts->userFirstname();
@@ -699,6 +703,12 @@ void UserAccountsModel::markAccountForDeleting(const QVariant &userUsername)
     emit logDataChanged("INFO", "Ending markAccountForDeleting()");
 }
 
+bool UserAccountsModel::updatePassword(const QString &currentPasswordText, const QString &passwordText)
+{
+
+    return true;
+}
+
 void UserAccountsModel::loadAllUserAccounts()
 {
     emit logDataChanged("INFO", "Starting loadAllUserAccounts()");
@@ -865,7 +875,9 @@ QString UserAccountsModel::hashPassword(const QString &pswd)
     qDebug() << "Salt: " << salt << " :: " << salt.toUtf8();
     QCryptographicHash hash(QCryptographicHash::Sha3_256);
     hash.addData(pswd.toUtf8() + salt.toUtf8());
-    return hash.result().toHex()+":"+salt;
+    auto hashedPassword = hash.result().toHex()+":"+salt;
+    qDebug() << hashedPassword;
+    return hashedPassword;
 }
 
 bool UserAccountsModel::login(const QString &savedPswd, const QString &inputPswd)

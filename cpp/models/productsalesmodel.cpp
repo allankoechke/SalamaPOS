@@ -504,9 +504,14 @@ void ProductSalesModel::clearModel()
 {
     int index = m_productSales.size() - 1;
 
-    beginRemoveRows(QModelIndex(), 0, index);
-    m_productSales.clear();
-    endRemoveRows();
+    if(index >= 0)
+    {
+        beginRemoveRows(QModelIndex(), 0, index);
+        m_productSales.clear();
+        endRemoveRows();
+    } else {
+        m_productSales.clear();
+    }
 
     setCount(0);
 }

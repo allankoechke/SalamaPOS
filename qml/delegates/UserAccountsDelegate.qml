@@ -103,6 +103,8 @@ Rectangle {
         Item{
             Layout.preferredWidth: 100
             Layout.fillHeight: true
+            enabled: mainApp.isAdmin
+            opacity: enabled ? 1 : 0.4
 
             RowLayout
             {
@@ -129,6 +131,7 @@ Rectangle {
             MouseArea
             {
                 anchors.fill: parent
+                cursorShape: parent.enabled ? Qt.ArrowCursor : Qt.ForbiddenCursor
                 onClicked: root.editedChanged();
             }
         }

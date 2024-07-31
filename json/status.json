@@ -6,5 +6,6 @@
     "canAddStock":true,
     "canRemoveStock":false,
     "canUndoSales":false,
-    "canBackupDb":false
+    "canBackupDb":false,
+    "isAdmin": false
 }

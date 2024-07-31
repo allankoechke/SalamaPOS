@@ -27,6 +27,7 @@ Rectangle {
     property alias alarmsPopup: alarmsPopup
     property alias stockHistoryWindow: stockHistoryWindow
     property alias adminSalesWindow: adminSalesWindow
+    property alias passwordResetPopup: passwordResetPopup
 
     onNavBarIndexChanged: {
         switch(navBarIndex)
@@ -276,6 +277,10 @@ Rectangle {
     UserAccountPopup
     {
         id: userAccountPopup
+    }
+
+    PasswordResetPopup {
+        id: passwordResetPopup
     }
 
     AccountsPopup

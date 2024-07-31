@@ -52,7 +52,14 @@ Window {
     property bool loggedUser_canDeleteStock: false
     property bool loggedUser_canUndoSales: false
     property bool loggedUser_canBackupDb: false
-    property bool isAdmin: false
+    property bool isAdmin: loggedUser_canAddAccounts &&
+                           loggedUser_canDeleteAccounts &&
+                           loggedUser_canAddItems &&
+                           loggedUser_canDeleteItems &&
+                           loggedUser_canAddStock &&
+                           loggedUser_canDeleteStock &&
+                           loggedUser_canUndoSales &&
+                           loggedUser_canBackupDb
 
     property alias backup: backup
     property alias logic: logic

@@ -69,11 +69,17 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
+
+    UserAccountsModel m_userAccounts;
+    // m_userAccounts.hashPassword("Alten24");
+    // m_userAccounts.hashPassword("1234");
+    // 166fbc02b4a7f27e00d1ad92e02f52456106a9312dfdfc5640385b0d8b83c668:1722456400
+
     // Singletons
     QmlInterface qmlInterface;
     StockItemsModel m_stockModel;
     CheckoutItemsModel m_checkoutItems;
-    UserAccountsModel m_userAccounts;
+    // UserAccountsModel m_userAccounts;
     CompleterModel m_completer;
     saleItemsModel m_saleItem;
     ProductSalesModel m_pSale;
