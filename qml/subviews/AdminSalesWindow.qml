@@ -15,7 +15,7 @@ Window {
     property alias x: rootWindow.x
     property alias y: rootWindow.y
 
-    flags:  Qt.Dialog | Qt.WindowCloseButtonHint
+    flags:  Qt.Dialog //  | Qt.WindowCloseButtonHint
     modality: Qt.ApplicationModal
     color: bgColor
     width: 800

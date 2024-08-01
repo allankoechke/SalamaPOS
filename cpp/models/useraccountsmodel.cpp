@@ -385,13 +385,14 @@ void UserAccountsModel::addNewUserAccount(const QVariant &userFirstname, const Q
     emit logDataChanged("INFO", "Ending AddNewUserAccount()");
 }
 
-void UserAccountsModel::updatePassword(const QVariant &userUsername, const QVariant &userPassword)
+void UserAccountsModel::updatePassword(const QVariant &userUsername, const QVariant &passwordOld, const QVariant &passwordNew)
 {
     emit logDataChanged("INFO", "Starting updatePassword()");
 
     QSqlDatabase m_db = QSqlDatabase::database();
 
-    QString password = hashPassword(userPassword.toString());
+    QString oldPassword = "";
+    QString newPassword = hashPassword(passwordNew.toString());
 
     int index = getUserIndex(userUsername.toString());
 
@@ -400,17 +401,59 @@ void UserAccountsModel::updatePassword(const QVariant &userUsername, const QVari
         if(m_db.isOpen())
         {
             QSqlQuery query;
-            query.prepare("UPDATE \"users\" set password=:password WHERE username=:username");
-            query.bindValue(":password", password);
+            query.prepare("SELECT password FROM \"users\" WHERE username=:username");
             query.bindValue(":username", userUsername.toString());
 
             if(query.exec())
+            {
+                if(query.size() > 0 && query.first())
+                {
+                    QString p = query.value(0).toString();
+                    QString salt = p.split(":").size() >= 2 ? p.split(":").at(1) : "";
+                    oldPassword = hashPassword(passwordOld.toString(), salt);
+
+                    qDebug() << "Salt: " << salt;
+
+                    qDebug() << "Old Password: " << oldPassword << "\n: " << p;
+
+                    if( p != oldPassword) {
+
+                        emit userPasswordChanged(false);
+
+                        emit userPasswordChangeError("Could not authenticate");
+
+                        return;
+                    }
+                } else {
+                    emit userPasswordChanged(false);
+
+                    emit userPasswordChangeError("Could not authenticate");
+
+                    return;
+                }
+            }
+
+            else
+            {
+                emit userPasswordChanged(false);
+
+                emit userPasswordChangeError("Could not authenticate!");
+
+                return;
+            }
+
+            QSqlQuery query1;
+            query1.prepare("UPDATE \"users\" set password=:password WHERE username=:username");
+            query1.bindValue(":password", newPassword);
+            query1.bindValue(":username", userUsername.toString());
+
+            if(query1.exec())
             {
                 m_db.commit();
 
                 // qDebug() << ">> User Password Updated";
 
-                setData(this->index(index), QVariant::fromValue(password), UserPasswordRole);
+                setData(this->index(index), QVariant::fromValue(newPassword), UserPasswordRole);
 
                 emit userPasswordChanged(true);
 
@@ -422,6 +465,8 @@ void UserAccountsModel::updatePassword(const QVariant &userUsername, const QVari
                 m_db.rollback();
 
                 emit userPasswordChanged(false);
+
+                emit userPasswordChangeError("Failed to update password");
 
                 QString errorStr = "Error executing SQL: " + query.lastError().text();
 
@@ -703,12 +748,6 @@ void UserAccountsModel::markAccountForDeleting(const QVariant &userUsername)
     emit logDataChanged("INFO", "Ending markAccountForDeleting()");
 }
 
-bool UserAccountsModel::updatePassword(const QString &currentPasswordText, const QString &passwordText)
-{
-
-    return true;
-}
-
 void UserAccountsModel::loadAllUserAccounts()
 {
     emit logDataChanged("INFO", "Starting loadAllUserAccounts()");
@@ -720,8 +759,8 @@ void UserAccountsModel::loadAllUserAccounts()
         QSqlQuery query;
 
         const QString sql = "SELECT firstname,lastname,users.username,password,phone_no,date_added, can_add_user, can_remove_user, can_add_product,\
-                can_remove_product, can_add_stock, can_remove_stock, can_remove_sales, can_backup, to_change_password FROM \"users\" INNER \
-                JOIN \"priviledges\" ON users.username = priviledges.username";
+            can_remove_product, can_add_stock, can_remove_stock, can_remove_sales, can_backup, to_change_password FROM \"users\" INNER \
+            JOIN \"priviledges\" ON users.username = priviledges.username";
 
 
         if(query.exec(sql))
@@ -880,19 +919,32 @@ QString UserAccountsModel::hashPassword(const QString &pswd)
     return hashedPassword;
 }
 
+QString UserAccountsModel::hashPassword(const QString &pswd, const QString &salt)
+{
+    QCryptographicHash hash(QCryptographicHash::Sha3_256);
+    hash.addData(pswd.toUtf8() + salt.toUtf8());
+    auto hashedPassword = hash.result().toHex()+":"+salt;
+    qDebug() << hashedPassword;
+    return hashedPassword;
+}
+
 bool UserAccountsModel::login(const QString &savedPswd, const QString &inputPswd)
 {
-    QString _pswd = savedPswd.split(":").at(0);
-    QString _salt = savedPswd.split(":").at(1);
+    try {
+        QString _pswd = savedPswd.split(":").at(0);
+        QString _salt = savedPswd.split(":").at(1);
 
-    QCryptographicHash hash(QCryptographicHash::Sha3_256);
-    hash.addData(inputPswd.toUtf8() + _salt.toUtf8());
+        QCryptographicHash hash(QCryptographicHash::Sha3_256);
+        hash.addData(inputPswd.toUtf8() + _salt.toUtf8());
 
-    if(hash.result().toHex() == _pswd)
-        return true;
+        if(hash.result().toHex() == _pswd)
+            return true;
 
-    else
+        else
+            return false;
+    } catch(char e) {
         return false;
+    }
 }
 
 int UserAccountsModel::getUserIndex(const QString &username)

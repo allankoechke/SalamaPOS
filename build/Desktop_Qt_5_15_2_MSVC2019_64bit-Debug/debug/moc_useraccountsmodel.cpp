@@ -23,7 +23,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_UserAccountsModel_t {
     QByteArrayData data[47];
-    char stringdata0[709];
+    char stringdata0[707];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -40,50 +40,51 @@ QT_MOC_LITERAL(4, 43, 18), // "userRemovedChanged"
 QT_MOC_LITERAL(5, 62, 18), // "userUpdatedChanged"
 QT_MOC_LITERAL(6, 81, 22), // "userPriviledgesChanged"
 QT_MOC_LITERAL(7, 104, 19), // "userPasswordChanged"
-QT_MOC_LITERAL(8, 124, 22), // "toDeleteAccountChanged"
-QT_MOC_LITERAL(9, 147, 19), // "loggedInUserChanged"
-QT_MOC_LITERAL(10, 167, 12), // "loggedInUser"
-QT_MOC_LITERAL(11, 180, 20), // "logged_inUserChanged"
-QT_MOC_LITERAL(12, 201, 23), // "loggingInUsernameStatus"
-QT_MOC_LITERAL(13, 225, 23), // "loggingInPasswordStatus"
-QT_MOC_LITERAL(14, 249, 18), // "userAccountsLoaded"
-QT_MOC_LITERAL(15, 268, 21), // "usernameExistsChanged"
-QT_MOC_LITERAL(16, 290, 14), // "logDataChanged"
-QT_MOC_LITERAL(17, 305, 5), // "level"
-QT_MOC_LITERAL(18, 311, 4), // "info"
-QT_MOC_LITERAL(19, 316, 17), // "addNewUserAccount"
-QT_MOC_LITERAL(20, 334, 13), // "userFirstname"
-QT_MOC_LITERAL(21, 348, 12), // "userLastname"
-QT_MOC_LITERAL(22, 361, 12), // "userUsername"
-QT_MOC_LITERAL(23, 374, 12), // "userPassword"
-QT_MOC_LITERAL(24, 387, 11), // "userPhoneNo"
-QT_MOC_LITERAL(25, 399, 13), // "userDateAdded"
-QT_MOC_LITERAL(26, 413, 14), // "updatePassword"
-QT_MOC_LITERAL(27, 428, 17), // "removeUserAccount"
-QT_MOC_LITERAL(28, 446, 5), // "index"
-QT_MOC_LITERAL(29, 452, 17), // "updateUserAccount"
-QT_MOC_LITERAL(30, 470, 13), // "orig_username"
-QT_MOC_LITERAL(31, 484, 11), // "canAddUsers"
-QT_MOC_LITERAL(32, 496, 14), // "canRemoveUsers"
-QT_MOC_LITERAL(33, 511, 11), // "canAddItems"
-QT_MOC_LITERAL(34, 523, 14), // "canRemoveItems"
-QT_MOC_LITERAL(35, 538, 11), // "canAddStock"
-QT_MOC_LITERAL(36, 550, 14), // "canRemoveStock"
-QT_MOC_LITERAL(37, 565, 12), // "canUndoSales"
-QT_MOC_LITERAL(38, 578, 11), // "canBackupDb"
-QT_MOC_LITERAL(39, 590, 22), // "markAccountForDeleting"
-QT_MOC_LITERAL(40, 613, 19), // "currentPasswordText"
-QT_MOC_LITERAL(41, 633, 12), // "passwordText"
-QT_MOC_LITERAL(42, 646, 19), // "loadAllUserAccounts"
-QT_MOC_LITERAL(43, 666, 9), // "loginUser"
-QT_MOC_LITERAL(44, 676, 5), // "uname"
-QT_MOC_LITERAL(45, 682, 4), // "pswd"
-QT_MOC_LITERAL(46, 687, 21) // "getUpdatedPriviledges"
+QT_MOC_LITERAL(8, 124, 23), // "userPasswordChangeError"
+QT_MOC_LITERAL(9, 148, 6), // "reason"
+QT_MOC_LITERAL(10, 155, 22), // "toDeleteAccountChanged"
+QT_MOC_LITERAL(11, 178, 19), // "loggedInUserChanged"
+QT_MOC_LITERAL(12, 198, 12), // "loggedInUser"
+QT_MOC_LITERAL(13, 211, 20), // "logged_inUserChanged"
+QT_MOC_LITERAL(14, 232, 23), // "loggingInUsernameStatus"
+QT_MOC_LITERAL(15, 256, 23), // "loggingInPasswordStatus"
+QT_MOC_LITERAL(16, 280, 18), // "userAccountsLoaded"
+QT_MOC_LITERAL(17, 299, 21), // "usernameExistsChanged"
+QT_MOC_LITERAL(18, 321, 14), // "logDataChanged"
+QT_MOC_LITERAL(19, 336, 5), // "level"
+QT_MOC_LITERAL(20, 342, 4), // "info"
+QT_MOC_LITERAL(21, 347, 17), // "addNewUserAccount"
+QT_MOC_LITERAL(22, 365, 13), // "userFirstname"
+QT_MOC_LITERAL(23, 379, 12), // "userLastname"
+QT_MOC_LITERAL(24, 392, 12), // "userUsername"
+QT_MOC_LITERAL(25, 405, 12), // "userPassword"
+QT_MOC_LITERAL(26, 418, 11), // "userPhoneNo"
+QT_MOC_LITERAL(27, 430, 13), // "userDateAdded"
+QT_MOC_LITERAL(28, 444, 14), // "updatePassword"
+QT_MOC_LITERAL(29, 459, 17), // "removeUserAccount"
+QT_MOC_LITERAL(30, 477, 5), // "index"
+QT_MOC_LITERAL(31, 483, 17), // "updateUserAccount"
+QT_MOC_LITERAL(32, 501, 13), // "orig_username"
+QT_MOC_LITERAL(33, 515, 11), // "canAddUsers"
+QT_MOC_LITERAL(34, 527, 14), // "canRemoveUsers"
+QT_MOC_LITERAL(35, 542, 11), // "canAddItems"
+QT_MOC_LITERAL(36, 554, 14), // "canRemoveItems"
+QT_MOC_LITERAL(37, 569, 11), // "canAddStock"
+QT_MOC_LITERAL(38, 581, 14), // "canRemoveStock"
+QT_MOC_LITERAL(39, 596, 12), // "canUndoSales"
+QT_MOC_LITERAL(40, 609, 11), // "canBackupDb"
+QT_MOC_LITERAL(41, 621, 22), // "markAccountForDeleting"
+QT_MOC_LITERAL(42, 644, 19), // "loadAllUserAccounts"
+QT_MOC_LITERAL(43, 664, 9), // "loginUser"
+QT_MOC_LITERAL(44, 674, 5), // "uname"
+QT_MOC_LITERAL(45, 680, 4), // "pswd"
+QT_MOC_LITERAL(46, 685, 21) // "getUpdatedPriviledges"
 
     },
     "UserAccountsModel\0userAddedChanged\0\0"
     "status\0userRemovedChanged\0userUpdatedChanged\0"
     "userPriviledgesChanged\0userPasswordChanged\0"
+    "userPasswordChangeError\0reason\0"
     "toDeleteAccountChanged\0loggedInUserChanged\0"
     "loggedInUser\0logged_inUserChanged\0"
     "loggingInUsernameStatus\0loggingInPasswordStatus\0"
@@ -96,8 +97,7 @@ QT_MOC_LITERAL(46, 687, 21) // "getUpdatedPriviledges"
     "canAddUsers\0canRemoveUsers\0canAddItems\0"
     "canRemoveItems\0canAddStock\0canRemoveStock\0"
     "canUndoSales\0canBackupDb\0"
-    "markAccountForDeleting\0currentPasswordText\0"
-    "passwordText\0loadAllUserAccounts\0"
+    "markAccountForDeleting\0loadAllUserAccounts\0"
     "loginUser\0uname\0pswd\0getUpdatedPriviledges"
 };
 #undef QT_MOC_LITERAL
@@ -113,7 +113,7 @@ static const uint qt_meta_data_UserAccountsModel[] = {
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-      13,       // signalCount
+      14,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
        1,    1,  134,    2, 0x06 /* Public */,
@@ -122,23 +122,23 @@ static const uint qt_meta_data_UserAccountsModel[] = {
        6,    1,  143,    2, 0x06 /* Public */,
        7,    1,  146,    2, 0x06 /* Public */,
        8,    1,  149,    2, 0x06 /* Public */,
-       9,    1,  152,    2, 0x06 /* Public */,
-      11,    0,  155,    2, 0x06 /* Public */,
-      12,    1,  156,    2, 0x06 /* Public */,
-      13,    1,  159,    2, 0x06 /* Public */,
-      14,    1,  162,    2, 0x06 /* Public */,
-      15,    1,  165,    2, 0x06 /* Public */,
-      16,    2,  168,    2, 0x06 /* Public */,
+      10,    1,  152,    2, 0x06 /* Public */,
+      11,    1,  155,    2, 0x06 /* Public */,
+      13,    0,  158,    2, 0x06 /* Public */,
+      14,    1,  159,    2, 0x06 /* Public */,
+      15,    1,  162,    2, 0x06 /* Public */,
+      16,    1,  165,    2, 0x06 /* Public */,
+      17,    1,  168,    2, 0x06 /* Public */,
+      18,    2,  171,    2, 0x06 /* Public */,
 
  // methods: name, argc, parameters, tag, flags
-      19,    6,  173,    2, 0x02 /* Public */,
-      19,    5,  186,    2, 0x22 /* Public | MethodCloned */,
-      26,    2,  197,    2, 0x02 /* Public */,
-      27,    2,  202,    2, 0x02 /* Public */,
-      29,    5,  207,    2, 0x02 /* Public */,
-      29,    9,  218,    2, 0x02 /* Public */,
-      39,    1,  237,    2, 0x02 /* Public */,
-      26,    2,  240,    2, 0x02 /* Public */,
+      21,    6,  176,    2, 0x02 /* Public */,
+      21,    5,  189,    2, 0x22 /* Public | MethodCloned */,
+      28,    3,  200,    2, 0x02 /* Public */,
+      29,    2,  207,    2, 0x02 /* Public */,
+      31,    5,  212,    2, 0x02 /* Public */,
+      31,    9,  223,    2, 0x02 /* Public */,
+      41,    1,  242,    2, 0x02 /* Public */,
       42,    0,  245,    2, 0x02 /* Public */,
       43,    2,  246,    2, 0x02 /* Public */,
       46,    1,  251,    2, 0x02 /* Public */,
@@ -149,33 +149,33 @@ static const uint qt_meta_data_UserAccountsModel[] = {
     QMetaType::Void, QMetaType::Bool,    3,
     QMetaType::Void, QMetaType::Bool,    3,
     QMetaType::Void, QMetaType::Bool,    3,
+    QMetaType::Void, QMetaType::QString,    9,
     QMetaType::Void, QMetaType::Bool,    3,
-    QMetaType::Void, QMetaType::QJsonObject,   10,
+    QMetaType::Void, QMetaType::QJsonObject,   12,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Bool,    3,
     QMetaType::Void, QMetaType::Bool,    3,
     QMetaType::Void, QMetaType::Bool,    3,
     QMetaType::Void, QMetaType::Bool,    3,
-    QMetaType::Void, QMetaType::QString, QMetaType::QString,   17,   18,
+    QMetaType::Void, QMetaType::QString, QMetaType::QString,   19,   20,
 
  // methods: parameters
-    QMetaType::Void, QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariant,   20,   21,   22,   23,   24,   25,
-    QMetaType::Void, QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariant,   20,   21,   22,   23,   24,
-    QMetaType::Void, QMetaType::QVariant, QMetaType::QVariant,   22,   23,
-    QMetaType::Void, QMetaType::QVariant, QMetaType::QVariant,   22,   28,
-    QMetaType::Void, QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariant,   20,   21,   22,   24,   30,
-    QMetaType::Void, QMetaType::QVariant, QMetaType::Bool, QMetaType::Bool, QMetaType::Bool, QMetaType::Bool, QMetaType::Bool, QMetaType::Bool, QMetaType::Bool, QMetaType::Bool,   22,   31,   32,   33,   34,   35,   36,   37,   38,
-    QMetaType::Void, QMetaType::QVariant,   22,
-    QMetaType::Bool, QMetaType::QString, QMetaType::QString,   40,   41,
+    QMetaType::Void, QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariant,   22,   23,   24,   25,   26,   27,
+    QMetaType::Void, QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariant,   22,   23,   24,   25,   26,
+    QMetaType::Void, QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariant,   24,    2,    2,
+    QMetaType::Void, QMetaType::QVariant, QMetaType::QVariant,   24,   30,
+    QMetaType::Void, QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariant, QMetaType::QVariant,   22,   23,   24,   26,   32,
+    QMetaType::Void, QMetaType::QVariant, QMetaType::Bool, QMetaType::Bool, QMetaType::Bool, QMetaType::Bool, QMetaType::Bool, QMetaType::Bool, QMetaType::Bool, QMetaType::Bool,   24,   33,   34,   35,   36,   37,   38,   39,   40,
+    QMetaType::Void, QMetaType::QVariant,   24,
     QMetaType::Void,
     QMetaType::Void, QMetaType::QVariant, QMetaType::QVariant,   44,   45,
-    QMetaType::QJsonObject, QMetaType::Int,   28,
+    QMetaType::QJsonObject, QMetaType::Int,   30,
 
  // properties: name, type, flags
-      10, QMetaType::QJsonObject, 0x00495103,
+      12, QMetaType::QJsonObject, 0x00495103,
 
  // properties: notify_signal_id
-       6,
+       7,
 
        0        // eod
 };
@@ -191,23 +191,22 @@ void UserAccountsModel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
         case 2: _t->userUpdatedChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 3: _t->userPriviledgesChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 4: _t->userPasswordChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 5: _t->toDeleteAccountChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 6: _t->loggedInUserChanged((*reinterpret_cast< QJsonObject(*)>(_a[1]))); break;
-        case 7: _t->logged_inUserChanged(); break;
-        case 8: _t->loggingInUsernameStatus((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 9: _t->loggingInPasswordStatus((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 10: _t->userAccountsLoaded((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 11: _t->usernameExistsChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 12: _t->logDataChanged((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
-        case 13: _t->addNewUserAccount((*reinterpret_cast< const QVariant(*)>(_a[1])),(*reinterpret_cast< const QVariant(*)>(_a[2])),(*reinterpret_cast< const QVariant(*)>(_a[3])),(*reinterpret_cast< const QVariant(*)>(_a[4])),(*reinterpret_cast< const QVariant(*)>(_a[5])),(*reinterpret_cast< const QVariant(*)>(_a[6]))); break;
-        case 14: _t->addNewUserAccount((*reinterpret_cast< const QVariant(*)>(_a[1])),(*reinterpret_cast< const QVariant(*)>(_a[2])),(*reinterpret_cast< const QVariant(*)>(_a[3])),(*reinterpret_cast< const QVariant(*)>(_a[4])),(*reinterpret_cast< const QVariant(*)>(_a[5]))); break;
-        case 15: _t->updatePassword((*reinterpret_cast< const QVariant(*)>(_a[1])),(*reinterpret_cast< const QVariant(*)>(_a[2]))); break;
-        case 16: _t->removeUserAccount((*reinterpret_cast< const QVariant(*)>(_a[1])),(*reinterpret_cast< QVariant(*)>(_a[2]))); break;
-        case 17: _t->updateUserAccount((*reinterpret_cast< const QVariant(*)>(_a[1])),(*reinterpret_cast< const QVariant(*)>(_a[2])),(*reinterpret_cast< const QVariant(*)>(_a[3])),(*reinterpret_cast< const QVariant(*)>(_a[4])),(*reinterpret_cast< const QVariant(*)>(_a[5]))); break;
-        case 18: _t->updateUserAccount((*reinterpret_cast< const QVariant(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2])),(*reinterpret_cast< const bool(*)>(_a[3])),(*reinterpret_cast< const bool(*)>(_a[4])),(*reinterpret_cast< const bool(*)>(_a[5])),(*reinterpret_cast< const bool(*)>(_a[6])),(*reinterpret_cast< const bool(*)>(_a[7])),(*reinterpret_cast< const bool(*)>(_a[8])),(*reinterpret_cast< const bool(*)>(_a[9]))); break;
-        case 19: _t->markAccountForDeleting((*reinterpret_cast< const QVariant(*)>(_a[1]))); break;
-        case 20: { bool _r = _t->updatePassword((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])));
-            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = std::move(_r); }  break;
+        case 5: _t->userPasswordChangeError((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 6: _t->toDeleteAccountChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 7: _t->loggedInUserChanged((*reinterpret_cast< QJsonObject(*)>(_a[1]))); break;
+        case 8: _t->logged_inUserChanged(); break;
+        case 9: _t->loggingInUsernameStatus((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 10: _t->loggingInPasswordStatus((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 11: _t->userAccountsLoaded((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 12: _t->usernameExistsChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 13: _t->logDataChanged((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
+        case 14: _t->addNewUserAccount((*reinterpret_cast< const QVariant(*)>(_a[1])),(*reinterpret_cast< const QVariant(*)>(_a[2])),(*reinterpret_cast< const QVariant(*)>(_a[3])),(*reinterpret_cast< const QVariant(*)>(_a[4])),(*reinterpret_cast< const QVariant(*)>(_a[5])),(*reinterpret_cast< const QVariant(*)>(_a[6]))); break;
+        case 15: _t->addNewUserAccount((*reinterpret_cast< const QVariant(*)>(_a[1])),(*reinterpret_cast< const QVariant(*)>(_a[2])),(*reinterpret_cast< const QVariant(*)>(_a[3])),(*reinterpret_cast< const QVariant(*)>(_a[4])),(*reinterpret_cast< const QVariant(*)>(_a[5]))); break;
+        case 16: _t->updatePassword((*reinterpret_cast< const QVariant(*)>(_a[1])),(*reinterpret_cast< const QVariant(*)>(_a[2])),(*reinterpret_cast< const QVariant(*)>(_a[3]))); break;
+        case 17: _t->removeUserAccount((*reinterpret_cast< const QVariant(*)>(_a[1])),(*reinterpret_cast< QVariant(*)>(_a[2]))); break;
+        case 18: _t->updateUserAccount((*reinterpret_cast< const QVariant(*)>(_a[1])),(*reinterpret_cast< const QVariant(*)>(_a[2])),(*reinterpret_cast< const QVariant(*)>(_a[3])),(*reinterpret_cast< const QVariant(*)>(_a[4])),(*reinterpret_cast< const QVariant(*)>(_a[5]))); break;
+        case 19: _t->updateUserAccount((*reinterpret_cast< const QVariant(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2])),(*reinterpret_cast< const bool(*)>(_a[3])),(*reinterpret_cast< const bool(*)>(_a[4])),(*reinterpret_cast< const bool(*)>(_a[5])),(*reinterpret_cast< const bool(*)>(_a[6])),(*reinterpret_cast< const bool(*)>(_a[7])),(*reinterpret_cast< const bool(*)>(_a[8])),(*reinterpret_cast< const bool(*)>(_a[9]))); break;
+        case 20: _t->markAccountForDeleting((*reinterpret_cast< const QVariant(*)>(_a[1]))); break;
         case 21: _t->loadAllUserAccounts(); break;
         case 22: _t->loginUser((*reinterpret_cast< const QVariant(*)>(_a[1])),(*reinterpret_cast< const QVariant(*)>(_a[2]))); break;
         case 23: { QJsonObject _r = _t->getUpdatedPriviledges((*reinterpret_cast< int(*)>(_a[1])));
@@ -252,58 +251,65 @@ void UserAccountsModel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
             }
         }
         {
+            using _t = void (UserAccountsModel::*)(const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&UserAccountsModel::userPasswordChangeError)) {
+                *result = 5;
+                return;
+            }
+        }
+        {
             using _t = void (UserAccountsModel::*)(bool );
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&UserAccountsModel::toDeleteAccountChanged)) {
-                *result = 5;
+                *result = 6;
                 return;
             }
         }
         {
             using _t = void (UserAccountsModel::*)(QJsonObject );
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&UserAccountsModel::loggedInUserChanged)) {
-                *result = 6;
+                *result = 7;
                 return;
             }
         }
         {
             using _t = void (UserAccountsModel::*)();
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&UserAccountsModel::logged_inUserChanged)) {
-                *result = 7;
-                return;
-            }
-        }
-        {
-            using _t = void (UserAccountsModel::*)(bool );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&UserAccountsModel::loggingInUsernameStatus)) {
                 *result = 8;
                 return;
             }
         }
         {
             using _t = void (UserAccountsModel::*)(bool );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&UserAccountsModel::loggingInPasswordStatus)) {
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&UserAccountsModel::loggingInUsernameStatus)) {
                 *result = 9;
                 return;
             }
         }
         {
             using _t = void (UserAccountsModel::*)(bool );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&UserAccountsModel::userAccountsLoaded)) {
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&UserAccountsModel::loggingInPasswordStatus)) {
                 *result = 10;
                 return;
             }
         }
         {
             using _t = void (UserAccountsModel::*)(bool );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&UserAccountsModel::usernameExistsChanged)) {
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&UserAccountsModel::userAccountsLoaded)) {
                 *result = 11;
+                return;
+            }
+        }
+        {
+            using _t = void (UserAccountsModel::*)(bool );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&UserAccountsModel::usernameExistsChanged)) {
+                *result = 12;
                 return;
             }
         }
         {
             using _t = void (UserAccountsModel::*)(QString , QString );
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&UserAccountsModel::logDataChanged)) {
-                *result = 12;
+                *result = 13;
                 return;
             }
         }
@@ -423,58 +429,65 @@ void UserAccountsModel::userPasswordChanged(bool _t1)
 }
 
 // SIGNAL 5
-void UserAccountsModel::toDeleteAccountChanged(bool _t1)
+void UserAccountsModel::userPasswordChangeError(const QString & _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 5, _a);
 }
 
 // SIGNAL 6
-void UserAccountsModel::loggedInUserChanged(QJsonObject _t1)
+void UserAccountsModel::toDeleteAccountChanged(bool _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 6, _a);
 }
 
 // SIGNAL 7
-void UserAccountsModel::logged_inUserChanged()
+void UserAccountsModel::loggedInUserChanged(QJsonObject _t1)
 {
-    QMetaObject::activate(this, &staticMetaObject, 7, nullptr);
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    QMetaObject::activate(this, &staticMetaObject, 7, _a);
 }
 
 // SIGNAL 8
-void UserAccountsModel::loggingInUsernameStatus(bool _t1)
+void UserAccountsModel::logged_inUserChanged()
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
-    QMetaObject::activate(this, &staticMetaObject, 8, _a);
+    QMetaObject::activate(this, &staticMetaObject, 8, nullptr);
 }
 
 // SIGNAL 9
-void UserAccountsModel::loggingInPasswordStatus(bool _t1)
+void UserAccountsModel::loggingInUsernameStatus(bool _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 9, _a);
 }
 
 // SIGNAL 10
-void UserAccountsModel::userAccountsLoaded(bool _t1)
+void UserAccountsModel::loggingInPasswordStatus(bool _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 10, _a);
 }
 
 // SIGNAL 11
-void UserAccountsModel::usernameExistsChanged(bool _t1)
+void UserAccountsModel::userAccountsLoaded(bool _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 11, _a);
 }
 
 // SIGNAL 12
+void UserAccountsModel::usernameExistsChanged(bool _t1)
+{
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    QMetaObject::activate(this, &staticMetaObject, 12, _a);
+}
+
+// SIGNAL 13
 void UserAccountsModel::logDataChanged(QString _t1, QString _t2)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
-    QMetaObject::activate(this, &staticMetaObject, 12, _a);
+    QMetaObject::activate(this, &staticMetaObject, 13, _a);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

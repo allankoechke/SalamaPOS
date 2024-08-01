@@ -56,11 +56,12 @@ Controls2.Popup
 
                 AppText
                 {
-                    color: QmlInterface.isDarkTheme? "grey":"black"
+                    color: QmlInterface.isDarkTheme? "#eee" : "black"
                     size: 17
                     text: qsTr("Select Creditee")
 
-                    anchors.centerIn: parent
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
                 }
 
                 AppButton

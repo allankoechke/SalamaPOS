@@ -57,7 +57,7 @@ public:
 
     Q_INVOKABLE void addNewUserAccount(const QVariant &userFirstname, const QVariant &userLastname, const QVariant &userUsername, const QVariant &userPassword, const QVariant &userPhoneNo, const QVariant &userDateAdded = "");
 
-    Q_INVOKABLE void updatePassword(const QVariant &userUsername, const QVariant &userPassword);
+    Q_INVOKABLE void updatePassword(const QVariant &userUsername, const QVariant&, const QVariant&);
 
     Q_INVOKABLE void removeUserAccount(const QVariant &userUsername, QVariant index);
 
@@ -66,8 +66,6 @@ public:
     Q_INVOKABLE void updateUserAccount(const QVariant &userUsername, const bool &canAddUsers, const bool &canRemoveUsers, const bool &canAddItems, const bool &canRemoveItems, const bool &canAddStock, const bool &canRemoveStock, const bool &canUndoSales, const bool &canBackupDb);
 
     Q_INVOKABLE void markAccountForDeleting(const QVariant &userUsername);
-
-    Q_INVOKABLE bool updatePassword(const QString& currentPasswordText, const QString& passwordText);
 
     Q_INVOKABLE void loadAllUserAccounts();
 
@@ -86,6 +84,8 @@ public:
     void removeUserAccount(int index);
 
     QString hashPassword(const QString &pswd);
+
+    QString hashPassword(const QString &pswd, const QString &salt);
 
     bool login(const QString &savedPswd, const QString &inputPswd);
 
@@ -110,6 +110,8 @@ signals:
     void userPriviledgesChanged(bool status);
 
     void userPasswordChanged(bool status);
+
+    void userPasswordChangeError(const QString& reason);
 
     void toDeleteAccountChanged(bool status);
 

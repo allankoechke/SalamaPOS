@@ -43,7 +43,7 @@ Rectangle {
                 color: "white"
                 // font.bold: true
                 size: 12
-                text: "<i>v</i><b>21.01.01</b>"
+                text: "<i>v</i><b>24.08.01</b>"
                 textFormat: AppText.StyledText
 
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -68,6 +68,7 @@ Rectangle {
         {
             menuIcon: "\uf488"
             menuLabel: qsTr("Sell")
+            visible: !mainApp.isAdmin
             isMenuCurrentlyActive: navBarIndex === 1
 
             onMenuClicked: navBarIndex = 1;

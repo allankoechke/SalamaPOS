@@ -197,8 +197,7 @@ Controls2.Popup
 
 
         isError = false
-        var response = AccountsModel.updatePassword(currentPasswordText, passwordText);
-        // internal.isAwaitingUpdatePasswordRequest = false;
+        AccountsModel.updatePassword(loggedUser_username, currentPasswordText, passwordText);
 
     }
 
@@ -208,5 +207,27 @@ Controls2.Popup
         passwordText=""
         confirmPasswordText=""
         currentPasswordText=""
+    }
+
+    Connections {
+        target: AccountsModel
+
+        function onUserPasswordChanged(ok) {
+            internal.isAwaitingUpdatePasswordRequest = false;
+            if(ok) {
+                AlarmsModel.addAlarmItem("success", "Password updated, logging you out!")
+
+                navBarIndex = 8;
+                loginView.clearFields();
+                navBar.visible = false;
+                notificationBar.visible = false;
+                root.close();
+            }
+        }
+
+        function onUserPasswordChangeError(reason) {
+            internal.isAwaitingUpdatePasswordRequest = false;
+            AlarmsModel.addAlarmItem("error", reason)
+        }
     }
 }

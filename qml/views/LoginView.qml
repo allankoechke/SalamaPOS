@@ -14,6 +14,7 @@ Item {
     {
         _uname.text = "";
         _pswd.text = "";
+        errorString = "";
     }
 
     Item {
@@ -195,6 +196,7 @@ Item {
             {
                 color: isError? "red":"transparent"
                 text: errorString
+                visible: errorString!==""
 
                 Layout.alignment: Qt.AlignHCenter
 
