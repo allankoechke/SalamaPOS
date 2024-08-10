@@ -4,8 +4,7 @@
 #include <QQmlApplicationEngine>
 #include <QFont>
 #include <QFontDatabase>
-
-// #define DEBUG_MODE
+#include <QMessageBox>
 
 // To add a console when running on windows
 #ifdef Q_OS_WINDOWS
@@ -27,30 +26,12 @@
 #include "models/crediteeaccountsmodel.h"
 #include "models/alarmsmodel.h"
 #include "processinterface.h"
+#include "runguard.h"
+
+#define APP_NAME "Salama POS App"
 
 int main(int argc, char *argv[])
 {
-#ifdef Q_OS_WINDOWS
-#ifdef DEBUG_MODE
-    // detach from the current console window
-    // if launched from a console window, that will still run waiting for the new console (below) to close
-    // it is useful to detach from Qt Creator's <Application output> panel
-    FreeConsole();
-
-    // create a separate new console window
-    AllocConsole();
-
-    // attach the new console to this application's process
-    AttachConsole(GetCurrentProcessId());
-
-    // reopen the std I/O streams to redirect I/O to the new console
-    freopen("CON", "w", stdout);
-    freopen("CON", "w", stderr);
-    freopen("CON", "r", stdin);
-
-#endif
-#endif
-
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QQuickStyle::setStyle(QStringLiteral("Material"));
     QApplication app(argc, argv);
@@ -67,14 +48,21 @@ int main(int argc, char *argv[])
         qDebug() << "Could not load the specified font!";
     }
 
+    // Make sure there is no other instance running
+    RunGuard runGuard(APP_NAME);
+    if (!runGuard.tryToRun()) {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Icon::Critical);
+        msgBox.setText(
+            QString(QObject::tr("Salama POS is already running, if you need to log in as another user, log out then in with the new account.\n")));
+        msgBox.exec();
+        return 127;
+    }
+
     QQmlApplicationEngine engine;
 
 
     UserAccountsModel m_userAccounts;
-    // m_userAccounts.hashPassword("Alten24");
-    // m_userAccounts.hashPassword("1234");
-    // 166fbc02b4a7f27e00d1ad92e02f52456106a9312dfdfc5640385b0d8b83c668:1722456400
-
     // Singletons
     QmlInterface qmlInterface;
     StockItemsModel m_stockModel;

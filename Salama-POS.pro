@@ -38,6 +38,7 @@ SOURCES += \
         cpp/qmlinterface.cpp \
         # cpp/qwtbarplot.cpp \
         # cpp/qwtbarplotdata.cpp \
+        cpp/runguard.cpp \
         cpp/serialportinterface.cpp \
         cpp/webapiinterface.cpp \
         cpp/websocketsinterface.cpp
@@ -89,6 +90,7 @@ HEADERS += \
     cpp/qmlinterface.h \
     # cpp/qwtbarplot.h \
     # cpp/qwtbarplotdata.h \
+    cpp/runguard.h \
     cpp/serialportinterface.h \
     cpp/webapiinterface.h \
     cpp/websocketsinterface.h
